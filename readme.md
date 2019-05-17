@@ -13,22 +13,21 @@ You can download an Excel file with the VBA code of the latest release pre-insta
 
 ### End User
 1. Download a zip file of the files in  the repository.
-2. Create a new Excel spreadsheet and save it as an "Excel Macro-Enables Wookbook (*.xlsm).
+2. Create a new Excel spreadsheet and save it as an "Excel Macro-Enabled Wookbook (*.xlsm).
 3. Open the Visual Basic Editor. Windows: "Alt-F11". Mac: "Opt-F11" or "Fn-Opt-F11".
 3. Import all the files in the `/src` folder into the VBAProject.
 4. Open the `Main` module.
 5. Place the curser in the the subroutine `install()` and press F5. This will create the required worksheets.
- - The dashboard worksheet which contains the instructions and merge button for the end user.
- - The 2 worksheets for the data tables.
+   - The dashboard worksheet which contains the instructions and merge button for the end user.
+   - The 2 worksheets for the data tables.
 6. Distribute the spreadsheet to the end user.
-7. The Dashboard Worksheet contains instructions for the end user.
 
 ### Developers
 1. Either download the zip file or clone the project.
 2. Follow the instructions 1-5 above.
 3. A further 2 steps are needed to run the tests.
- - Import all the files in the `/testing` folder into VBAProject.
- - Create a folder `/testing/test-files` in the same folder where the workbook was saved and copy there all the contents of `/testing/test-files` in the repository.
+   - Import all the files in the `/testing` folder into VBAProject.
+   - Create a folder `/testing/test-files` in the same folder where the workbook was saved and copy there all the contents of `/testing/test-files` in the repository.
 
 ## Working with the Code
 
