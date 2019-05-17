@@ -98,7 +98,7 @@ Private Sub printAnswerWsHeaderLine(ws As Worksheet, surveyRun As ModelSurveyRun
     
     For i = 1 To surveyRun.questionCount
         With ws.Cells(1, 4 + i)
-            .value = i
+            .value = "Q" & i
             .Font.Bold = True
             .HorizontalAlignment = xlCenter
         End With
