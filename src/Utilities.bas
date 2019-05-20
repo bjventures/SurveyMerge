@@ -111,4 +111,16 @@ Function isFileAccessAllowed() As Boolean
         
 End Function
 
+Function directoryExists(strDir As String) As Boolean
+
+    ' Need this approach since on Mac comparing to empty string gives an incorrect result if the directory is empty.
+    If Len(Dir(strDir, vbDirectory)) = 0 Then
+        directoryExists = True
+        Stop
+    Else
+        directoryExists = False
+    End If
+
+End Function
+
 
