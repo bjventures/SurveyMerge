@@ -19,7 +19,7 @@ Sub runAllTests()
         Exit Sub
     End If
     
-    If Dir(getTestFilePath, vbDirectory) = "" Then
+    If Not directoryExists(getTestFilePath) Then
         MsgBox "The tests could not be run. The folder 'testing/test-files' does not exist.", vbCritical, MsgTitle
         Exit Sub
     End If
