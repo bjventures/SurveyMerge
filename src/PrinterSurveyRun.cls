@@ -16,6 +16,28 @@ Implements IPrinter
 
 Private i As Integer
 
+
+Private Const CP_UTF8 = 65001
+
+Private Declare Function MultiByteToWideChar Lib "kernel32" ( _
+   ByVal CodePage As Long, ByVal dwFlags As Long, _
+   ByVal lpMultiByteStr As Long, ByVal cchMultiByte As Long, _
+   ByVal lpWideCharStr As Long, ByVal cchWideChar As Long) As Long
+
+
+Public Function sUTF8ToUni(bySrc() As Byte) As String
+   ' Converts a UTF-8 byte array to a Unicode string
+   Dim lBytes As Long, lNC As Long, lRet As Long
+
+   lBytes = UBound(bySrc) - LBound(bySrc) + 1
+   lNC = lBytes
+   sUTF8ToUni = String$(lNC, Chr(0))
+   lRet = MultiByteToWideChar(CP_UTF8, 0, VarPtr(bySrc(LBound(bySrc))), lBytes, StrPtr(sUTF8ToUni), lNC)
+   sUTF8ToUni = Left$(sUTF8ToUni, lRet)
+End Function
+
+
+
 Sub IPrinter_printData(surveyRun As ModelSurveyRun, lineNo As Integer)
 
     Dim ws As Worksheet
