@@ -28,10 +28,10 @@ Private Sub exportVisualBasicCode()
     srcDirectory = getCurrentPath & "src"
     testingDirectory = getCurrentPath & "testing"
         
-    If Dir(srcDirectory, vbDirectory) = "" Then
+    If Not directoryExists(srcDirectory) Then
         MkDir srcDirectory
     End If
-    If Dir(testingDirectory, vbDirectory) = "" Then
+    If Not directoryExists(testingDirectory) Then
       MkDir testingDirectory
     End If
     
@@ -90,7 +90,7 @@ Function getCurrentPath() As String
     Dim currentPath As String
     currentPath = ActiveWorkbook.path
     If Right(currentPath, 1) <> "/" Then currentPath = currentPath & "/"
-    If Dir(currentPath, vbDirectory) = "" Then MsgBox "The directory does not exist.", vbOKOnly, MsgTitle
+    If Not directoryExists(currentPath) Then MsgBox "The directory does not exist.", vbOKOnly, MsgTitle
     getCurrentPath = currentPath
 
 End Function
@@ -109,6 +109,17 @@ Function isFileAccessAllowed() As Boolean
         isFileAccessAllowed = True
     #End If
         
+End Function
+
+Function directoryExists(strDir As String) As Boolean
+
+    ' Need this approach since on Mac comparing to empty string gives an incorrect result if the directory is empty.
+    If Len(Dir(strDir, vbDirectory)) = 0 Then
+        directoryExists = False
+    Else
+        directoryExists = True
+    End If
+
 End Function
 
 

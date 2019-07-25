@@ -20,8 +20,6 @@ Public Function parse(filePath As String, fileName As String, printer As IPrinte
 
 On Error GoTo Catch
     
-    Dim file As String
-    Dim inputFile As Integer
     Dim fileText As String
     Dim surveyRunCount As Double
     Dim i As Integer
@@ -33,16 +31,17 @@ On Error GoTo Catch
     Dim subjectId As String
     Dim lineArray() As String
     
-    inputFile = FreeFile
     Set parser = New ParserSurveyRun
-    file = filePath & fileName
+    
+    #If Mac Then
+        fileText = cleanFileText(getAsciFile(filePath, fileName))
+    #Else
+        fileText = cleanFileText(getUtfFile(filePath, fileName))
+    #End If
 
-    Open file For Input As #inputFile
-    fileText = Input(LOF(inputFile), #inputFile)
-    Close #inputFile
-    fileText = cleanFileText(fileText)
 
     lineArray = Split(fileText, vbLf)
+    
     surveyRunCount = (UBound(lineArray) - FileRow.firstAnswer) / 3
     
     surveyName = getMetaData(lineArray, "Survey Name", 0)
@@ -61,6 +60,39 @@ Finally:
 
 Catch:
     ' Need to close file before error gets propagated.
+    Call Err.Raise(Err.number, Err.Source, Err.description)
+
+End Function
+
+Private Function getUtfFile(filePath As String, fileName As String) As String
+    ' Ensure reference is set to Microsoft ActiveX DataObjects library (the latest version of it).
+    ' Under "tools/references". References travel with the excel file, so once added, no need to worry.
+    Dim objStream
+    Set objStream = CreateObject("ADODB.Stream")
+    objStream.Charset = "utf-8"
+    objStream.Open
+    objStream.LoadFromFile (filePath & fileName)
+    getUtfFile = objStream.ReadText()
+
+End Function
+
+Private Function getAsciFile(filePath As String, fileName As String) As String
+    Dim inputFile As Integer
+    Dim file As String
+    Dim fileText As String
+    inputFile = FreeFile
+
+     file = filePath + fileName
+    Open file For Input As #inputFile
+    fileText = Input(LOF(inputFile), #inputFile)
+    Close #inputFile
+    getAsciFile = fileText
+    
+Finally:
+    Exit Function
+    
+Catch:
+    ' Need to close file before error gets propagated.
     Close #inputFile
     Call Err.Raise(Err.number, Err.Source, Err.description)
 
@@ -69,7 +101,7 @@ End Function
 '
 ' This function is temporarily needed as older data files may have line breaks in the middle of text questions.
 ' The middle lines in the survey run are combined so each SurveyRun will have 3 lines.
-' TODO: Since May 2019, line breaks are removed from the PIEL App data file. In late 2010 can remove this.
+' TODO: Since May 2019, line breaks are removed from the PIEL App data file. In late 2020 can remove this.
 '
 Private Function cleanFileText(fileText As String) As String
     Dim cleanText As String
@@ -108,6 +140,7 @@ Private Sub parseAndPrintSurveyRun(surveyName As String, subjectId As String, ru
     On Error GoTo Catch
     Set surveyRun = parser.parse(surveyName, subjectId, runLines)
     Call printer.printData(surveyRun, lineNo)
+    
 Finally:
     Exit Sub
 Catch:
