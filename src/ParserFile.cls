@@ -54,6 +54,13 @@ On Error GoTo Catch
         Call parseAndPrintSurveyRun(surveyName, subjectId, runLines, parser, surveyRun, printer, startLine + i)
     Next i
     parse = surveyRunCount + startLine
+    
+Finally:
+    Exit Function
+
+Catch:
+    ' Need to close file before error gets propagated.
+    Call Err.Raise(Err.number, Err.Source, Err.description)
 
 End Function
 
