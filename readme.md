@@ -1,5 +1,5 @@
 # SurveyMerge
-SurveyMerge is an Excel tool which facilitates data analysis of survey data files created by the [PIEL Survey app](http://pielsurvey.org) . It merges multiple survey runs and multiple survey files. SurveyMerge runs within Excel on Windows. At this stage it does not support Excel on Mac. It is written in Visual Basic for Applications (VBA).
+SurveyMerge is an Excel tool which facilitates data analysis of survey data files created by the [PIEL Survey app](http://pielsurvey.org) . It merges multiple survey runs and multiple survey files. SurveyMerge runs within Excel on Windows. At this stage it does not support Excel on Mac and must be regarded as a Beta version. It is written in Visual Basic for Applications (VBA).
 
 The PIEL Survey app is a research tool which conducts surveys using Ecological Momentary Assessment Methodology (EMA), otherwise known as Experience Sampling Methodology (ESM). It is available as an iOS and Android app.
 
