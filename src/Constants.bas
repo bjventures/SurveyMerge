@@ -4,10 +4,9 @@ Attribute VB_Name = "Constants"
 '
 Option Explicit
 
-Public Const MsgTitle As String = "SurveyMerge"
+Public Const ProjectName As String = "SurveyMerge"
 
 Enum CustomError
-    UnknownKeyword = 514
     IncorrectDataFormat = 515
     AnswerCountError = 516
     InvalidValue = 517
@@ -15,6 +14,8 @@ Enum CustomError
     SetupError = 519
     SurveyRunError = 520
     InvalidQuestionType = 521
+    FileNotFound = 522
+    DirNotFound = 522
 End Enum
 
 Enum FileRow

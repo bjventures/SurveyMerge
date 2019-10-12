@@ -40,7 +40,7 @@ End Property
 
 Private Function ITester_runTest(methodName As String) As Boolean
    
-    If Len(methodName) > 63 Then MsgBox "The method name '" & methodName & "' is too long to run on the Mac os.", vbCritical, MsgTitle
+    If Len(methodName) > 63 Then MsgBox "The method name '" & methodName & "' is too long to run on the Mac os.", vbCritical, ProjectName
     ITester_runTest = CallByName(Me, methodName, VbMethod)
 
 End Function
@@ -113,7 +113,7 @@ Finally:
     Exit Function
 
 Catch:
-    assertion = Err.number = CustomError.UnknownKeyword
+    assertion = Err.number = CustomError.IncorrectDataFormat
     test_ParserFile_WhenHasIncorrectSurveyNameString_ShouldThrow = assertion
     Resume Finally
 
@@ -128,7 +128,7 @@ Finally:
     Exit Function
 
 Catch:
-    assertion = Err.number = CustomError.UnknownKeyword
+    assertion = Err.number = CustomError.IncorrectDataFormat
     test_ParserFile_WhenHasIncorrectSubjectIdString_ShouldThrow = assertion
     Resume Finally
 

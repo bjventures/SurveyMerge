@@ -4,6 +4,9 @@ Attribute VB_Name = "Main"
 '
 Option Explicit
 
+'
+' The arguments for this Sub are to enable testing.
+'
 Sub combineCsvFiles(Optional currentPath As String = "", Optional showMsg As Boolean = True)
          
     On Error GoTo Catch
@@ -22,10 +25,7 @@ Sub combineCsvFiles(Optional currentPath As String = "", Optional showMsg As Boo
     fileArray = getFileList(currentPath)
     arrayBound = UBound(fileArray)
     
-    If arrayBound < 1 Then
-        MsgBox "No data files were found in the current directory.", vbOKOnly, MsgTitle
-        Exit Sub
-    End If
+    If arrayBound < 1 Then Call Err.Raise(CustomError.FileNotFound, ProjectName & ".combineCsvFiles", "No data files were found in the current directory.")
     
     Set parser = New ParserFile
     Set printer = New PrinterSurveyRun
@@ -43,13 +43,15 @@ Sub combineCsvFiles(Optional currentPath As String = "", Optional showMsg As Boo
     Next
 
     Application.ScreenUpdating = True
-    If showMsg Then MsgBox success & " CSV files were combined.", vbOKOnly, MsgTitle
+    If showMsg Then MsgBox success & " CSV files were combined.", vbOKOnly, ProjectName
 
 Finally:
     Exit Sub
 
 Catch:
-    If showMsg Then MsgBox "The file could not be imported. " & Err.description, vbOKOnly, MsgTitle
+    ' Delete any imported data, if an error occured, it is unreliable.
+    Call createOrClearWorksheets(sheetArray)
+    If showMsg Then MsgBox "The file could not be imported." & vbNewLine & Err.description, vbOKOnly, ProjectName
     Resume Finally
 
 End Sub

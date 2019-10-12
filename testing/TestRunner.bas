@@ -10,17 +10,17 @@ Sub runAllTests()
     
     'There will be an error if the worksheet "Dashboard" does not exist.
     If Not isProjectInstalled() Then
-    MsgBox "The tests could not be run. The project is not properly installed.", vbOKOnly, MsgTitle
+    MsgBox "The tests could not be run. The project is not properly installed.", vbOKOnly, ProjectName
         Exit Sub
     End If
     
     If Not isFileAccessAllowed Then
-        MsgBox "The tests could not be run. Access to files has not been granted or the folder does not exist. Please reinstall and allow file access.", vbOKOnly, MsgTitle
+        MsgBox "The tests could not be run. Access to files has not been granted or the folder does not exist. Please reinstall and allow file access.", vbOKOnly, ProjectName
         Exit Sub
     End If
     
     If Not directoryExists(getTestFilePath) Then
-        MsgBox "The tests could not be run. The folder 'testing/test-files' does not exist.", vbCritical, MsgTitle
+        MsgBox "The tests could not be run. The folder 'testing/test-files' does not exist.", vbCritical, ProjectName
         Exit Sub
     End If
 
@@ -88,7 +88,7 @@ Finally:
     Exit Sub
 
 Catch:
-    MsgBox "An unexpected error occurred in the test '" & testObject.className & "." & methodName & "'." & vbCrLf & Err.description, vbCritical, MsgTitle
+    MsgBox "An unexpected error occurred in the test '" & testObject.className & "." & methodName & "'." & vbCrLf & Err.description, vbCritical, ProjectName
     Resume Finally
     
 End Sub
@@ -133,7 +133,7 @@ Catch:
     Else
         msg = "Error no: " & Err.number & " in 'getAnswerLines'." & vbNewLine & Err.description
     End If
-    MsgBox msg, vbOKOnly, MsgTitle
+    MsgBox msg, vbOKOnly, ProjectName
     Close inputFile
     Resume Finally
     

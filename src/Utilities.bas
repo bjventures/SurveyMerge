@@ -19,7 +19,7 @@ Private Sub exportVisualBasicCode()
     Dim extension As String
     
     If Not isFileAccessAllowed Then
-        MsgBox "Failed to export files as access to the '/testing' folder has not been granted. Please reinstall and grant access.", vbOKOnly, MsgTitle
+        MsgBox "Failed to export files as access to the '/testing' folder has not been granted. Please reinstall and grant access.", vbOKOnly, ProjectName
         Exit Sub
     End If
         
@@ -63,7 +63,7 @@ Private Sub exportVisualBasicCode()
         Call VBComponent.Export(path)
         
         If Err.number <> 0 Then
-            MsgBox "Failed to export " & VBComponent.name & " to " & path, vbCritical, MsgTitle
+            MsgBox "Failed to export " & VBComponent.name & " to " & path, vbCritical, ProjectName
         Else
             count = count + 1
             Debug.Print "Exported: " & VBComponent.name
@@ -80,7 +80,7 @@ Catch:
     Else
         msg = Err.description
     End If
-        MsgBox msg, vbCritical, MsgTitle
+        MsgBox msg, vbCritical, ProjectName
     Resume Finally
     
 End Sub
@@ -90,7 +90,7 @@ Function getCurrentPath() As String
     Dim currentPath As String
     currentPath = ActiveWorkbook.path
     If Right(currentPath, 1) <> "/" Then currentPath = currentPath & "/"
-    If Not directoryExists(currentPath) Then MsgBox "The directory does not exist.", vbOKOnly, MsgTitle
+    If Not directoryExists(currentPath) Then Call Err.Raise(CustomError.DirNotFound, ProjectName & ".getCurrentPath", "The directory does not exist.")
     getCurrentPath = currentPath
 
 End Function
