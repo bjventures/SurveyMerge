@@ -164,7 +164,6 @@ End Function
 Public Function test_AnswerList_WhenSetIncorrectValue_ShouldThrow() As Boolean
 
     Dim listAnswer As New ModelAnswerList
-    Dim msg As String
 
 On Error GoTo Catch
     listAnswer.value = -1

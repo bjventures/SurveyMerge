@@ -163,7 +163,6 @@ End Function
 
 Public Function test_AnswerSlider_WhenSetIncorrectValue_ShouldThrow() As Boolean
     Dim sliderAnswer As New ModelAnswerSlider
-    Dim msg As String
 
 On Error GoTo Catch
     sliderAnswer.value = -1.444

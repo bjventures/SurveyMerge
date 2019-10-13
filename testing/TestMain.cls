@@ -14,7 +14,6 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements ITester
 
-Private moduleName As String
 Private assertion As Boolean
 Private wsAnswers As Worksheet
 Private wsAnswerTime As Worksheet

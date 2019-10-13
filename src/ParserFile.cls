@@ -55,7 +55,6 @@ Public Function parse(ByRef filePath As String, ByRef fileName As String, ByRef 
     Next i
     parse = surveyRunCount + startLine
     
-Finally:
     Exit Function
 
 Catch:

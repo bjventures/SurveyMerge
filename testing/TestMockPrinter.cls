@@ -19,6 +19,7 @@ Private m_ValidSurveyRunNumber As Long
 Private m_SurveyRun As ModelSurveyRun
 Private m_ErrorMessage As String
 
+'@Ignore ParameterNotUsed
 Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
 
     Set m_SurveyRun = surveyRun
@@ -26,6 +27,7 @@ Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
 
 End Sub
 
+'@Ignore ParameterNotUsed
 Sub IPrinter_printError(ByVal errorMessage As String, ByVal lineNo As Long)
 
     m_ErrorMessage = errorMessage

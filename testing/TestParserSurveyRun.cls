@@ -86,6 +86,7 @@ Catch:
     
 End Function
 
+'@Ignore UnderscoreInPublicClassModuleMember
 Public Function test_ParserSurveyRun_WhenIncorrectFileData_ShouldThrow() As Boolean
 
 On Error GoTo Catch
@@ -100,4 +101,5 @@ Catch:
     Resume Finally
     
 End Function
+
 

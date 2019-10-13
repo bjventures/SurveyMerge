@@ -14,7 +14,6 @@ Attribute VB_Exposed = False
 Option Explicit
 Implements ITester
 
-Private moduleName As String
 Private assertion As Boolean
 Private parser As ParserFile
 Private runCount As Long
@@ -105,6 +104,7 @@ Public Function test_ParserFile_WhenHasSurveyName_ShouldSet() As Boolean
 
 End Function
 
+'@Ignore UnderscoreInPublicClassModuleMember
 Public Function test_ParserFile_WhenHasIncorrectSurveyNameString_ShouldThrow() As Boolean
     
     On Error GoTo Catch
@@ -149,6 +149,7 @@ Catch:
     Resume Finally
 
 End Function
+
 
 
 
