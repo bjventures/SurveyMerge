@@ -20,8 +20,7 @@ Private i As Long
 Public Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
 
     Dim ws As Worksheet
-    Dim answer As Variant
-
+    
     Set ws = Sheets(getWsName(WsSheet.Answers))
     printAnswerWs ws, surveyRun, lineNo
     
@@ -52,7 +51,7 @@ End Sub
 
 Private Sub printAnswerTimeWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
         
-   printAnswerWsHeaderLine ws, surveyRun, lineNo
+    printAnswerWsHeaderLine ws, surveyRun, lineNo
     
     ws.Cells(lineNo + 2, 1) = surveyRun.surveyName
     ws.Cells(lineNo + 2, 2) = surveyRun.participantId
@@ -69,7 +68,7 @@ Private Sub printAnswerTimeWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSur
 
 End Sub
 
-Private Sub printAnswerWsHeaderLine(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
+Private Sub printAnswerWsHeaderLine(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByVal lineNo As Long)
     ' Print header for first survey run, do not repeat.
     If lineNo <> 0 Then Exit Sub
         
@@ -107,10 +106,11 @@ Private Sub printAnswerWsHeaderLine(ByRef ws As Worksheet, ByRef surveyRun As Mo
     
 End Sub
 
-Sub IPrinter_printError(ByRef description As String, ByRef lineNo As Long)
+Public Sub IPrinter_printError(ByVal description As String, ByVal lineNo As Long)
 
     Dim ws As Worksheet
     Set ws = Sheets(getWsName(WsSheet.Answers))
     ws.Cells(lineNo + 2, 1) = "Error In Survey Run: " & description
 
 End Sub
+

@@ -12,6 +12,7 @@ Private Sub installEndUser()
 
 End Sub
 
+'@Ignore ProcedureNotUsed
 Private Sub installDeveloper()
 
     installEndUser
@@ -27,7 +28,7 @@ Private Sub doFirstInstall(ByRef sheetArray As Variant)
 
 End Sub
 
-Private Function sheetExists(ByRef sheetToFind As String, Optional ByRef wb As Workbook) As Boolean
+Private Function sheetExists(ByVal sheetToFind As String, Optional ByRef wb As Workbook) As Boolean
     
     Dim sheet As Worksheet
     sheetExists = False
@@ -41,7 +42,7 @@ Private Function sheetExists(ByRef sheetToFind As String, Optional ByRef wb As W
 
 End Function
 
-Public Function createOrClearWorksheets(ByRef sheetArray As Variant) As Variant
+Public Sub createOrClearWorksheets(ByVal sheetArray As Variant)
 
     Dim SheetName As Variant
     Dim sheetString As String
@@ -55,7 +56,7 @@ Public Function createOrClearWorksheets(ByRef sheetArray As Variant) As Variant
         End If
     Next SheetName
 
-End Function
+End Sub
 
 Private Sub setupDashboard()
     
@@ -97,19 +98,19 @@ Private Sub setupDashboard()
     Set btnRange = ws.Range("A8")
     Set btn = ws.Buttons.Add(btnRange.Left + 145, btnRange.Top, 100, 25)
     With btn
-      .Caption = "Combine Files"
-      .name = "btnCombine"
-      .Font.Bold = True
-      .OnAction = "combineCsvFiles"
+        .Caption = "Combine Files"
+        .name = "btnCombine"
+        .Font.Bold = True
+        .OnAction = "combineCsvFiles"
     End With
 
 End Sub
 
-Private Function createSheet(ByRef name As String) As Variant
+Private Sub createSheet(ByVal name As String)
     With ThisWorkbook
         .Sheets.Add(After:=.Sheets(.Sheets.count)).name = name
     End With
-End Function
+End Sub
 
 Private Function getInstructions1() As String
 
@@ -145,11 +146,5 @@ Private Function getInstructions3() As String
     getInstructions3 = returnString
 
 End Function
-
-
-
-
-
-
 
 

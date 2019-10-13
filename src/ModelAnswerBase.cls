@@ -17,7 +17,6 @@ Option Explicit
 Private m_number As Long
 Private m_time As Date
 Private m_offset As Long
-Private m_Description As String
 
 Public Property Let number(ByVal value As Long)
     
@@ -25,7 +24,7 @@ Public Property Let number(ByVal value As Long)
     m_number = value
     
 End Property
- 
+
 Public Property Get number() As Long
 
     number = m_number
@@ -52,7 +51,6 @@ Public Property Get isoOffset() As Long
     
 End Property
 
-
 Public Property Get time() As Date
 
     time = m_time
@@ -64,6 +62,4 @@ Public Property Get description() As String
     description = vbNullString
 
 End Property
-
-
 

@@ -34,32 +34,32 @@ Private Sub exportVisualBasicCode()
         MkDir srcDirectory
     End If
     If Not directoryExists(testingDirectory) Then
-      MkDir testingDirectory
+        MkDir testingDirectory
     End If
     
     For Each VBComponent In ActiveWorkbook.VBProject.VBComponents
         Select Case VBComponent.Type
-            Case Document
-                ' We don't want worksheets
-                GoTo NextItem
-            Case ClassModule
-                extension = ".cls"
-            Case Form
-                extension = ".frm"
-            Case Module
-                extension = ".bas"
-            Case Else
-                extension = ".txt"
+        Case Document
+            ' We don't want worksheets
+            GoTo NextItem
+        Case ClassModule
+            extension = ".cls"
+        Case Form
+            extension = ".frm"
+        Case Module
+            extension = ".bas"
+        Case Else
+            extension = ".txt"
         End Select
             
-       ' On Error Resume Next
-       ' Err.Clear
+        ' On Error Resume Next
+        ' Err.Clear
         
         Select Case InStr(VBComponent.name, "Test")
-         Case 0
-             path = srcDirectory & "/" & VBComponent.name & extension
-         Case Else
-             path = testingDirectory & "/" & VBComponent.name & extension
+        Case 0
+            path = srcDirectory & "/" & VBComponent.name & extension
+        Case Else
+            path = testingDirectory & "/" & VBComponent.name & extension
         End Select
         
         VBComponent.Export path
@@ -82,12 +82,12 @@ Catch:
     Else
         msg = Err.description
     End If
-        MsgBox msg, vbCritical, ProjectName
+    MsgBox msg, vbCritical, ProjectName
     Resume Finally
     
 End Sub
 
-Function getCurrentPath() As String
+Public Function getCurrentPath() As String
 
     Dim currentPath As String
     currentPath = ActiveWorkbook.path
@@ -97,15 +97,15 @@ Function getCurrentPath() As String
 
 End Function
 
-Function isFileAccessAllowed() As Boolean
+Public Function isFileAccessAllowed() As Boolean
     ' Grant file access is only needed on the Mac for versions later than Excel 2016 due to sandbox protection.
     #If Mac Then
         #If MAC_OFFICE_VERSION < 16 Then
             isFileAccessAllowed = True
             Exit Function
         #Else
-           isFileAccessAllowed = GrantAccessToMultipleFiles(Array(getCurrentPath))
-           Exit Function
+            isFileAccessAllowed = GrantAccessToMultipleFiles(Array(getCurrentPath))
+            Exit Function
         #End If
     #Else
         isFileAccessAllowed = True
@@ -113,15 +113,10 @@ Function isFileAccessAllowed() As Boolean
         
 End Function
 
-Function directoryExists(ByRef strDir As String) As Boolean
-
+Public Function directoryExists(ByRef strDir As String) As Boolean
+    
     ' Need this approach since on Mac comparing to empty string gives an incorrect result if the directory is empty.
-    If Len(Dir(strDir, vbDirectory)) = 0 Then
-        directoryExists = False
-    Else
-        directoryExists = True
-    End If
+    directoryExists = IIf(Len(Dir(strDir, vbDirectory)) = 0, False, True)
 
 End Function
-
 

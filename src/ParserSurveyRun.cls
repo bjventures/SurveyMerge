@@ -37,11 +37,11 @@ Public Function parse(ByRef surveyName As String, ByRef participantId As String,
     
 End Function
 
-Private Function setSurveyRunMetaData(ByRef surveyName As String, ByRef participantId As String, ByRef dataArray As Variant)
+Private Sub setSurveyRunMetaData(ByVal surveyName As String, ByVal participantId As String, ByVal dataArray As Variant)
         
     Dim dateString As String
         
-On Error GoTo Catch
+    On Error GoTo Catch
     singleSurveyRun.surveyName = surveyName
     singleSurveyRun.participantId = participantId
             
@@ -54,9 +54,10 @@ On Error GoTo Catch
     singleSurveyRun.questionCount = UBound(Split(dataArray(0), ",")) - 1
 
 Finally:
-    Exit Function
+    Exit Sub
 Catch:
     Err.Raise CustomError.IncorrectDataFormat
     Resume Finally
 
-End Function
+End Sub
+

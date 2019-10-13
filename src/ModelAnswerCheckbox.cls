@@ -45,7 +45,7 @@ Catch:
     Resume Finally
 
 End Property
- 
+
 Public Property Get value() As Variant
 
     value = m_value
@@ -60,7 +60,7 @@ Private Property Let ModelAnswerBase_number(ByVal value As Long)
     baseAnswer.number = value
     
 End Property
- 
+
 Private Property Get ModelAnswerBase_number() As Long
 
     ModelAnswerBase_number = baseAnswer.number
@@ -88,6 +88,7 @@ End Property
 Private Property Get ModelAnswerBase_description() As String
     Dim i As Long
     Dim bound As Long
+    Dim strArray() As String
     
     bound = UBound(m_value)
     ReDim strArray(bound) As String
@@ -98,3 +99,4 @@ Private Property Get ModelAnswerBase_description() As String
     ModelAnswerBase_description = CStr(Join(strArray, ","))
     
 End Property
+

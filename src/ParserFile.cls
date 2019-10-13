@@ -17,9 +17,9 @@ Option Explicit
 ' This function parses and prints the SurveyRuns in a single file.
 ' Note errors in individual SurveyRuns are handled by printing the error, they are not propagated.
 '
-Public Function parse(ByRef filePath As String, ByRef fileName As String, ByRef printer As IPrinter, ByRef startLine As Long) As Long
+Public Function parse(ByRef filePath As String, ByRef fileName As String, ByRef printer As IPrinter, ByVal startLine As Long) As Long
 
-On Error GoTo Catch
+    On Error GoTo Catch
     
     Dim fileText As String
     Dim surveyRunCount As Double
@@ -64,7 +64,7 @@ Catch:
 
 End Function
 
-Private Function getUtfFile(ByRef filePath As String, ByRef fileName As String) As String
+Private Function getUtfFile(ByVal filePath As String, ByVal fileName As String) As String
     ' Ensure reference is set to Microsoft ActiveX DataObjects library.
     ' Under "tools/references". References travel with the excel file, so once added, no need to worry.
     Dim objStream As Variant
@@ -76,27 +76,7 @@ Private Function getUtfFile(ByRef filePath As String, ByRef fileName As String) 
 
 End Function
 
-Private Function getAsciFile(ByRef filePath As String, ByRef fileName As String) As String
-    Dim inputFile As Long
-    Dim file As String
-    Dim fileText As String
-    inputFile = FreeFile
 
-     file = filePath + fileName
-    Open file For Input As #inputFile
-    fileText = Input$(LOF(inputFile), #inputFile)
-    Close #inputFile
-    getAsciFile = fileText
-    
-Finally:
-    Exit Function
-    
-Catch:
-    ' Need to close file before error gets propagated.
-    Close #inputFile
-    Err.Raise Err.number, Err.Source, Err.description
-
-End Function
 
 '
 ' This function is temporarily needed as older data files may have line breaks in the middle of text questions.
@@ -146,12 +126,12 @@ Finally:
 Catch:
     Dim msg As String
     Select Case Err.number
-        Case CustomError.InvalidQuestionType
-            msg = "The question type is not recognised."
-        Case CustomError.SurveyRunError
-            msg = "The number of questions is inconsistent."
-        Case Else
-            msg = "Error " & Err.number & ": " & Err.description
+    Case CustomError.InvalidQuestionType
+        msg = "The question type is not recognised."
+    Case CustomError.SurveyRunError
+        msg = "The number of questions is inconsistent."
+    Case Else
+        msg = "Error " & Err.number & ": " & Err.description
     End Select
     
     printer.printError msg, lineNo
@@ -171,29 +151,27 @@ Private Function getMetaData(ByRef fileLineArray() As String, ByRef dataName As 
  
 End Function
 
-Private Function validateMetaData(ByRef dataName As Variant, ByRef dataArray As Variant) As Boolean
+Private Function validateMetaData(ByVal dataName As Variant, ByRef dataArray As Variant) As Boolean
 
-   ' Check there is a value
-   If UBound(dataArray) <> 1 Then
+    ' Check there is a value
+    If UBound(dataArray) <> 1 Then
         validateMetaData = False
         Exit Function
-   End If
-   ' Check the name of the value is correct.
+    End If
+    ' Check the name of the value is correct.
     ' Here need "And dataName <> dataArray(0)" since an earlier version of the Android app does not add quotes to the keyword.
     ' Long term can remove this.
-   If Chr$(34) & dataName & Chr$(34) <> dataArray(0) And dataName <> dataArray(0) Then
+    If Chr$(34) & dataName & Chr$(34) <> dataArray(0) And dataName <> dataArray(0) Then
         validateMetaData = False
         Exit Function
-   End If
-   ' Check the value is in parentheses
-   If Left$(dataArray(FileCol.metadata - 1), 1) <> Chr$(34) Or Right$(dataArray(1), 1) <> Chr$(34) Then
+    End If
+    ' Check the value is in parentheses
+    If Left$(dataArray(FileCol.metadata - 1), 1) <> Chr$(34) Or Right$(dataArray(1), 1) <> Chr$(34) Then
         validateMetaData = False
         Exit Function
-   End If
-   validateMetaData = True
+    End If
+    validateMetaData = True
 End Function
 
-Private Function getQuestionLineNo(ByRef lineNo As Long) As Long
-    getQuestionLineNo = ((lineNo - FileRow.firstAnswer) Mod 3) + 1
-End Function
+
 

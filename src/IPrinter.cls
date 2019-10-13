@@ -17,6 +17,7 @@ Public Sub printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
 
 End Sub
 
-Public Sub printError(ByRef descriptions As String, ByRef lineNo As Long)
+Public Sub printError(ByVal descriptions As String, ByVal lineNo As Long)
 
 End Sub
+

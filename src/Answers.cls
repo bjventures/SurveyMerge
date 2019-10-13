@@ -37,3 +37,4 @@ Public Sub Remove(ByRef IndexOrName As Variant)
     Answers.Remove IndexOrName
 
 End Sub
+

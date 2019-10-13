@@ -26,7 +26,7 @@ Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
 
 End Sub
 
-Sub IPrinter_printError(ByRef errorMessage As String, ByRef lineNo As Long)
+Sub IPrinter_printError(ByVal errorMessage As String, ByVal lineNo As Long)
 
     m_ErrorMessage = errorMessage
 

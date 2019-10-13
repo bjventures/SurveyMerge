@@ -33,7 +33,7 @@ Public Property Let value(ByVal value As Long)
     m_value = value
     
 End Property
- 
+
 Public Property Get value() As Long
 
     value = m_value
@@ -48,7 +48,7 @@ Private Property Let ModelAnswerBase_number(ByVal value As Long)
     baseAnswer.number = value
     
 End Property
- 
+
 Private Property Get ModelAnswerBase_number() As Long
 
     ModelAnswerBase_number = baseAnswer.number
@@ -78,3 +78,4 @@ Private Property Get ModelAnswerBase_description() As String
     ModelAnswerBase_description = CStr(m_value)
     
 End Property
+

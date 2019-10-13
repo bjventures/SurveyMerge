@@ -8,14 +8,13 @@ Option Explicit
 '
 ' The arguments for this Sub are to enable testing.
 '
-Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, Optional ByRef showMsg As Boolean = True)
+Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, Optional ByVal showMsg As Boolean = True)
          
     On Error GoTo Catch
       
     Dim sheetArray() As Variant
     Dim success As Long
     Dim fileArray() As String
-    Dim fileName As String
     Dim i As Long
     Dim arrayBound As Long
     Dim parser As ParserFile
@@ -60,7 +59,7 @@ End Sub
 '
 ' Returns an Array of Strings containing the full path to files.
 '
-Private Function getFileList(ByRef currentDir As String, Optional ByRef extension As String = "csv") As String()
+Private Function getFileList(ByVal currentDir As String, Optional ByVal extension As String = "csv") As String()
 
     Dim fileArray() As String
     Dim fileCount As Long
@@ -80,3 +79,4 @@ Private Function getFileList(ByRef currentDir As String, Optional ByRef extensio
     getFileList = fileArray
     
 End Function
+
