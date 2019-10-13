@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.View")
 '
 ' class module: PrinterSurveyRun
 '
@@ -14,25 +15,25 @@ Option Explicit
 
 Implements IPrinter
 
-Private i As Integer
+Private i As Long
 
-Sub IPrinter_printData(surveyRun As ModelSurveyRun, lineNo As Integer)
+Public Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
 
     Dim ws As Worksheet
     Dim answer As Variant
 
     Set ws = Sheets(getWsName(WsSheet.Answers))
-    Call printAnswerWs(ws, surveyRun, lineNo)
+    printAnswerWs ws, surveyRun, lineNo
     
     Set ws = Sheets(getWsName(WsSheet.AnswerTime))
-    Call printAnswerTimeWs(ws, surveyRun, lineNo)
+    printAnswerTimeWs ws, surveyRun, lineNo
 
 
 End Sub
 
-Private Sub printAnswerWs(ws As Worksheet, surveyRun As ModelSurveyRun, lineNo As Integer)
+Private Sub printAnswerWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
             
-    Call printAnswerWsHeaderLine(ws, surveyRun, lineNo)
+    printAnswerWsHeaderLine ws, surveyRun, lineNo
     
     ws.Cells(lineNo + 2, 1) = surveyRun.surveyName
     ws.Cells(lineNo + 2, 2) = surveyRun.participantId
@@ -49,9 +50,9 @@ Private Sub printAnswerWs(ws As Worksheet, surveyRun As ModelSurveyRun, lineNo A
 
 End Sub
 
-Private Sub printAnswerTimeWs(ws As Worksheet, surveyRun As ModelSurveyRun, lineNo As Integer)
+Private Sub printAnswerTimeWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
         
-   Call printAnswerWsHeaderLine(ws, surveyRun, lineNo)
+   printAnswerWsHeaderLine ws, surveyRun, lineNo
     
     ws.Cells(lineNo + 2, 1) = surveyRun.surveyName
     ws.Cells(lineNo + 2, 2) = surveyRun.participantId
@@ -68,7 +69,7 @@ Private Sub printAnswerTimeWs(ws As Worksheet, surveyRun As ModelSurveyRun, line
 
 End Sub
 
-Private Sub printAnswerWsHeaderLine(ws As Worksheet, surveyRun As ModelSurveyRun, lineNo As Integer)
+Private Sub printAnswerWsHeaderLine(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
     ' Print header for first survey run, do not repeat.
     If lineNo <> 0 Then Exit Sub
         
@@ -106,7 +107,7 @@ Private Sub printAnswerWsHeaderLine(ws As Worksheet, surveyRun As ModelSurveyRun
     
 End Sub
 
-Sub IPrinter_printError(description As String, lineNo As Integer)
+Sub IPrinter_printError(ByRef description As String, ByRef lineNo As Long)
 
     Dim ws As Worksheet
     Set ws = Sheets(getWsName(WsSheet.Answers))

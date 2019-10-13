@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Tests")
 '
 ' class module: TestMain
 '
@@ -32,16 +33,13 @@ Private Property Get ITester_testList() As Variant
 
 End Property
 
-Private Function ITester_runTest(methodName As String) As Boolean
+Private Function ITester_runTest(ByRef methodName As String) As Boolean
     
     If Len(methodName) > 63 Then MsgBox "The method name '" & methodName & "' is too long to run on the Mac os.", vbCritical, ProjectName
     ITester_runTest = CallByName(Me, methodName, VbMethod)
 
 End Function
 
-Private Sub Class_Initialize()
-End Sub
-   
 Private Sub ITester_setUp()
     Application.DisplayAlerts = False
     ' Ignore error if worksheet does not exist.
@@ -56,7 +54,7 @@ End Sub
 
 Public Function test_WhenMultipleFiles_ShouldMergeAllSurveyRuns() As Boolean
 
-    Call combineCsvFiles(getCurrentPath() & "testing/test-files/test-group-1/", False)
+    combineCsvFiles getCurrentPath() & "testing/test-files/test-group-1/", False
     Set wsAnswers = Sheets(getWsName(WsSheet.Answers))
     Set wsAnswerTime = Sheets(getWsName(WsSheet.AnswerTime))
 
@@ -68,7 +66,7 @@ End Function
 
 Public Function test_WhenMultipleFilesAndroidAndApple_ShouldMergeAllSurveyRuns() As Boolean
 
-    Call combineCsvFiles(getCurrentPath() & "testing/test-files/test-group-2/", False)
+    combineCsvFiles getCurrentPath() & "testing/test-files/test-group-2/", False
 
     Set wsAnswers = Sheets(getWsName(WsSheet.Answers))
     Set wsAnswerTime = Sheets(getWsName(WsSheet.AnswerTime))
@@ -81,14 +79,17 @@ End Function
 
 Public Function test_WhenSurveyRunError_ShouldPrintError() As Boolean
 
-    Call combineCsvFiles(getCurrentPath() & "testing/test-files/test-group-3/", False)
+    combineCsvFiles getCurrentPath() & "testing/test-files/test-group-3/", False
 
     Set wsAnswers = Sheets(getWsName(WsSheet.Answers))
     assertion = wsAnswers.Cells(3, 1) = "Error In Survey Run: The question type is not recognised."
     assertion = wsAnswers.Cells(5, 1) = "Error In Survey Run: The number of questions is inconsistent."
-    assertion = wsAnswers.Cells(6, 1) = "Error In Survey Run: " & Chr(34) & "Survey Error Name" & Chr(34) & "is not a valid keyword."
+    assertion = wsAnswers.Cells(6, 1) = "Error In Survey Run: " & Chr$(34) & "Survey Error Name" & Chr$(34) & "is not a valid keyword."
     assertion = wsAnswers.Cells(9, 1) = "Error In Survey Run: The question type is not recognised."
     test_WhenSurveyRunError_ShouldPrintError = assertion
 
 End Function
+
+
+
 

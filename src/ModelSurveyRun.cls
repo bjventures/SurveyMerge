@@ -7,12 +7,13 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Model")
 '
 ' class module: ModelSurveyRun
 '
 Option Explicit
 
-Public questionCount As Integer
+Public questionCount As Long
 Public surveyName As String
 Public participantId As String
 Public startTime As Date

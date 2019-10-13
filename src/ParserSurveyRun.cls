@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Data.Parsers")
 '
 ' class module: ParserSurveyRun
 '
@@ -20,23 +21,23 @@ Private Sub Class_Initialize()
 
 End Sub
 
-Public Function parse(surveyName As String, participantId As String, dataArray As Variant) As ModelSurveyRun
+Public Function parse(ByRef surveyName As String, ByRef participantId As String, ByRef dataArray As Variant) As ModelSurveyRun
     
     Dim parser As ParserAnswers
     
-    Call setSurveyRunMetaData(surveyName, participantId, dataArray)
+    setSurveyRunMetaData surveyName, participantId, dataArray
     
     Set parser = New ParserAnswers
     Set singleSurveyRun.answerCollection = parser.parse(dataArray)
     If singleSurveyRun.answerCollection.count <> singleSurveyRun.questionCount Then
-        Call Err.Raise(CustomError.SurveyRunError)
+        Err.Raise CustomError.SurveyRunError
     End If
 
     Set parse = singleSurveyRun
     
 End Function
 
-Private Function setSurveyRunMetaData(surveyName As String, participantId As String, dataArray As Variant)
+Private Function setSurveyRunMetaData(ByRef surveyName As String, ByRef participantId As String, ByRef dataArray As Variant)
         
     Dim dateString As String
         
@@ -45,9 +46,9 @@ On Error GoTo Catch
     singleSurveyRun.participantId = participantId
             
     dateString = Split(dataArray(1), ",")(0)
-    singleSurveyRun.startTime = DateValue(Mid(dateString, 1, 10)) + TimeValue(Mid(dateString, 12, 8))
+    singleSurveyRun.startTime = DateValue(Mid$(dateString, 1, 10)) + TimeValue(Mid$(dateString, 12, 8))
     dateString = Split(dataArray(1), ",")(1)
-    singleSurveyRun.endTime = DateValue(Mid(dateString, 1, 10)) + TimeValue(Mid(dateString, 12, 8))
+    singleSurveyRun.endTime = DateValue(Mid$(dateString, 1, 10)) + TimeValue(Mid$(dateString, 12, 8))
     
     ' Note that first 2 elements are not question numbers and need to adjust from index (ie not "- 2")
     singleSurveyRun.questionCount = UBound(Split(dataArray(0), ",")) - 1
@@ -55,7 +56,7 @@ On Error GoTo Catch
 Finally:
     Exit Function
 Catch:
-    Call Err.Raise(CustomError.IncorrectDataFormat)
+    Err.Raise CustomError.IncorrectDataFormat
     Resume Finally
 
 End Function

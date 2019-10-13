@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Model")
 '
 ' class module: ModelAnswerSlider
 ' Note that many methods are delegated to the AnswerBase class.
@@ -28,7 +29,7 @@ End Sub
 
 Public Property Let value(ByVal value As Single)
     
-    If value < 0 Then Call Err.Raise(CustomError.ModelValidationError)
+    If value < 0 Then Err.Raise CustomError.ModelValidationError
     m_value = value
     
 End Property
@@ -42,13 +43,13 @@ End Property
 '
 ' Delegate properties to implemented base class (AnswerBase)
 '
-Private Property Let ModelAnswerBase_number(ByVal value As Integer)
+Private Property Let ModelAnswerBase_number(ByVal value As Long)
     
     baseAnswer.number = value
     
 End Property
  
-Private Property Get ModelAnswerBase_number() As Integer
+Private Property Get ModelAnswerBase_number() As Long
 
     ModelAnswerBase_number = baseAnswer.number
     
@@ -66,7 +67,7 @@ Private Property Get ModelAnswerBase_time() As Date
     
 End Property
 
-Private Property Get ModelAnswerBase_isoOffset() As Integer
+Private Property Get ModelAnswerBase_isoOffset() As Long
 
     ModelAnswerBase_isoOffset = baseAnswer.isoOffset
     

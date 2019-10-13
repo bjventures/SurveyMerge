@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'
+'@Folder("SurveyMerge.Tests")
 ' class module: ITester
 '
 Option Explicit
@@ -18,7 +18,7 @@ End Property
 Public Property Get testList() As Variant
 End Property
 
-Public Function runTest(methodName As String) As Boolean
+Public Function runTest(ByRef methodName As String) As Boolean
 End Function
 
 Public Sub setUp()

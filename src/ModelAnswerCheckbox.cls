@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Model")
 '
 ' class module: ModelAnswerCheckbox
 ' Note that many methods are delegated to the AnswerBase class.
@@ -15,7 +16,7 @@ Option Explicit
 Implements ModelAnswerBase
 
 Private baseAnswer As ModelAnswerBase
-Private m_value() As Integer
+Private m_value() As Long
 
 '
 ' Class specific properties
@@ -28,8 +29,8 @@ Public Property Let value(ByVal value As Variant)
     ' Note that the value argument must be an array of integers.
     On Error GoTo Catch
     
-    Dim bound As Integer
-    Dim i As Integer
+    Dim bound As Long
+    Dim i As Long
     
     bound = UBound(value)
     ReDim m_value(bound)
@@ -40,7 +41,7 @@ Finally:
     Exit Property
  
 Catch:
-    Call Err.Raise(CustomError.ModelValidationError)
+    Err.Raise CustomError.ModelValidationError
     Resume Finally
 
 End Property
@@ -54,13 +55,13 @@ End Property
 '
 ' Delegate properties to implemented base class (AnswerBase)
 '
-Private Property Let ModelAnswerBase_number(ByVal value As Integer)
+Private Property Let ModelAnswerBase_number(ByVal value As Long)
     
     baseAnswer.number = value
     
 End Property
  
-Private Property Get ModelAnswerBase_number() As Integer
+Private Property Get ModelAnswerBase_number() As Long
 
     ModelAnswerBase_number = baseAnswer.number
     
@@ -78,15 +79,15 @@ Private Property Get ModelAnswerBase_time() As Date
     
 End Property
 
-Private Property Get ModelAnswerBase_isoOffset() As Integer
+Private Property Get ModelAnswerBase_isoOffset() As Long
 
     ModelAnswerBase_isoOffset = baseAnswer.isoOffset
     
 End Property
 
 Private Property Get ModelAnswerBase_description() As String
-    Dim i As Integer
-    Dim bound As Integer
+    Dim i As Long
+    Dim bound As Long
     
     bound = UBound(m_value)
     ReDim strArray(bound) As String

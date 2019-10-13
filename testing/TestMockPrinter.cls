@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Tests")
 '
 ' class module: TestMockPrinter
 '
@@ -14,24 +15,24 @@ Option Explicit
 
 Implements IPrinter
 
-Private m_ValidSurveyRunNumber As Integer
+Private m_ValidSurveyRunNumber As Long
 Private m_SurveyRun As ModelSurveyRun
 Private m_ErrorMessage As String
 
-Sub IPrinter_printData(surveyRun As ModelSurveyRun, lineNo As Integer)
+Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
 
     Set m_SurveyRun = surveyRun
     m_ValidSurveyRunNumber = m_ValidSurveyRunNumber + 1
 
 End Sub
 
-Sub IPrinter_printError(errorMessage As String, lineNo As Integer)
+Sub IPrinter_printError(ByRef errorMessage As String, ByRef lineNo As Long)
 
     m_ErrorMessage = errorMessage
 
 End Sub
 
-Public Property Get validSurveyRunNumber() As Integer
+Public Property Get validSurveyRunNumber() As Long
 
      validSurveyRunNumber = m_ValidSurveyRunNumber
 

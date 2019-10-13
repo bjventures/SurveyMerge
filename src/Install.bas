@@ -1,4 +1,5 @@
 Attribute VB_Name = "Install"
+'@Folder("SurveyMerge.Controller")
 Option Explicit
 
 Private Sub installEndUser()
@@ -6,27 +7,27 @@ Private Sub installEndUser()
     Dim sheetArray() As Variant
     If Not sheetExists(getWsName(WsSheet.Dashboard)) Then
         sheetArray = Array(getWsName(WsSheet.Dashboard), getWsName(WsSheet.Answers), getWsName(WsSheet.AnswerTime))
-        Call doFirstInstall(sheetArray)
+        doFirstInstall (sheetArray)
     End If
 
 End Sub
 
 Private Sub installDeveloper()
 
-    Call installEndUser
+    installEndUser
 
 End Sub
 
-Private Sub doFirstInstall(sheetArray As Variant)
+Private Sub doFirstInstall(ByRef sheetArray As Variant)
 
     Application.ScreenUpdating = False
-    Call createOrClearWorksheets(sheetArray)
-    Call setupDashboard
+    createOrClearWorksheets sheetArray
+    setupDashboard
     Application.ScreenUpdating = True
 
 End Sub
 
-Private Function sheetExists(sheetToFind As String, Optional wb As Workbook) As Boolean
+Private Function sheetExists(ByRef sheetToFind As String, Optional ByRef wb As Workbook) As Boolean
     
     Dim sheet As Worksheet
     sheetExists = False
@@ -40,7 +41,7 @@ Private Function sheetExists(sheetToFind As String, Optional wb As Workbook) As 
 
 End Function
 
-Public Function createOrClearWorksheets(sheetArray As Variant)
+Public Function createOrClearWorksheets(ByRef sheetArray As Variant) As Variant
 
     Dim SheetName As Variant
     Dim sheetString As String
@@ -50,7 +51,7 @@ Public Function createOrClearWorksheets(sheetArray As Variant)
         If sheetExists(sheetString) Then
             Sheets(sheetString).Cells.ClearContents
         Else
-            Call createSheet(sheetString)
+            createSheet sheetString
         End If
     Next SheetName
 
@@ -104,7 +105,7 @@ Private Sub setupDashboard()
 
 End Sub
 
-Private Function createSheet(name As String)
+Private Function createSheet(ByRef name As String) As Variant
     With ThisWorkbook
         .Sheets.Add(After:=.Sheets(.Sheets.count)).name = name
     End With
@@ -144,4 +145,11 @@ Private Function getInstructions3() As String
     getInstructions3 = returnString
 
 End Function
+
+
+
+
+
+
+
 

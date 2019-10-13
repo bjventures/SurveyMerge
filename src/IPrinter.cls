@@ -7,15 +7,16 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Utilities")
 '
 ' class module: IPrinter
 '
 Option Explicit
 
-Public Sub printData(surveyRun As ModelSurveyRun, lineNo As Integer)
+Public Sub printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
 
 End Sub
 
-Public Sub printError(descriptions As String, lineNo As Integer)
+Public Sub printError(ByRef descriptions As String, ByRef lineNo As Long)
 
 End Sub

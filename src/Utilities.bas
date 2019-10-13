@@ -1,9 +1,11 @@
 Attribute VB_Name = "Utilities"
+'@Folder("SurveyMerge.Utilities")
 '
 ' module: Utilities
 '
 Option Explicit
 
+'@Ignore ProcedureNotUsed
 Private Sub exportVisualBasicCode()
 
     Const Module = 1
@@ -12,7 +14,7 @@ Private Sub exportVisualBasicCode()
     Const Document = 100
     
     Dim VBComponent As Object
-    Dim count As Integer
+    Dim count As Long
     Dim path As String
     Dim srcDirectory As String
     Dim testingDirectory As String
@@ -50,8 +52,8 @@ Private Sub exportVisualBasicCode()
                 extension = ".txt"
         End Select
             
-        On Error Resume Next
-        Err.Clear
+       ' On Error Resume Next
+       ' Err.Clear
         
         Select Case InStr(VBComponent.name, "Test")
          Case 0
@@ -60,7 +62,7 @@ Private Sub exportVisualBasicCode()
              path = testingDirectory & "/" & VBComponent.name & extension
         End Select
         
-        Call VBComponent.Export(path)
+        VBComponent.Export path
         
         If Err.number <> 0 Then
             MsgBox "Failed to export " & VBComponent.name & " to " & path, vbCritical, ProjectName
@@ -89,8 +91,8 @@ Function getCurrentPath() As String
 
     Dim currentPath As String
     currentPath = ActiveWorkbook.path
-    If Right(currentPath, 1) <> "/" Then currentPath = currentPath & "/"
-    If Not directoryExists(currentPath) Then Call Err.Raise(CustomError.DirNotFound, ProjectName & ".getCurrentPath", "The directory does not exist.")
+    If Right$(currentPath, 1) <> "/" Then currentPath = currentPath & "/"
+    If Not directoryExists(currentPath) Then Err.Raise CustomError.DirNotFound, ProjectName & ".getCurrentPath", "The directory does not exist."
     getCurrentPath = currentPath
 
 End Function
@@ -111,7 +113,7 @@ Function isFileAccessAllowed() As Boolean
         
 End Function
 
-Function directoryExists(strDir As String) As Boolean
+Function directoryExists(ByRef strDir As String) As Boolean
 
     ' Need this approach since on Mac comparing to empty string gives an incorrect result if the directory is empty.
     If Len(Dir(strDir, vbDirectory)) = 0 Then

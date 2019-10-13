@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Data.Parsers")
 '
 ' class module: ParserFile
 '
@@ -16,14 +17,14 @@ Option Explicit
 ' This function parses and prints the SurveyRuns in a single file.
 ' Note errors in individual SurveyRuns are handled by printing the error, they are not propagated.
 '
-Public Function parse(filePath As String, fileName As String, printer As IPrinter, startLine As Integer) As Integer
+Public Function parse(ByRef filePath As String, ByRef fileName As String, ByRef printer As IPrinter, ByRef startLine As Long) As Long
 
 On Error GoTo Catch
     
     Dim fileText As String
     Dim surveyRunCount As Double
-    Dim i As Integer
-    Dim firstRow As Integer
+    Dim i As Long
+    Dim firstRow As Long
     Dim runLines As Variant
     Dim parser As ParserSurveyRun
     Dim surveyRun As ModelSurveyRun
@@ -50,7 +51,7 @@ On Error GoTo Catch
         firstRow = i * 3 + FileRow.firstAnswer
         ' Create an array of the 3 survey run lines
         runLines = Array(lineArray(firstRow), lineArray(firstRow + 1), lineArray(firstRow + 2))
-        Call parseAndPrintSurveyRun(surveyName, subjectId, runLines, parser, surveyRun, printer, startLine + i)
+        parseAndPrintSurveyRun surveyName, subjectId, runLines, parser, surveyRun, printer, startLine + i
     Next i
     parse = surveyRunCount + startLine
     
@@ -59,14 +60,14 @@ Finally:
 
 Catch:
     ' Need to close file before error gets propagated.
-    Call Err.Raise(Err.number, Err.Source, "There is an error in the file '" & fileName & "'. " & Err.description)
+    Err.Raise Err.number, Err.Source, "There is an error in the file '" & fileName & "'. " & Err.description
 
 End Function
 
-Private Function getUtfFile(filePath As String, fileName As String) As String
+Private Function getUtfFile(ByRef filePath As String, ByRef fileName As String) As String
     ' Ensure reference is set to Microsoft ActiveX DataObjects library.
     ' Under "tools/references". References travel with the excel file, so once added, no need to worry.
-    Dim objStream
+    Dim objStream As Variant
     Set objStream = CreateObject("ADODB.Stream")
     objStream.Charset = "utf-8"
     objStream.Open
@@ -75,15 +76,15 @@ Private Function getUtfFile(filePath As String, fileName As String) As String
 
 End Function
 
-Private Function getAsciFile(filePath As String, fileName As String) As String
-    Dim inputFile As Integer
+Private Function getAsciFile(ByRef filePath As String, ByRef fileName As String) As String
+    Dim inputFile As Long
     Dim file As String
     Dim fileText As String
     inputFile = FreeFile
 
      file = filePath + fileName
     Open file For Input As #inputFile
-    fileText = Input(LOF(inputFile), #inputFile)
+    fileText = Input$(LOF(inputFile), #inputFile)
     Close #inputFile
     getAsciFile = fileText
     
@@ -93,7 +94,7 @@ Finally:
 Catch:
     ' Need to close file before error gets propagated.
     Close #inputFile
-    Call Err.Raise(Err.number, Err.Source, Err.description)
+    Err.Raise Err.number, Err.Source, Err.description
 
 End Function
 
@@ -102,23 +103,23 @@ End Function
 ' The middle lines in the survey run are combined so each SurveyRun will have 3 lines.
 ' TODO: Since May 2019, line breaks are removed from the PIEL App data file. In late 2020 can remove this.
 '
-Private Function cleanFileText(fileText As String) As String
+Private Function cleanFileText(ByRef fileText As String) As String
     Dim cleanText As String
     Dim questionArray() As String
     Dim lineArray() As String
-    Dim i As Integer
-    Dim n As Integer
+    Dim i As Long
+    Dim n As Long
     
     ' Make sure lines are separated by vbLf
     fileText = Replace(fileText, vbCrLf, vbLf)
     ' Just in case there are Mac line breaks
-    fileText = Replace(fileText, vbCr, "")
-    questionArray = Split(fileText, Chr(34) & "Start Time")
+    fileText = Replace(fileText, vbCr, vbNullString)
+    questionArray = Split(fileText, Chr$(34) & "Start Time")
 
     cleanText = questionArray(0)
     
     For i = 1 To UBound(questionArray)
-        cleanText = cleanText & Chr(34) & "Start Time"
+        cleanText = cleanText & Chr$(34) & "Start Time"
         lineArray = Split(questionArray(i), vbLf)
         cleanText = cleanText + lineArray(0) + vbLf
         For n = 1 To UBound(lineArray) - 2
@@ -134,11 +135,11 @@ End Function
 '
 ' This function handles errors in the SurveyRun by printing the error.
 '
-Private Sub parseAndPrintSurveyRun(surveyName As String, subjectId As String, runLines As Variant, parser As ParserSurveyRun, surveyRun As ModelSurveyRun, printer As IPrinter, lineNo As Integer)
+Private Sub parseAndPrintSurveyRun(ByRef surveyName As String, ByRef subjectId As String, ByRef runLines As Variant, ByRef parser As ParserSurveyRun, ByRef surveyRun As ModelSurveyRun, ByRef printer As IPrinter, ByRef lineNo As Long)
     
     On Error GoTo Catch
     Set surveyRun = parser.parse(surveyName, subjectId, runLines)
-    Call printer.printData(surveyRun, lineNo)
+    printer.printData surveyRun, lineNo
     
 Finally:
     Exit Sub
@@ -153,24 +154,24 @@ Catch:
             msg = "Error " & Err.number & ": " & Err.description
     End Select
     
-    Call printer.printError(msg, lineNo)
+    printer.printError msg, lineNo
     Resume Finally
         
 End Sub
 
-Private Function getMetaData(fileLineArray() As String, dataName As String, lineNo As Integer) As String
+Private Function getMetaData(ByRef fileLineArray() As String, ByRef dataName As String, ByRef lineNo As Long) As String
 
     Dim dataArray() As String
     dataArray = Split(fileLineArray(lineNo), ",")
     
     If validateMetaData(dataName, dataArray) = False Then
-        Call Err.Raise(CustomError.IncorrectDataFormat, "ProjectName.getMetaData", "The value '" & dataName & "' was not found on line " & lineNo & ".")
+        Err.Raise CustomError.IncorrectDataFormat, "ProjectName.getMetaData", "The value '" & dataName & "' was not found on line " & lineNo & "."
     End If
-    getMetaData = Mid(dataArray(FileCol.metadata - 1), 2, Len(dataArray(1)) - 2)
+    getMetaData = Mid$(dataArray(FileCol.metadata - 1), 2, Len(dataArray(1)) - 2)
  
 End Function
 
-Private Function validateMetaData(dataName, dataArray) As Boolean
+Private Function validateMetaData(ByRef dataName As Variant, ByRef dataArray As Variant) As Boolean
 
    ' Check there is a value
    If UBound(dataArray) <> 1 Then
@@ -180,19 +181,19 @@ Private Function validateMetaData(dataName, dataArray) As Boolean
    ' Check the name of the value is correct.
     ' Here need "And dataName <> dataArray(0)" since an earlier version of the Android app does not add quotes to the keyword.
     ' Long term can remove this.
-   If Chr(34) & dataName & Chr(34) <> dataArray(0) And dataName <> dataArray(0) Then
+   If Chr$(34) & dataName & Chr$(34) <> dataArray(0) And dataName <> dataArray(0) Then
         validateMetaData = False
         Exit Function
    End If
    ' Check the value is in parentheses
-   If Left(dataArray(FileCol.metadata - 1), 1) <> Chr(34) Or Right(dataArray(1), 1) <> Chr(34) Then
+   If Left$(dataArray(FileCol.metadata - 1), 1) <> Chr$(34) Or Right$(dataArray(1), 1) <> Chr$(34) Then
         validateMetaData = False
         Exit Function
    End If
    validateMetaData = True
 End Function
 
-Private Function getQuestionLineNo(lineNo As Integer) As Integer
+Private Function getQuestionLineNo(ByRef lineNo As Long) As Long
     getQuestionLineNo = ((lineNo - FileRow.firstAnswer) Mod 3) + 1
 End Function
 

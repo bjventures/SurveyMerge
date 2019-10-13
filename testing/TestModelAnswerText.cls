@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Tests")
 '
 ' class module: TestModelAnswerText
 '
@@ -35,7 +36,7 @@ Private Property Get ITester_testList() As Variant
    
 End Property
 
-Private Function ITester_runTest(methodName As String) As Boolean
+Private Function ITester_runTest(ByRef methodName As String) As Boolean
         
     If Len(methodName) > 63 Then MsgBox "The method name '" & methodName & "' is too long to run on the Mac os.", vbCritical, ProjectName
     ITester_runTest = CallByName(Me, methodName, VbMethod)
@@ -158,3 +159,4 @@ Public Function test_AnswerText_WhenSetValue_ShouldGetDescription() As Boolean
     test_AnswerText_WhenSetValue_ShouldGetDescription = assertion
 
 End Function
+

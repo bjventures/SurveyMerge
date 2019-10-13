@@ -1,4 +1,5 @@
 Attribute VB_Name = "TestRunner"
+'@Folder("SurveyMerge.Tests")
 '
 ' module: TestRunner
 '
@@ -25,25 +26,25 @@ Sub runAllTests()
     End If
 
     Set testObject = New TestMain
-    Call runTestClass
+    runTestClass
     Set testObject = New TestAnswers
-    Call runTestClass
+    runTestClass
     Set testObject = New TestModelAnswerBase
-    Call runTestClass
+    runTestClass
     Set testObject = New TestModelAnswerCheckbox
-    Call runTestClass
+    runTestClass
     Set testObject = New TestModelAnswerList
-    Call runTestClass
+    runTestClass
     Set testObject = New TestModelAnswerSlider
-    Call runTestClass
+    runTestClass
     Set testObject = New TestModelAnswerText
-    Call runTestClass
+    runTestClass
     Set testObject = New TestParserAnswers
-    Call runTestClass
+    runTestClass
     Set testObject = New TestParserFile
-    Call runTestClass
+    runTestClass
     Set testObject = New TestParserSurveyRun
-    Call runTestClass
+    runTestClass
 
 End Sub
 
@@ -63,7 +64,7 @@ End Function
 Private Sub runTestClass()
         
     Dim methodName As Variant
-    Dim nameLength As Integer
+    Dim nameLength As Long
     Dim result As Boolean
     
     On Error GoTo Catch
@@ -99,18 +100,18 @@ Function getTestFilePath() As String
 
 End Function
 
-Function getTestFileName(fileName As String) As String
+Function getTestFileName(ByRef fileName As String) As String
     
     getTestFileName = fileName & ".csv"
 
 End Function
 
 
-Public Function getAnswerLines(fileNameStub As String) As Variant
+Public Function getAnswerLines(ByRef fileNameStub As String) As Variant
     ' Note that the text file should only have the 3 answer lines.
 
 On Error GoTo Catch
-    Dim inputFile As Integer
+    Dim inputFile As Long
     Dim fileString As String
     Dim fileName As String
     Dim lineArray As Variant
@@ -118,7 +119,7 @@ On Error GoTo Catch
     fileName = getTestFilePath & getTestFileName(fileNameStub)
     inputFile = FreeFile
     Open fileName For Input As #inputFile
-    fileString = Input(LOF(inputFile), inputFile)
+    fileString = Input$(LOF(inputFile), inputFile)
     Close #inputFile
     
     lineArray = Split(fileString, vbLf)

@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("SurveyMerge.Tests")
 '
 ' class module: TestParserAnswers
 '
@@ -45,7 +46,7 @@ Private Property Get ITester_testList() As Variant
    
 End Property
 
-Private Function ITester_runTest(methodName As String) As Boolean
+Private Function ITester_runTest(ByRef methodName As String) As Boolean
     
     If Len(methodName) > 63 Then MsgBox "The method name '" & methodName & "' is too long to run on the Mac os.", vbCritical, ProjectName
     ITester_runTest = CallByName(Me, methodName, VbMethod)
@@ -123,12 +124,12 @@ Public Function test_ParserAnswers_WhenHaveTextAnswerType_ShouldParse() As Boole
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
     
-    assertion = textAnswer.value = "hh,xx" & Chr(34) & ",b6,yyy" & Chr(34) & ",ii"
+    assertion = textAnswer.value = "hh,xx" & Chr$(34) & ",b6,yyy" & Chr$(34) & ",ii"
     
     assertion = assertion And baseAnswer.number = 0
     assertion = assertion And baseAnswer.time = CDate("16/04/2019 3:08:13 PM")
     assertion = assertion And baseAnswer.isoOffset = 1000
-    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = "hh,xx" & Chr(34) & ",b6,yyy" & Chr(34) & ",ii"
+    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = "hh,xx" & Chr$(34) & ",b6,yyy" & Chr$(34) & ",ii"
         
     test_ParserAnswers_WhenHaveTextAnswerType_ShouldParse = assertion
 
@@ -141,7 +142,7 @@ Public Function test_ParserAnswers_WhenHaveNilAnswer_ShouldParse() As Boolean
     assertion = baseAnswer.number = 0
     assertion = assertion And baseAnswer.time = CDate("12:00:00 AM")
     assertion = assertion And baseAnswer.isoOffset = 0
-    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerBase" And baseAnswer.description = ""
+    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerBase" And baseAnswer.description = vbNullString
         
     test_ParserAnswers_WhenHaveNilAnswer_ShouldParse = assertion
 
@@ -180,8 +181,8 @@ Public Function test_ParserAnswers_WhenTextAnswerHasQuoteCommaList_ShouldParse()
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
     
-    assertion = textAnswer.value = "hh,xx" & Chr(34) & ",b6,yyy" & Chr(34) & ",ii"
-    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = "hh,xx" & Chr(34) & ",b6,yyy" & Chr(34) & ",ii"
+    assertion = textAnswer.value = "hh,xx" & Chr$(34) & ",b6,yyy" & Chr$(34) & ",ii"
+    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = "hh,xx" & Chr$(34) & ",b6,yyy" & Chr$(34) & ",ii"
 
     test_ParserAnswers_WhenTextAnswerHasQuoteCommaList_ShouldParse = assertion
 
@@ -194,8 +195,8 @@ Public Function test_ParserAnswers_WhenTextAnswerIsEmpty_ShouldParse() As Boolea
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
 
-    assertion = textAnswer.value = ""
-    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = ""
+    assertion = textAnswer.value = vbNullString
+    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = vbNullString
 
     test_ParserAnswers_WhenTextAnswerIsEmpty_ShouldParse = assertion
 
@@ -207,8 +208,8 @@ Public Function test_ParserAnswers_WhenTextAnswerQuoteCommaNoAnswer_ShouldParse(
     Set baseAnswer = answerCollection.item(4)
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
-    assertion = textAnswer.value = "hh,xx" & Chr(34) & ",b6,yyy" & Chr(34) & ",ii"
-    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = "hh,xx" & Chr(34) & ",b6,yyy" & Chr(34) & ",ii"
+    assertion = textAnswer.value = "hh,xx" & Chr$(34) & ",b6,yyy" & Chr$(34) & ",ii"
+    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = "hh,xx" & Chr$(34) & ",b6,yyy" & Chr$(34) & ",ii"
     test_ParserAnswers_WhenTextAnswerQuoteCommaNoAnswer_ShouldParse = assertion
 
 End Function
@@ -220,8 +221,8 @@ Public Function test_ParserAnswers_WhenTextAnswerHasCommaQuote_ShouldParse() As 
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
     
-    assertion = textAnswer.value = "hh," & Chr(34) & "i,ii" & Chr(34) & " ," & Chr(34) & "2,3"
-    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = "hh," & Chr(34) & "i,ii" & Chr(34) & " ," & Chr(34) & "2,3"
+    assertion = textAnswer.value = "hh," & Chr$(34) & "i,ii" & Chr$(34) & " ," & Chr$(34) & "2,3"
+    assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = "hh," & Chr$(34) & "i,ii" & Chr$(34) & " ," & Chr$(34) & "2,3"
     
     test_ParserAnswers_WhenTextAnswerHasCommaQuote_ShouldParse = assertion
 
@@ -236,7 +237,7 @@ Public Function test_ParserAnswers_WhenTextAnswerMultiplQuoteComma_ShouldParse()
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
     
-    testString = "hh,xx" & Chr(34) & ",k6,yy" & Chr(34) & ",3" & Chr(34) & ",i," & Chr(34) & ",i"
+    testString = "hh,xx" & Chr$(34) & ",k6,yy" & Chr$(34) & ",3" & Chr$(34) & ",i," & Chr$(34) & ",i"
     assertion = textAnswer.value = testString
     assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = testString
     
@@ -270,7 +271,7 @@ Public Function test_ParserAnswers_WhenComplexTextAnswerIsLast_ShouldParse() As 
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
     
-    testString = "hh,xx" & Chr(34) & ",x6,yy" & Chr(34) & ",3" & Chr(34) & ",i," & Chr(34) & ",i"
+    testString = "hh,xx" & Chr$(34) & ",x6,yy" & Chr$(34) & ",3" & Chr$(34) & ",i," & Chr$(34) & ",i"
     assertion = textAnswer.value = testString
     assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = testString
     
@@ -287,7 +288,7 @@ Public Function test_ParserAnswers_WhenComplexTextAnswerThenNil_ShouldParse() As
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
     
-    testString = "hh,xx" & Chr(34) & ",x6,yy" & Chr(34) & ",3" & Chr(34) & ",i," & Chr(34) & ",i"
+    testString = "hh,xx" & Chr$(34) & ",x6,yy" & Chr$(34) & ",3" & Chr$(34) & ",i," & Chr$(34) & ",i"
     assertion = textAnswer.value = testString
     assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = testString
     
@@ -304,7 +305,7 @@ Public Function test_ParserAnswers_WhenComplexTextAnswerThenList_ShouldParse() A
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
     
-    testString = "hh,xx" & Chr(34) & ",x6,yy" & Chr(34) & ",3" & Chr(34) & ",i," & Chr(34) & ",i"
+    testString = "hh,xx" & Chr$(34) & ",x6,yy" & Chr$(34) & ",3" & Chr$(34) & ",i," & Chr$(34) & ",i"
     assertion = textAnswer.value = testString
     assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = testString
     
@@ -321,11 +322,14 @@ Public Function test_ParserAnswers_WhenComplexTextAnswerThenText_ShouldParse() A
     Dim textAnswer As ModelAnswerText
     Set textAnswer = baseAnswer
     
-    testString = "hh,xx" & Chr(34) & ",x6,yy" & Chr(34) & ",3" & Chr(34) & ",i," & Chr(34) & ",i"
+    testString = "hh,xx" & Chr$(34) & ",x6,yy" & Chr$(34) & ",3" & Chr$(34) & ",i," & Chr$(34) & ",i"
     assertion = textAnswer.value = testString
     assertion = assertion And TypeName(baseAnswer) = "ModelAnswerText" And baseAnswer.description = testString
     
     test_ParserAnswers_WhenComplexTextAnswerThenText_ShouldParse = assertion
     
 End Function
+
+
+
 

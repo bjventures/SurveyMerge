@@ -7,12 +7,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'
+'@Folder("SurveyMerge.Data.Parsers")
 ' class module: ParserAnswer
 '
 Option Explicit
 
-Function parse(lines As Variant) As Answers
+Function parse(ByRef lines As Variant) As Answers
     ' lines is an array of the 3 data lines from the file.
     Dim cleanArray As Variant
     
@@ -22,18 +22,18 @@ Function parse(lines As Variant) As Answers
 
 End Function
 
-Private Function getAnswerCollection(answerArray As Variant, timeArray As Variant) As Answers
+Private Function getAnswerCollection(ByRef answerArray As Variant, ByRef timeArray As Variant) As Answers
     ' This function returns an AnswerCollection.
     ' Note that the answers must be valid, there is no checking for validity elsewhere.
     ' It throws an error if an unknown question type is encountered.
     ' Note that the question answers are not set, this is for future random order and random questions
 
-    Dim column As Integer
+    Dim column As Long
     Dim item As Variant
     Dim inputString As String
     Dim cleanQuotedString As String
     Dim isValid As Boolean
-    Dim strLength As Integer
+    Dim strLength As Long
     Dim baseAnswer As ModelAnswerBase
     Dim listAnswer As ModelAnswerList
     Dim checkboxAnswer As ModelAnswerCheckbox
@@ -57,8 +57,8 @@ Private Function getAnswerCollection(answerArray As Variant, timeArray As Varian
         
         ' Check if is text or checkbox answer.
         If strLength >= 2 Then
-            If Left(inputString, 1) = Chr(34) And Right(inputString, 1) = Chr(34) Then
-                cleanQuotedString = Mid(inputString, 2, strLength - 2)
+            If Left$(inputString, 1) = Chr$(34) And Right$(inputString, 1) = Chr$(34) Then
+                cleanQuotedString = Mid$(inputString, 2, strLength - 2)
                 If isIntegerArray(cleanQuotedString) Then
                     Set checkboxAnswer = New ModelAnswerCheckbox
                     Set baseAnswer = checkboxAnswer
@@ -98,7 +98,7 @@ Private Function getAnswerCollection(answerArray As Variant, timeArray As Varian
             End If
         End If
         ' If get here, it is an error.
-        Call Err.Raise(CustomError.InvalidQuestionType)
+        Err.Raise CustomError.InvalidQuestionType
 NextIteration:
     column = column + 1
     Next
@@ -107,7 +107,7 @@ NextIteration:
 
 End Function
 
-Private Function isIntegerArray(inputString As String) As Boolean
+Private Function isIntegerArray(ByRef inputString As String) As Boolean
      
     If Len(inputString) < 1 Then
         isIntegerArray = False
@@ -115,7 +115,7 @@ Private Function isIntegerArray(inputString As String) As Boolean
     End If
     
     Dim stringArray() As String
-    Dim i As Integer
+    Dim i As Long
     
     stringArray = Split(inputString, ",")
     For i = 0 To UBound(stringArray)
@@ -129,12 +129,12 @@ Private Function isIntegerArray(inputString As String) As Boolean
 
 End Function
 
-Private Function convertToIntegerArray(inputString As String) As Variant
+Private Function convertToIntegerArray(ByRef inputString As String) As Variant
  
     Dim stringArray() As String
-    Dim intArray() As Integer
-    Dim bound As Integer
-    Dim i As Integer
+    Dim intArray() As Long
+    Dim bound As Long
+    Dim i As Long
     
     stringArray = Split(inputString, ",")
     bound = UBound(stringArray)
@@ -149,7 +149,7 @@ Private Function convertToIntegerArray(inputString As String) As Variant
 End Function
 
 
-Private Function isInteger(item As String) As Boolean
+Private Function isInteger(ByRef item As String) As Boolean
 
     Dim result As Boolean
     result = False
@@ -167,20 +167,20 @@ End Function
 
 ' The purpose of this function is to combine the aray items from a checkbox question into a single item.
 ' The result may be a shorter array. The size should match the number of questions.
-Private Function getCleanDataArray(dataArray As Variant) As Variant
+Private Function getCleanDataArray(ByRef dataArray As Variant) As Variant
 
     Dim newDataArray As Variant
-    Dim newCounter As Integer
-    Dim oldCounter As Integer
+    Dim newCounter As Long
+    Dim oldCounter As Long
     Dim stringFlag As Boolean
-    Dim endIndex As Integer
+    Dim endIndex As Long
         
     newDataArray = Array()
     newCounter = 0
     For oldCounter = FileCol.metadata To UBound(dataArray)
         ReDim Preserve newDataArray(newCounter)
         newDataArray(newCounter) = dataArray(oldCounter)
-        If Left(newDataArray(newCounter), 1) = Chr(34) Then
+        If Left$(newDataArray(newCounter), 1) = Chr$(34) Then
             endIndex = getEndIndex(oldCounter, dataArray, UBound(dataArray))
             newDataArray(newCounter) = joinSubArray(dataArray, oldCounter + 1, endIndex)
             oldCounter = endIndex
@@ -198,15 +198,15 @@ End Function
 ' It is broken by 2 edge cases: {","} and {",number,} but is better than Excel parsing for this type of file.
 ' TODO: Since May 2019, {"} is replaced by {'} in the PIEL App data file. In late 2010 can simplify this logic.
 '
-Private Function getEndIndex(counter As Integer, answerArray As Variant, oldArraySize As Integer) As Integer
-    Dim i As Integer
+Private Function getEndIndex(ByRef counter As Long, ByRef answerArray As Variant, ByRef oldArraySize As Long) As Long
+    Dim i As Long
     i = counter
     
     ' If item is possible end of text answer (i.e. has {*"}), progressively look for next one until find new question.
     ' That is the real endIndex
     Do While i < oldArraySize
-        If Right(answerArray(i), 1) = Chr(34) Then
-            If Left(answerArray(i + 1), 1) = Chr(34) Or IsNumeric(answerArray(i + 1)) Or Len(answerArray(i + 1)) = 0 Then
+        If Right$(answerArray(i), 1) = Chr$(34) Then
+            If Left$(answerArray(i + 1), 1) = Chr$(34) Or IsNumeric(answerArray(i + 1)) Or Len(answerArray(i + 1)) = 0 Then
                 getEndIndex = i
                 Exit Function
             End If
@@ -218,10 +218,10 @@ Private Function getEndIndex(counter As Integer, answerArray As Variant, oldArra
     
 End Function
 
-Private Function joinSubArray(mainArray As Variant, startIndex As Integer, endIndex As Integer, Optional separator = ",") As String
+Private Function joinSubArray(ByRef mainArray As Variant, ByRef startIndex As Long, ByRef endIndex As Long, Optional ByRef separator As Variant = ",") As String
     
-    Dim i As Integer
-    Dim arrayDim As Integer
+    Dim i As Long
+    Dim arrayDim As Long
     Dim tempArray As Variant
     
     arrayDim = endIndex - startIndex + 1

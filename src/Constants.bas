@@ -1,4 +1,5 @@
 Attribute VB_Name = "Constants"
+'@Folder("SurveyMerge.Utilities")
 '
 ' module: Constants
 '
@@ -35,7 +36,7 @@ Enum WsSheet
     AnswerTime = 3
 End Enum
 
-Function getWsName(id As WsSheet) As String
+Public Function getWsName(ByRef id As WsSheet) As String
     Select Case id
         Case WsSheet.Dashboard
             getWsName = "Dashboard"
