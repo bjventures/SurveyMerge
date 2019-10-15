@@ -18,6 +18,7 @@ Implements ModelAnswerBase
 Private baseAnswer As ModelAnswerBase
 Private m_value As Long
 
+
 '
 ' Class specific properties
 '
@@ -43,9 +44,9 @@ End Property
 '
 ' Delegate properties to implemented base class (AnswerBase)
 '
-Private Property Let ModelAnswerBase_number(ByVal answerValue As Long)
+Private Property Let ModelAnswerBase_number(ByVal number As Long)
     
-    baseAnswer.number = answerValue
+    baseAnswer.number = number
     
 End Property
 
