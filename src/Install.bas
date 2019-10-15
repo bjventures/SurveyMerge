@@ -6,7 +6,7 @@ Private Sub installEndUser()
 
     Dim sheetArray() As Variant
     If Not sheetExists(getWsName(WsSheet.Dashboard)) Then
-        sheetArray = Array(getWsName(WsSheet.Dashboard), getWsName(WsSheet.Answers), getWsName(WsSheet.AnswerTime))
+        sheetArray = Array(getWsName(WsSheet.Dashboard), getWsName(WsSheet.Answers), getWsName(WsSheet.Times))
         doFirstInstall (sheetArray)
     End If
 
@@ -50,7 +50,7 @@ Public Sub createOrClearWorksheets(ByVal sheetArray As Variant)
     For Each SheetName In sheetArray
         sheetString = CStr(SheetName)
         If sheetExists(sheetString) Then
-            Sheets(sheetString).Cells.ClearContents
+            ThisWorkbook.Sheets(sheetString).Cells.ClearContents
         Else
             createSheet sheetString
         End If
@@ -63,7 +63,7 @@ Private Sub setupDashboard()
     Dim ws As Worksheet
     Dim btnRange As Range
     Dim btn As Button
-    Set ws = Sheets(getWsName(WsSheet.Dashboard))
+    Set ws = ThisWorkbook.Sheets(getWsName(WsSheet.Dashboard))
     ws.Activate
     
     ' Instructions
@@ -74,9 +74,9 @@ Private Sub setupDashboard()
         .Font.Size = 14
     End With
     ws.Columns("A").ColumnWidth = 75
-    ws.Cells(2, 1) = getInstructions1
-    ws.Cells(3, 1) = getInstructions2
-    ws.Cells(5, 1) = getInstructions3
+    ws.Cells(2, 1).value = getInstructions1
+    ws.Cells(3, 1).value = getInstructions2
+    ws.Cells(5, 1).value = getInstructions3
     
     ' Links
     With ws

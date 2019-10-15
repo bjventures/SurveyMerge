@@ -27,10 +27,10 @@ Private Sub Class_Initialize()
 
 End Sub
 
-Public Property Let value(ByVal value As Long)
+Public Property Let value(ByVal answerValue As Long)
     
-    If value < 1 Then Err.Raise CustomError.ModelValidationError
-    m_value = value
+    If answerValue < 1 Then Err.Raise CustomError.ModelValidationError
+    m_value = answerValue
     
 End Property
 
@@ -43,9 +43,9 @@ End Property
 '
 ' Delegate properties to implemented base class (AnswerBase)
 '
-Private Property Let ModelAnswerBase_number(ByVal value As Long)
+Private Property Let ModelAnswerBase_number(ByVal answerValue As Long)
     
-    baseAnswer.number = value
+    baseAnswer.number = answerValue
     
 End Property
 
@@ -55,9 +55,9 @@ Private Property Get ModelAnswerBase_number() As Long
     
 End Property
 
-Private Property Let ModelAnswerBase_isoTime(ByVal value As String)
+Private Property Let ModelAnswerBase_isoTime(ByVal answerValue As String)
     
-    baseAnswer.isoTime = value
+    baseAnswer.isoTime = answerValue
     
 End Property
 

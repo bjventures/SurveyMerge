@@ -141,7 +141,8 @@ End Function
 
 Public Function test_AnswerText_WhenSetValue_ShouldSet() As Boolean
         
-    Dim textAnswer As New ModelAnswerText
+    Dim textAnswer As ModelAnswerText
+    Set textAnswer = New ModelAnswerText
     textAnswer.value = "Test"
     assertion = textAnswer.value = "Test"
     
@@ -150,7 +151,8 @@ End Function
 
 Public Function test_AnswerText_WhenSetValue_ShouldGetDescription() As Boolean
 
-    Dim textAnswer As New ModelAnswerText
+    Dim textAnswer As ModelAnswerText
+    Set textAnswer = New ModelAnswerText
     textAnswer.value = "Test"
     
     Set baseAnswer = textAnswer

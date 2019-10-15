@@ -20,17 +20,17 @@ Private m_SurveyRun As ModelSurveyRun
 Private m_ErrorMessage As String
 
 '@Ignore ParameterNotUsed
-Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
+Sub IPrinter_printData(ByRef singleRun As ModelSurveyRun, ByRef lineNo As Long)
 
-    Set m_SurveyRun = surveyRun
+    Set m_SurveyRun = singleRun
     m_ValidSurveyRunNumber = m_ValidSurveyRunNumber + 1
 
 End Sub
 
 '@Ignore ParameterNotUsed
-Sub IPrinter_printError(ByVal errorMessage As String, ByVal lineNo As Long)
+Sub IPrinter_printError(ByVal message As String, ByVal lineNo As Long)
 
-    m_ErrorMessage = errorMessage
+    m_ErrorMessage = message
 
 End Sub
 

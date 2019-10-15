@@ -25,17 +25,17 @@ Private Sub Class_Initialize()
     Set baseAnswer = New ModelAnswerBase
 End Sub
 
-Public Property Let value(ByVal value As Variant)
+Public Property Let value(ByVal answerValue As Variant)
     ' Note that the value argument must be an array of integers.
     On Error GoTo Catch
     
     Dim bound As Long
     Dim i As Long
     
-    bound = UBound(value)
+    bound = UBound(answerValue)
     ReDim m_value(bound)
     For i = 0 To bound
-        m_value(i) = value(i)
+        m_value(i) = answerValue(i)
     Next i
 Finally:
     Exit Property
@@ -55,9 +55,9 @@ End Property
 '
 ' Delegate properties to implemented base class (AnswerBase)
 '
-Private Property Let ModelAnswerBase_number(ByVal value As Long)
+Private Property Let ModelAnswerBase_number(ByVal answerValue As Long)
     
-    baseAnswer.number = value
+    baseAnswer.number = answerValue
     
 End Property
 
@@ -67,9 +67,9 @@ Private Property Get ModelAnswerBase_number() As Long
     
 End Property
 
-Private Property Let ModelAnswerBase_isoTime(ByVal value As String)
+Private Property Let ModelAnswerBase_isoTime(ByVal answerValue As String)
     
-    baseAnswer.isoTime = value
+    baseAnswer.isoTime = answerValue
     
 End Property
 

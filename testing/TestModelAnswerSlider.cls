@@ -141,7 +141,8 @@ End Function
 
 Public Function test_AnswerSlider_WhenSetValue_ShouldSet() As Boolean
         
-    Dim sliderAnswer As New ModelAnswerSlider
+    Dim sliderAnswer As ModelAnswerSlider
+    Set sliderAnswer = New ModelAnswerSlider
     sliderAnswer.value = 3.4444
     assertion = sliderAnswer.value = 3.4444
         
@@ -151,7 +152,8 @@ End Function
 
 Public Function test_AnswerSlider_WhenSetValue_ShouldGetDescription() As Boolean
 
-    Dim sliderAnswer As New ModelAnswerSlider
+    Dim sliderAnswer As ModelAnswerSlider
+    Set sliderAnswer = New ModelAnswerSlider
     sliderAnswer.value = 3.8333
     
     Set baseAnswer = sliderAnswer
@@ -162,7 +164,9 @@ Public Function test_AnswerSlider_WhenSetValue_ShouldGetDescription() As Boolean
 End Function
 
 Public Function test_AnswerSlider_WhenSetIncorrectValue_ShouldThrow() As Boolean
-    Dim sliderAnswer As New ModelAnswerSlider
+    Dim sliderAnswer As ModelAnswerSlider
+    Set sliderAnswer = New ModelAnswerSlider
+
 
 On Error GoTo Catch
     sliderAnswer.value = -1.444

@@ -38,8 +38,9 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
     Dim checkboxAnswer As ModelAnswerCheckbox
     Dim textAnswer As ModelAnswerText
     Dim sliderAnswer As ModelAnswerSlider
-    Dim answerCollection As New Answers
+    Dim answerCollection As Answers
     
+    Set answerCollection = New Answers
     ' The starting column for the timestamp as an index.
     column = FileCol.answerData - 1
     For Each item In answerArray

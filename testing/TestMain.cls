@@ -16,7 +16,7 @@ Implements ITester
 
 Private assertion As Boolean
 Private wsAnswers As Worksheet
-Private wsAnswerTime As Worksheet
+Private wstime As Worksheet
 
 Private Property Get ITester_className() As String
     ITester_className = "TestMain"
@@ -43,8 +43,8 @@ Private Sub ITester_setUp()
     Application.DisplayAlerts = False
     ' Ignore error if worksheet does not exist.
     On Error Resume Next
-    Sheets(getWsName(WsSheet.Answers)).Delete
-    Sheets(getWsName(WsSheet.AnswerTime)).Delete
+     ThisWorkbook.Sheets(getWsName(WsSheet.Answers)).Delete
+     ThisWorkbook.Sheets(getWsName(WsSheet.Times)).Delete
     Application.DisplayAlerts = True
 End Sub
 
@@ -54,10 +54,10 @@ End Sub
 Public Function test_WhenMultipleFiles_ShouldMergeAllSurveyRuns() As Boolean
 
     combineCsvFiles getCurrentPath() & "testing/test-files/test-group-1/", False
-    Set wsAnswers = Sheets(getWsName(WsSheet.Answers))
-    Set wsAnswerTime = Sheets(getWsName(WsSheet.AnswerTime))
+    Set wsAnswers = ThisWorkbook.Sheets(getWsName(WsSheet.Answers))
+    Set wstime = ThisWorkbook.Sheets(getWsName(WsSheet.Times))
 
-    assertion = wsAnswers.UsedRange.Rows.count = 10 And wsAnswerTime.UsedRange.Rows.count = 10
+    assertion = wsAnswers.UsedRange.Rows.count = 10 And wstime.UsedRange.Rows.count = 10
 
     test_WhenMultipleFiles_ShouldMergeAllSurveyRuns = assertion
 
@@ -67,10 +67,10 @@ Public Function test_WhenMultipleFilesAndroidAndApple_ShouldMergeAllSurveyRuns()
 
     combineCsvFiles getCurrentPath() & "testing/test-files/test-group-2/", False
 
-    Set wsAnswers = Sheets(getWsName(WsSheet.Answers))
-    Set wsAnswerTime = Sheets(getWsName(WsSheet.AnswerTime))
+    Set wsAnswers = ThisWorkbook.Sheets(getWsName(WsSheet.Answers))
+    Set wstime = ThisWorkbook.Sheets(getWsName(WsSheet.Times))
 
-    assertion = wsAnswers.UsedRange.Rows.count = 9 And wsAnswerTime.UsedRange.Rows.count = 9
+    assertion = wsAnswers.UsedRange.Rows.count = 9 And wstime.UsedRange.Rows.count = 9
 
     test_WhenMultipleFilesAndroidAndApple_ShouldMergeAllSurveyRuns = assertion
 
@@ -80,7 +80,7 @@ Public Function test_WhenSurveyRunError_ShouldPrintError() As Boolean
 
     combineCsvFiles getCurrentPath() & "testing/test-files/test-group-3/", False
 
-    Set wsAnswers = Sheets(getWsName(WsSheet.Answers))
+    Set wsAnswers = ThisWorkbook.Sheets(getWsName(WsSheet.Answers))
     assertion = wsAnswers.Cells(3, 1) = "Error In Survey Run: The question type is not recognised."
     assertion = wsAnswers.Cells(5, 1) = "Error In Survey Run: The number of questions is inconsistent."
     assertion = wsAnswers.Cells(6, 1) = "Error In Survey Run: " & Chr$(34) & "Survey Error Name" & Chr$(34) & "is not a valid keyword."

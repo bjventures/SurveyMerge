@@ -51,7 +51,8 @@ End Sub
 
 Public Function test_Answers_WhenAddListQuestionType_ShouldAdd() As Boolean
     
-    Dim answer As New ModelAnswerList
+    Dim answer As ModelAnswerList
+    Set answer = New ModelAnswerList
     answer.value = 2
 
     answerCollection.Add answer
@@ -64,7 +65,8 @@ End Function
 
 Public Function test_Answers_WhenAddCheckboxQuestionType_ShouldAdd() As Boolean
     
-    Dim answer As New ModelAnswerCheckbox
+    Dim answer As ModelAnswerCheckbox
+    Set answer = New ModelAnswerCheckbox
     answer.value = Array(2, 4)
 
     answerCollection.Add answer
@@ -77,7 +79,8 @@ End Function
 
 Public Function test_Answers_WhenAddTextQuestionType_ShouldAdd() As Boolean
 
-    Dim answer As New ModelAnswerText
+    Dim answer As ModelAnswerText
+    Set answer = New ModelAnswerText
     answer.value = "Test"
 
     answerCollection.Add answer
@@ -90,7 +93,8 @@ End Function
 
 Public Function test_Answers_WhenAddSliderQuestionType_ShouldAdd() As Boolean
 
-    Dim answer As New ModelAnswerSlider
+    Dim answer As ModelAnswerSlider
+    Set answer = New ModelAnswerSlider
     answer.value = 1.34
 
     answerCollection.Add answer
@@ -103,7 +107,8 @@ End Function
 
 Public Function test_Answers_WhenAddMultipleQuestions_ShouldCount() As Boolean
     
-    Dim answer As New ModelAnswerList
+    Dim answer As ModelAnswerList
+    Set answer = New ModelAnswerList
     answer.value = 2
     answerCollection.Add answer
     answer.value = 4
@@ -116,7 +121,8 @@ End Function
 
 Public Function test_Answers_WhenAddMultipleQuestions_ShouldGetItem() As Boolean
     
-    Dim answer As New ModelAnswerList
+    Dim answer As ModelAnswerList
+    Set answer = New ModelAnswerList
     answer.value = 2
     answerCollection.Add answer
     answer.value = 4
@@ -131,8 +137,11 @@ End Function
 
 Public Function test_Answers_WhenAddMultipleQuestionsAndRemove_ShouldRemoveItem() As Boolean
 
-    Dim answer1 As New ModelAnswerList
-    Dim answer2 As New ModelAnswerList
+    Dim answer1 As ModelAnswerList
+    Dim answer2 As ModelAnswerList
+    Set answer1 = New ModelAnswerList
+    Set answer2 = New ModelAnswerList
+    
     answer1.value = 2
     answerCollection.Add answer1
     answer2.value = 4

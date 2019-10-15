@@ -141,7 +141,8 @@ End Function
 
 Public Function test_AnswerList_WhenSetValue_ShouldSet() As Boolean
         
-    Dim listAnswer As New ModelAnswerList
+    Dim listAnswer As ModelAnswerList
+    Set listAnswer = New ModelAnswerList
     listAnswer.value = 3
     assertion = listAnswer.value = 3
     
@@ -151,7 +152,9 @@ End Function
 
 Public Function test_AnswerList_WhenSetValue_ShouldGetDescription() As Boolean
 
-    Dim listAnswer As New ModelAnswerList
+    Dim listAnswer As ModelAnswerList
+    Set listAnswer = New ModelAnswerList
+    
     listAnswer.value = 3
     
     Set baseAnswer = listAnswer
@@ -163,7 +166,8 @@ End Function
 
 Public Function test_AnswerList_WhenSetIncorrectValue_ShouldThrow() As Boolean
 
-    Dim listAnswer As New ModelAnswerList
+    Dim listAnswer As ModelAnswerList
+    Set listAnswer = New ModelAnswerList
 
 On Error GoTo Catch
     listAnswer.value = -1

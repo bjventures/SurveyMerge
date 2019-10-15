@@ -32,7 +32,7 @@ Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, 
     
     Application.ScreenUpdating = False
     
-    sheetArray = Array(getWsName(WsSheet.Answers), getWsName(WsSheet.AnswerTime))
+    sheetArray = Array(getWsName(WsSheet.Answers), getWsName(WsSheet.Times))
     createOrClearWorksheets sheetArray
     
     success = 0

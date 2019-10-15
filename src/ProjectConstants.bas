@@ -33,7 +33,7 @@ End Enum
 Enum WsSheet
     Dashboard = 1
     Answers = 2
-    AnswerTime = 3
+    Times = 3
 End Enum
 
 Public Function getWsName(ByRef id As WsSheet) As String
@@ -42,7 +42,7 @@ Public Function getWsName(ByRef id As WsSheet) As String
         getWsName = "Dashboard"
     Case WsSheet.Answers
         getWsName = "Answers"
-    Case WsSheet.AnswerTime
+    Case WsSheet.Times
         getWsName = "Answer Time"
     End Select
     
