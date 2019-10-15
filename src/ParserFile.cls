@@ -75,8 +75,6 @@ Private Function getUtfFile(ByVal filePath As String, ByVal fileName As String) 
 
 End Function
 
-
-
 '
 ' This function is temporarily needed as older data files may have line breaks in the middle of text questions.
 ' The middle lines in the survey run are combined so each SurveyRun will have 3 lines.
@@ -171,6 +169,4 @@ Private Function validateMetaData(ByVal dataName As Variant, ByRef dataArray As 
     End If
     validateMetaData = True
 End Function
-
-
 

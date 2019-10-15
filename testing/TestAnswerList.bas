@@ -7,7 +7,9 @@ Option Private Module
 
 Private Assert As Object
 Private Fakes As Object
-Private answer As ModelAnswerList
+Private answer As ModelAnswerBase
+Private listAnswer As ModelAnswerList
+
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -27,6 +29,7 @@ End Sub
 Private Sub TestInitialize()
     'this method runs before every test in the module.
     Set answer = New ModelAnswerList
+    Set listAnswer = answer
 End Sub
 
 '@TestCleanup
@@ -38,9 +41,9 @@ End Sub
 Private Sub value_WhenSet_ShouldSet()
     On Error GoTo TestFail
     
-    answer.value = 2
+    listAnswer.value = 2
     
-    Assert.AreEqual CLng(2), answer.value
+    Assert.AreEqual CLng(2), listAnswer.value
 
 TestExit:
     Exit Sub
@@ -48,135 +51,153 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
+'@TestMethod("AnswerList")
+Private Sub number_WhenSet_ShouldSet()
+    On Error GoTo TestFail
 
-'Public Function test_AnswerList_WhenSetNumber_ShouldSet() As Boolean
-'
-'    baseAnswer.number = 1
-'
-'    assertion = baseAnswer.number = 1
-'    test_AnswerList_WhenSetNumber_ShouldSet = assertion
-'
-'End Function
-'
-'Public Function test_AnswerList_WhenSetInvalidNumber_ShouldThrow() As Boolean
-'
-'On Error GoTo Catch
-'    baseAnswer.number = 0
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.ModelValidationError
-'    test_AnswerList_WhenSetInvalidNumber_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-'Public Function test_AnswerList_WhenSetValidTime_ShouldSet() As Boolean
-'
-'    baseAnswer.isoTime = "2019-04-16T15:08:07+1000"
-'    assertion = "16/04/2019 3:08:07 PM " = baseAnswer.time
-'
-'    test_AnswerList_WhenSetValidTime_ShouldSet = assertion
-'
-'End Function
-'
-'Public Function test_AnswerList_WhenSetValidTime_ShouldGetOffset() As Boolean
-'
-'    baseAnswer.isoTime = "2019-04-16T15:08:07-1000"
-'    assertion = -1000 = baseAnswer.isoOffset
-'
-'    test_AnswerList_WhenSetValidTime_ShouldGetOffset = assertion
-'
-'End Function
-'
-'Public Function test_AnswerList_WhenSetInvalidTime_ShouldThrow() As Boolean
-'
-'On Error GoTo Catch
-'    baseAnswer.isoTime = "20aa-04-16T15:08:07+1000"
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.ModelValidationError
-'    test_AnswerList_WhenSetInvalidTime_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-'Public Function test_AnswerList_WhenSetInvalidTimeOffset_ShouldThrow() As Boolean
-'
-'On Error GoTo Catch
-'    baseAnswer.isoTime = "20aa-04-16T15:08:07+1a00"
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.ModelValidationError
-'    test_AnswerList_WhenSetInvalidTimeOffset_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-'Public Function test_AnswerList_WhenSetTruncatedTime_ShouldThrow() As Boolean
-'
-'On Error GoTo Catch
-'    baseAnswer.isoTime = "20-04-16T15:08:07+1000"
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.ModelValidationError
-'    test_AnswerList_WhenSetTruncatedTime_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-'Public Function test_AnswerList_WhenSetValue_ShouldSet() As Boolean
-'
-'    Dim listAnswer As ModelAnswerList
-'    Set listAnswer = New ModelAnswerList
-'    listAnswer.value = 3
-'    assertion = listAnswer.value = 3
-'
-'    test_AnswerList_WhenSetValue_ShouldSet = assertion
-'
-'End Function
-'
-'Public Function test_AnswerList_WhenSetValue_ShouldGetDescription() As Boolean
-'
-'    Dim listAnswer As ModelAnswerList
-'    Set listAnswer = New ModelAnswerList
-'
-'    listAnswer.value = 3
-'
-'    Set baseAnswer = listAnswer
-'
-'    assertion = baseAnswer.description = "3"
-'    test_AnswerList_WhenSetValue_ShouldGetDescription = assertion
-'
-'End Function
-'
-'Public Function test_AnswerList_WhenSetIncorrectValue_ShouldThrow() As Boolean
-'
-'    Dim listAnswer As ModelAnswerList
-'    Set listAnswer = New ModelAnswerList
-'
-'On Error GoTo Catch
-'    listAnswer.value = -1
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.ModelValidationError
-'    test_AnswerList_WhenSetIncorrectValue_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
+    listAnswer.value = 2
 
+    Assert.AreEqual CLng(2), listAnswer.value
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("AnswerList")
+Private Sub answerList_WhenInvalidNumber_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
+    On Error GoTo TestFail
+
+    answer.number = 0
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("AnswerList")
+Private Sub answerListTime_WhenSetValid_ShouldSet()
+    On Error GoTo TestFail
+
+    answer.isoTime = "2019-04-16T15:08:07+1000"
+
+    Assert.AreEqual "2019-04-16 15:08:07", Format(answer.time, "yyyy-mm-dd hh:mm:ss")
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("AnswerList")
+Private Sub answerListTime_WhenSetValid_ShouldGetOffset()
+    On Error GoTo TestFail
+
+    answer.isoTime = "2019-04-16T15:08:07+1000"
+   
+    Assert.AreEqual CLng(1000), answer.isoOffset
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("AnswerList")
+Private Sub answerListIsoTime_WhenInvalidTime_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
+    On Error GoTo TestFail
+
+    answer.isoTime = "20aa-04-16T15:08:07+1000"
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("AnswerList")
+Private Sub answerListIsoTime_WhenInvalidTimeOffset_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
+    On Error GoTo TestFail
+
+    answer.isoTime = "20aa-04-16T15:08:07+1a00"
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("AnswerList")
+Private Sub answerListValue_WhenSetValid_ShouldSet()
+    On Error GoTo TestFail
+
+    listAnswer.value = 3
+   
+    Assert.AreEqual CLng(3), listAnswer.value
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("AnswerList")
+Private Sub answerListValue_WhenSetValid_ShouldGetDescription()
+    On Error GoTo TestFail
+
+    listAnswer.value = 3
+    Set answer = listAnswer
+   
+    Assert.AreEqual "3", answer.description
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("AnswerList")
+Private Sub answerListValue_WhenInvalid_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
+    On Error GoTo TestFail
+
+    listAnswer.value = 0
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub

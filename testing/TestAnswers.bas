@@ -44,8 +44,8 @@ Private Sub add_WhenAddListQuestion_ShouldAdd()
 
     answerCollection.Add answer
    
-   Assert.AreEqual CLng(1), answerCollection.count
-   Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerList
+    Assert.AreEqual CLng(1), answerCollection.count
+    Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerList
 
 TestExit:
     Exit Sub
@@ -62,8 +62,8 @@ Private Sub add_WhenAddCheckboxQuestion_ShouldAdd()
 
     answerCollection.Add answer
    
-   Assert.AreEqual CLng(1), answerCollection.count
-   Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerCheckbox
+    Assert.AreEqual CLng(1), answerCollection.count
+    Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerCheckbox
 
 TestExit:
     Exit Sub
@@ -80,8 +80,8 @@ Private Sub add_WhenAddTextQuestion_ShouldAdd()
 
     answerCollection.Add answer
    
-   Assert.AreEqual CLng(1), answerCollection.count
-   Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerText
+    Assert.AreEqual CLng(1), answerCollection.count
+    Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerText
 
 TestExit:
     Exit Sub
@@ -98,8 +98,8 @@ Private Sub add_WhenSliderQuestion_ShouldAdd()
 
     answerCollection.Add answer
    
-   Assert.AreEqual CLng(1), answerCollection.count
-   Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerSlider
+    Assert.AreEqual CLng(1), answerCollection.count
+    Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerSlider
 
 TestExit:
     Exit Sub
@@ -118,7 +118,7 @@ Private Sub add_WhenMultipleQuestions_ShouldAdd()
     answerCollection.Add answer
     answerCollection.Add answer
    
-   Assert.AreEqual CLng(3), answerCollection.count
+    Assert.AreEqual CLng(3), answerCollection.count
 
 TestExit:
     Exit Sub
@@ -142,8 +142,8 @@ Private Sub item_WhenMultipleQuestions_ShouldRetrieve()
     
     Set retrievedAnswer = answerCollection.item(2)
    
-   Assert.AreEqual CLng(2), answerCollection.count
-   Assert.AreEqual CLng(4), retrievedAnswer.value
+    Assert.AreEqual CLng(2), answerCollection.count
+    Assert.AreEqual CLng(4), retrievedAnswer.value
 
 TestExit:
     Exit Sub
@@ -169,8 +169,8 @@ Private Sub remove_WhenAddMultipleQuestionsAndRemove_ShouldRemoveItem()
 
     Set retrievedAnswer = answerCollection.item(1)
 
-   Assert.AreEqual CLng(1), answerCollection.count
-   Assert.AreEqual CLng(2), retrievedAnswer.value
+    Assert.AreEqual CLng(1), answerCollection.count
+    Assert.AreEqual CLng(2), retrievedAnswer.value
 
 TestExit:
     Exit Sub

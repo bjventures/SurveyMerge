@@ -69,9 +69,3 @@ Public Property Let answerCollection(ByRef value As Answers)
     mAnswerCollection = value
 End Property
 
-
-
-
-
-
-

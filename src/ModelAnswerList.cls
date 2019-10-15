@@ -18,7 +18,6 @@ Implements ModelAnswerBase
 Private baseAnswer As ModelAnswerBase
 Private m_value As Long
 
-
 '
 ' Class specific properties
 '
