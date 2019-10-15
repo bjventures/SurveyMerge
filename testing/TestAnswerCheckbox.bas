@@ -1,4 +1,4 @@
-Attribute VB_Name = "TestAnswerList"
+Attribute VB_Name = "TestAnswerCheckbox"
 Option Explicit
 Option Private Module
 
@@ -10,7 +10,7 @@ Option Private Module
 Private Assert As Object
 Private Fakes As Object
 Private answer As ModelAnswerBase
-Private listAnswer As ModelAnswerList
+Private checkboxAnswer As ModelAnswerCheckbox
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -26,22 +26,22 @@ End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    Set answer = New ModelAnswerList
-    Set listAnswer = answer
+    Set answer = New ModelAnswerCheckbox
+    Set checkboxAnswer = answer
 End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
     Set answer = Nothing
-    Set listAnswer = Nothing
+    Set checkboxAnswer = Nothing
 End Sub
 
 '@TestMethod("Model")
 Private Sub answerList_Value_WhenSetValid_ShouldSet()
     On Error GoTo TestFail
-    listAnswer.value = 3
-   
-    Assert.AreEqual CLng(3), listAnswer.value
+    checkboxAnswer.value = Array(2, 4)
+
+    Assert.SequenceEquals Array(CLng(2), CLng(4)), checkboxAnswer.value
 
     Exit Sub
 TestFail:
@@ -52,8 +52,8 @@ End Sub
 Private Sub answerList_Value_WhenInvalid_ShouldThrow()
     Const ExpectedError As Long = CustomError.ModelValidationError
     On Error GoTo TestFail
-    listAnswer.value = 0
-    
+    checkboxAnswer.value = Array(2, "error")
+
 Assert:
     Assert.Fail "Expected error was not raised"
 TestExit:
@@ -66,15 +66,14 @@ TestFail:
     End If
 End Sub
 
-
 '@TestMethod("Model")
 Private Sub answerList_Description_WhenValueSet_ShouldGetDescription()
     On Error GoTo TestFail
-    listAnswer.value = 3
+        checkboxAnswer.value = Array(2, 4)
     ' Recast to parent class.
-    Set answer = listAnswer
-   
-    Assert.AreEqual "3", answer.description
+    Set answer = checkboxAnswer
+
+    Assert.AreEqual "2,4", answer.description
 
     Exit Sub
 TestFail:

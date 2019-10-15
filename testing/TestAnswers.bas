@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("SurveyMerge.NewTests")
+'@Folder("SurveyMerge.Tests.Models")
 
 Private Assert As Object
 Private Fakes As Object
@@ -11,31 +11,27 @@ Private answerCollection As Answers
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
-    'this method runs once per module.
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
 End Sub
 
 '@ModuleCleanup
 Private Sub ModuleCleanup()
-    'this method runs once per module.
     Set Assert = Nothing
     Set Fakes = Nothing
 End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    'this method runs before every test in the module.
     Set answerCollection = New Answers
 End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
-    'this method runs after every test in the module.
     Set answerCollection = Nothing
 End Sub
 
-'@TestMethod("Answers")
+'@TestMethod("Model")
 Private Sub add_WhenAddListQuestion_ShouldAdd()
     On Error GoTo TestFail
     
@@ -51,7 +47,7 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-'@TestMethod("Answers")
+'@TestMethod("Model")
 Private Sub add_WhenAddCheckboxQuestion_ShouldAdd()
     On Error GoTo TestFail
     
@@ -68,7 +64,7 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-'@TestMethod("Answers")
+'@TestMethod("Model")
 Private Sub add_WhenAddTextQuestion_ShouldAdd()
     On Error GoTo TestFail
     
@@ -85,8 +81,8 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-'@TestMethod("Answers")
-Private Sub add_WhenSliderQuestion_ShouldAdd()
+'@TestMethod("Model")
+Private Sub add_WhenAddSliderQuestion_ShouldAdd()
     On Error GoTo TestFail
     
     Dim answer As ModelAnswerSlider
@@ -103,16 +99,16 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-'@TestMethod("Answers")
+'@TestMethod("Model")
 Private Sub add_WhenMultipleQuestions_ShouldAdd()
     On Error GoTo TestFail
     
     Dim listAnswer As ModelAnswerList
     Set listAnswer = New ModelAnswerList
     answerCollection.Add listAnswer
-    Dim checkBoxAnswer As ModelAnswerCheckbox
-    Set checkBoxAnswer = New ModelAnswerCheckbox
-    answerCollection.Add checkBoxAnswer
+    Dim checkboxAnswer As ModelAnswerCheckbox
+    Set checkboxAnswer = New ModelAnswerCheckbox
+    answerCollection.Add checkboxAnswer
     Dim sliderAnswer As ModelAnswerSlider
     Set sliderAnswer = New ModelAnswerSlider
     answerCollection.Add sliderAnswer
@@ -127,7 +123,7 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-'@TestMethod("Answers")
+'@TestMethod("Model")
 Private Sub item_WhenMultipleQuestions_ShouldRetrieve()
     On Error GoTo TestFail
     
@@ -151,7 +147,7 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-'@TestMethod("Answers")
+'@TestMethod("Model")
 Private Sub remove_WhenAddMultipleQuestionsAndRemove_ShouldRemoveItem()
     On Error GoTo TestFail
 

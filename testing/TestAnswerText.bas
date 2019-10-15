@@ -1,4 +1,4 @@
-Attribute VB_Name = "TestAnswerList"
+Attribute VB_Name = "TestAnswerText"
 Option Explicit
 Option Private Module
 
@@ -10,7 +10,7 @@ Option Private Module
 Private Assert As Object
 Private Fakes As Object
 Private answer As ModelAnswerBase
-Private listAnswer As ModelAnswerList
+Private textAnswer As ModelAnswerText
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -26,22 +26,22 @@ End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    Set answer = New ModelAnswerList
-    Set listAnswer = answer
+    Set answer = New ModelAnswerText
+    Set textAnswer = answer
 End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
     Set answer = Nothing
-    Set listAnswer = Nothing
+    Set textAnswer = Nothing
 End Sub
 
 '@TestMethod("Model")
 Private Sub answerList_Value_WhenSetValid_ShouldSet()
     On Error GoTo TestFail
-    listAnswer.value = 3
-   
-    Assert.AreEqual CLng(3), listAnswer.value
+    textAnswer.value = "Test"
+
+    Assert.AreEqual "Test", textAnswer.value
 
     Exit Sub
 TestFail:
@@ -49,32 +49,13 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerList_Value_WhenInvalid_ShouldThrow()
-    Const ExpectedError As Long = CustomError.ModelValidationError
-    On Error GoTo TestFail
-    listAnswer.value = 0
-    
-Assert:
-    Assert.Fail "Expected error was not raised"
-TestExit:
-    Exit Sub
-TestFail:
-    If Err.number = ExpectedError Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
-End Sub
-
-
-'@TestMethod("Model")
 Private Sub answerList_Description_WhenValueSet_ShouldGetDescription()
     On Error GoTo TestFail
-    listAnswer.value = 3
+    textAnswer.value = "Test"
     ' Recast to parent class.
-    Set answer = listAnswer
-   
-    Assert.AreEqual "3", answer.description
+    Set answer = textAnswer
+
+    Assert.AreEqual "Test", answer.description
 
     Exit Sub
 TestFail:
