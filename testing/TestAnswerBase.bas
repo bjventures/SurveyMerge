@@ -50,6 +50,19 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
+'@TestMethod("AnswerBase")
+Private Sub time_WhenNotSet_ShouldReturnMidnight()
+    On Error GoTo TestFail
+    
+    
+    Assert.AreEqual CDate(0), baseAnswer.time
+
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
 '
 'Public Function test_AnswerBase_WhenNoTimeSet_ShouldReturnMidnight() As Boolean
 '
