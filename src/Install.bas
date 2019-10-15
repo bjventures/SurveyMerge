@@ -116,13 +116,12 @@ Private Function getInstructions1() As String
 
     Dim returnString As String
     
-    returnString = "To import the PIEL Survey data files (with '.csv' extension):"
-    returnString = returnString & vbCrLf & "  1. Copy all the data files into the same folder at this Workbook."
-    returnString = returnString & vbCrLf & "  2. Click on the button below."
-    returnString = returnString & vbCrLf & "  3. Check the resulting imported data. Errors (if any) will be printed in the file."
-    returnString = returnString & vbCrLf
-    returnString = returnString & vbCrLf & "Each time that you click on the button, the previous imported data will be overwritten. "
-    returnString = returnString & "This allows you to merge the data as often as you like as new data files are received."
+    returnString = "To import the PIEL Survey data files (with '.csv' extension):" & _
+                   "  1. Copy all the data files into the same folder at this Workbook." & _
+                   "  2. Click on the button below." & _
+                   "  3. Check the resulting imported data. Errors (if any) will be printed in the file." & vbCrLf & vbCrLf & _
+                   "Each time that you click on the button, the previous imported data will be overwritten. " & _
+                   "This allows you to merge the data as often as you like as new data files are received."
     getInstructions1 = returnString
 
 End Function
@@ -131,8 +130,8 @@ Private Function getInstructions2() As String
 
     Dim returnString As String
     
-    returnString = "Note that this is a Beta version of the data merge tool, "
-    returnString = returnString & "let us know of any problems by clicking on the contact link below."
+    returnString = "Note that this is a Beta version of the data merge tool, " & _
+                   "let us know of any problems by clicking on the contact link below."
     getInstructions2 = returnString
 
 End Function
@@ -141,10 +140,13 @@ Private Function getInstructions3() As String
 
     Dim returnString As String
     
-    returnString = "This software is an open source project. Click on the link below for the repository that contains the code and license terms. "
-    returnString = returnString & "It would be great if your team could contribute to the project and improve it for other researchers."
+    returnString = "This software is an open source project. " & _
+                   "Click on the link below for the repository that contains the code and license terms. " & _
+                   "It would be great if your team could contribute to the project and improve it for other researchers."
     getInstructions3 = returnString
 
 End Function
+
+
 
 

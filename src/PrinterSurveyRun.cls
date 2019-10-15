@@ -110,7 +110,7 @@ Public Sub IPrinter_printError(ByVal description As String, ByVal lineNo As Long
 
     Dim ws As Worksheet
     Set ws = ThisWorkbook.Sheets(getWsName(WsSheet.Answers))
-    ws.Cells(lineNo + 2, 1) = "Error In Survey Run: " & description
+    ws.Cells(lineNo + 2, 1).value = "Error In Survey Run: " & description
 
 End Sub
 

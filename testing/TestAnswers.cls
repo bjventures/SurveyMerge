@@ -98,7 +98,6 @@ Public Function test_Answers_WhenAddSliderQuestionType_ShouldAdd() As Boolean
     answer.value = 1.34
 
     answerCollection.Add answer
-    Set answer = answerCollection.item(1)
 
     assertion = 1.34
     test_Answers_WhenAddSliderQuestionType_ShouldAdd = assertion

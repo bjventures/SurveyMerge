@@ -68,7 +68,8 @@ Public Function test_ParserAnswers_WhenHaveListAnswerType_ShouldParse() As Boole
 
     Set answerCollection = parser.parse(getAnswerLines("test-109"))
     Set baseAnswer = answerCollection.item(1)
-    Dim listAnswer As New ModelAnswerList
+    Dim listAnswer As ModelAnswerList
+    
     Set listAnswer = baseAnswer
 
     assertion = listAnswer.value = 8
