@@ -17,7 +17,7 @@ Option Explicit
 ' This function parses and prints the SurveyRuns in a single file.
 ' Note errors in individual SurveyRuns are handled by printing the error, they are not propagated.
 '
-Public Function parse(ByRef filePath As String, ByRef fileName As String, ByRef printer As IPrinter, ByVal startLine As Long) As Long
+Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef printer As IPrinter, ByVal startLine As Long) As Long
 
     On Error GoTo Catch
     
@@ -138,7 +138,7 @@ Catch:
         
 End Sub
 
-Private Function getMetaData(ByRef fileLineArray() As String, ByRef dataName As String, ByRef lineNo As Long) As String
+Private Function getMetaData(ByRef fileLineArray() As String, ByVal dataName As String, ByRef lineNo As Long) As String
 
     Dim dataArray() As String
     dataArray = Split(fileLineArray(lineNo), ",")

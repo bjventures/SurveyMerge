@@ -21,7 +21,7 @@ Private Sub Class_Initialize()
 
 End Sub
 
-Public Function parse(ByRef surveyName As String, ByRef participantId As String, ByRef dataArray As Variant) As ModelSurveyRun
+Public Function parse(ByVal surveyName As String, ByVal participantId As String, ByVal dataArray As Variant) As ModelSurveyRun
     
     Dim parser As ParserAnswers
     

@@ -25,17 +25,18 @@ Private Property Get ITester_className() As String
 End Property
 
 Private Property Get ITester_testList() As Variant
-    ITester_testList = Array( _
-        "test_ParserFile_WhenCorrect_ShouldReturnQuestionCount", _
-        "test_ParserFile_WhenCorrectStartingCountSet_ShouldReturnCount", _
-        "test_ParserFile_WhenCorrect_ShouldCallPrinterForEachSurveyRun", _
-        "test_ParserFile_WhenHasSubjectId_ShouldSet", _
-        "test_ParserFile_WhenHasSurveyName_ShouldSet", _
-        "test_ParserFile_WhenHasIncorrectSurveyNameString_ShouldThrow", _
-        "test_ParserFile_WhenHasIncorrectSubjectIdString_ShouldThrow", _
-        "test_ParserFile_WhenIncorrectFormatSubjectId_ShouldThrow" _
-    )
-   
+'    ITester_testList = Array( _
+'        "test_ParserFile_WhenCorrect_ShouldReturnQuestionCount", _
+'        "test_ParserFile_WhenCorrectStartingCountSet_ShouldReturnCount", _
+'        "test_ParserFile_WhenCorrect_ShouldCallPrinterForEachSurveyRun", _
+'        "test_ParserFile_WhenHasSubjectId_ShouldSet", _
+'        "test_ParserFile_WhenHasSurveyName_ShouldSet", _
+'        "test_ParserFile_WhenHasIncorrectSurveyNameString_ShouldThrow", _
+'        "test_ParserFile_WhenHasIncorrectSubjectIdString_ShouldThrow", _
+'        "test_ParserFile_WhenIncorrectFormatSubjectId_ShouldThrow" _
+'    )
+    ITester_testList = Array("test_ParserFile_WhenHasSubjectId_ShouldSet")
+       
 End Property
 
 Private Function ITester_runTest(ByRef methodName As String) As Boolean
@@ -91,6 +92,7 @@ Public Function test_ParserFile_WhenHasSubjectId_ShouldSet() As Boolean
     runCount = parser.parse(getTestFilePath(), getTestFileName("test-1"), mockPrinter, 0)
 
     assertion = "aa" = mockTestPrinter.surveyRun.participantId
+    
     test_ParserFile_WhenHasSubjectId_ShouldSet = assertion
 
 End Function

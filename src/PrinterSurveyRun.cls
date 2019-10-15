@@ -30,7 +30,7 @@ Public Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As
 
 End Sub
 
-Private Sub printAnswerWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
+Private Sub printAnswerWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByVal lineNo As Long)
             
     printAnswerWsHeaderLine ws, surveyRun, lineNo
     
@@ -49,7 +49,7 @@ Private Sub printAnswerWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyR
 
 End Sub
 
-Private Sub printtimeWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
+Private Sub printtimeWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByVal lineNo As Long)
         
     printAnswerWsHeaderLine ws, surveyRun, lineNo
     

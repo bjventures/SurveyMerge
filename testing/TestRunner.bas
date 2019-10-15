@@ -7,7 +7,7 @@ Option Explicit
 
 Private testObject As ITester
 
-Sub runAllTests()
+Public Sub runAllTests()
     
     'There will be an error if the worksheet "Dashboard" does not exist.
     If Not isProjectInstalled() Then
@@ -41,10 +41,10 @@ Sub runAllTests()
     runTestClass
     Set testObject = New TestParserAnswers
     runTestClass
-    Set testObject = New TestParserFile
-    runTestClass
-    Set testObject = New TestParserSurveyRun
-    runTestClass
+    'Set testObject = New TestParserFile
+    'runTestClass
+    'Set testObject = New TestParserSurveyRun
+    'runTestClass
 
 End Sub
 
@@ -94,13 +94,13 @@ Catch:
     
 End Sub
 
-Function getTestFilePath() As String
+Public Function getTestFilePath() As String
     
     getTestFilePath = getCurrentPath & "testing/test-files/"
 
 End Function
 
-Function getTestFileName(ByRef fileName As String) As String
+Public Function getTestFileName(ByVal fileName As String) As String
     
     getTestFileName = fileName & ".csv"
 

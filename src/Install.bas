@@ -19,7 +19,7 @@ Private Sub installDeveloper()
 
 End Sub
 
-Private Sub doFirstInstall(ByRef sheetArray As Variant)
+Private Sub doFirstInstall(ByVal sheetArray As Variant)
 
     Application.ScreenUpdating = False
     createOrClearWorksheets sheetArray
@@ -146,6 +146,7 @@ Private Function getInstructions3() As String
     getInstructions3 = returnString
 
 End Function
+
 
 
 
