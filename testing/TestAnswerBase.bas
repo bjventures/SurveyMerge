@@ -111,7 +111,15 @@ TestFail:
 End Sub
 
 
-
+'
+'Public Function test_AnswerBase_WhenSetValidTime_ShouldGetOffset() As Boolean
+'
+'    baseAnswer.isoTime = "2019-04-16T15:08:07-1000"
+'    assertion = -1000 = baseAnswer.isoOffset
+'
+'    test_AnswerBase_WhenSetValidTime_ShouldGetOffset = assertion
+'
+'End Function
 '
 'Public Function test_AnswerBase_WhenSetInvalidTime_ShouldThrow() As Boolean
 '
