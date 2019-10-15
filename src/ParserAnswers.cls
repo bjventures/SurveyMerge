@@ -35,7 +35,7 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
     Dim strLength As Long
     Dim baseAnswer As ModelAnswerBase
     Dim listAnswer As ModelAnswerList
-    Dim checkboxAnswer As ModelAnswerCheckbox
+    Dim checkBoxAnswer As ModelAnswerCheckbox
     Dim textAnswer As ModelAnswerText
     Dim sliderAnswer As ModelAnswerSlider
     Dim answerCollection As Answers
@@ -60,11 +60,11 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
             If Left$(inputString, 1) = Chr$(34) And Right$(inputString, 1) = Chr$(34) Then
                 cleanQuotedString = Mid$(inputString, 2, strLength - 2)
                 If isIntegerArray(cleanQuotedString) Then
-                    Set checkboxAnswer = New ModelAnswerCheckbox
-                    Set baseAnswer = checkboxAnswer
+                    Set checkBoxAnswer = New ModelAnswerCheckbox
+                    Set baseAnswer = checkBoxAnswer
                     baseAnswer.isoTime = timeArray(column)
-                    checkboxAnswer.value = convertToIntegerArray(cleanQuotedString)
-                    answerCollection.Add checkboxAnswer
+                    checkBoxAnswer.value = convertToIntegerArray(cleanQuotedString)
+                    answerCollection.Add checkBoxAnswer
                     GoTo NextIteration
                 Else
                     Set textAnswer = New ModelAnswerText

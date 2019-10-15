@@ -111,14 +111,20 @@ End Sub
 Private Sub add_WhenMultipleQuestions_ShouldAdd()
     On Error GoTo TestFail
     
-    Dim answer As ModelAnswerList
-    Set answer = New ModelAnswerList
-
-    answerCollection.Add answer
-    answerCollection.Add answer
-    answerCollection.Add answer
-   
-    Assert.AreEqual CLng(3), answerCollection.count
+    Dim listAnswer As ModelAnswerList
+    Set listAnswer = New ModelAnswerList
+    answerCollection.Add listAnswer
+    Dim checkBoxAnswer As ModelAnswerCheckbox
+    Set checkBoxAnswer = New ModelAnswerCheckbox
+    answerCollection.Add checkBoxAnswer
+    Dim sliderAnswer As ModelAnswerSlider
+    Set sliderAnswer = New ModelAnswerSlider
+    answerCollection.Add sliderAnswer
+    Dim textAnswer As ModelAnswerText
+    Set textAnswer = New ModelAnswerText
+    answerCollection.Add textAnswer
+    
+    Assert.AreEqual CLng(4), answerCollection.count
 
 TestExit:
     Exit Sub
