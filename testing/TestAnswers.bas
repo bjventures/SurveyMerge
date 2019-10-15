@@ -41,13 +41,11 @@ Private Sub add_WhenAddListQuestion_ShouldAdd()
     
     Dim answer As ModelAnswerList
     Set answer = New ModelAnswerList
-
     answerCollection.Add answer
    
     Assert.AreEqual CLng(1), answerCollection.count
     Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerList
 
-TestExit:
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -65,7 +63,6 @@ Private Sub add_WhenAddCheckboxQuestion_ShouldAdd()
     Assert.AreEqual CLng(1), answerCollection.count
     Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerCheckbox
 
-TestExit:
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -83,7 +80,6 @@ Private Sub add_WhenAddTextQuestion_ShouldAdd()
     Assert.AreEqual CLng(1), answerCollection.count
     Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerText
 
-TestExit:
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -101,7 +97,7 @@ Private Sub add_WhenSliderQuestion_ShouldAdd()
     Assert.AreEqual CLng(1), answerCollection.count
     Assert.IsTrue TypeOf answerCollection.item(1) Is ModelAnswerSlider
 
-TestExit:
+
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -126,7 +122,6 @@ Private Sub add_WhenMultipleQuestions_ShouldAdd()
     
     Assert.AreEqual CLng(4), answerCollection.count
 
-TestExit:
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -151,7 +146,6 @@ Private Sub item_WhenMultipleQuestions_ShouldRetrieve()
     Assert.AreEqual CLng(2), answerCollection.count
     Assert.AreEqual CLng(4), retrievedAnswer.value
 
-TestExit:
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -178,7 +172,6 @@ Private Sub remove_WhenAddMultipleQuestionsAndRemove_ShouldRemoveItem()
     Assert.AreEqual CLng(1), answerCollection.count
     Assert.AreEqual CLng(2), retrievedAnswer.value
 
-TestExit:
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description

@@ -7,6 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Option Explicit
+
 '@Folder("SurveyMerge.Tests")
 ''
 '' class module: TestModelAnswerCheckbox
@@ -179,4 +181,5 @@ Attribute VB_Exposed = False
 '
 'End Function
 '
+
 

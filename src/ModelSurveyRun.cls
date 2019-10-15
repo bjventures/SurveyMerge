@@ -62,10 +62,10 @@ Public Property Let endTime(ByVal value As Date)
 End Property
 
 Public Property Get answerCollection() As Answers
-    answerCollection = mAnswerCollection
+    Set answerCollection = mAnswerCollection
 End Property
 
 Public Property Let answerCollection(ByRef value As Answers)
-    mAnswerCollection = value
+    Set mAnswerCollection = value
 End Property
 

@@ -45,6 +45,10 @@ Catch:
 
 End Property
 
+Private Property Get isoTime() As String
+    isoTime = "This is not used."
+End Property
+
 Public Property Get isoOffset() As Long
 
     isoOffset = m_offset

@@ -45,7 +45,7 @@ Private Sub value_WhenSet_ShouldSet()
     
     Assert.AreEqual CLng(2), listAnswer.value
 
-TestExit:
+
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -59,7 +59,7 @@ Private Sub number_WhenSet_ShouldSet()
 
     Assert.AreEqual CLng(2), listAnswer.value
 
-TestExit:
+
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -93,7 +93,7 @@ Private Sub answerListTime_WhenSetValid_ShouldSet()
 
     Assert.AreEqual "2019-04-16 15:08:07", Format(answer.time, "yyyy-mm-dd hh:mm:ss")
 
-TestExit:
+
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -107,7 +107,7 @@ Private Sub answerListTime_WhenSetValid_ShouldGetOffset()
    
     Assert.AreEqual CLng(1000), answer.isoOffset
 
-TestExit:
+
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -161,7 +161,7 @@ Private Sub answerListValue_WhenSetValid_ShouldSet()
    
     Assert.AreEqual CLng(3), listAnswer.value
 
-TestExit:
+
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
@@ -176,7 +176,7 @@ Private Sub answerListValue_WhenSetValid_ShouldGetDescription()
    
     Assert.AreEqual "3", answer.description
 
-TestExit:
+
     Exit Sub
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
