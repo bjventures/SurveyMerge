@@ -7,12 +7,14 @@ Option Private Module
 
 Private Assert As Object
 Private Fakes As Object
+Private baseAnswer As ModelAnswerBase
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'this method runs once per module.
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
+ '   baseAnswer = ModelAnswerBase
 End Sub
 
 '@ModuleCleanup
@@ -25,6 +27,8 @@ End Sub
 '@TestInitialize
 Private Sub TestInitialize()
     'this method runs before every test in the module.
+    Set baseAnswer = New ModelAnswerBase
+    
 End Sub
 
 '@TestCleanup
@@ -36,12 +40,9 @@ End Sub
 Private Sub number_WhenSet_ShouldSet()
     On Error GoTo TestFail
     
-    'Arrange:
-
-    'Act:
-
-    'Assert:
-    Assert.Succeed
+    baseAnswer.number = 2
+    
+    Assert.AreEqual CLng(2), baseAnswer.number
 
 TestExit:
     Exit Sub
@@ -49,14 +50,6 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-'Public Function test_AnswerBase_WhenSetNumber_ShouldSet() As Boolean
-'
-'    baseAnswer.number = 1
-'
-'    assertion = baseAnswer.number = 1
-'    test_AnswerBase_WhenSetNumber_ShouldSet = assertion
-'
-'End Function
 '
 'Public Function test_AnswerBase_WhenNoTimeSet_ShouldReturnMidnight() As Boolean
 '

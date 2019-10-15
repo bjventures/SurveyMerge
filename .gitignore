@@ -1,5 +1,5 @@
 
 *.xls
-#*.xlsm
+*.xlsm
 *.xlsx
 *.csv
