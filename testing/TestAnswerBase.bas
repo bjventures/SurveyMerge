@@ -37,7 +37,7 @@ Private Sub TestCleanup()
 End Sub
 
 '@TestMethod("AnswerBase")
-Private Sub number_WhenSet_ShouldSet()
+Private Sub number_WhenSetValid_ShouldSet()
     On Error GoTo TestFail
     
     baseAnswer.number = 2
@@ -51,9 +51,28 @@ TestFail:
 End Sub
 
 '@TestMethod("AnswerBase")
-Private Sub time_WhenNotSet_ShouldReturnMidnight()
+Private Sub number_WhenInvalid_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
     On Error GoTo TestFail
     
+baseAnswer.number = 0
+
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("AnswerBase")
+Private Sub time_WhenNotSet_ShouldReturnMidnight()
+    On Error GoTo TestFail
     
     Assert.AreEqual CDate(0), baseAnswer.time
 
@@ -63,46 +82,36 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-'
-'Public Function test_AnswerBase_WhenNoTimeSet_ShouldReturnMidnight() As Boolean
-'
-'    assertion = baseAnswer.time = CDate(0)
-'    test_AnswerBase_WhenNoTimeSet_ShouldReturnMidnight = assertion
-'
-'End Function
-'
-'Public Function test_AnswerBase_WhenSetInvalidNumber_ShouldThrow() As Boolean
-'
-'On Error GoTo Catch
-'    baseAnswer.number = 0
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.ModelValidationError
-'    test_AnswerBase_WhenSetInvalidNumber_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-'Public Function test_AnswerBase_WhenSetValidTime_ShouldSet() As Boolean
-'
-'    baseAnswer.isoTime = "2019-04-16T15:08:07+1000"
-'    assertion = "16/04/2019 3:08:07 PM " = baseAnswer.time
-'
-'    test_AnswerBase_WhenSetValidTime_ShouldSet = assertion
-'
-'End Function
-'
-'Public Function test_AnswerBase_WhenSetValidTime_ShouldGetOffset() As Boolean
-'
-'    baseAnswer.isoTime = "2019-04-16T15:08:07-1000"
-'    assertion = -1000 = baseAnswer.isoOffset
-'
-'    test_AnswerBase_WhenSetValidTime_ShouldGetOffset = assertion
-'
-'End Function
+'@TestMethod("AnswerBase")
+Private Sub time_WhenSetValidIsoTime_ShouldSet()
+    On Error GoTo TestFail
+    
+    baseAnswer.isoTime = "2019-04-16T15:08:07+1000"
+   
+   Assert.AreEqual "2019-04-16 15:08:07", Format(baseAnswer.time, "yyyy-mm-dd hh:mm:ss")
+   
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("AnswerBase")
+Private Sub isoOffset_WhenSetValidIsoTime_ShouldSet()
+    On Error GoTo TestFail
+    
+    baseAnswer.isoTime = "2019-04-16T15:08:07+1000"
+   
+   Assert.AreEqual CLng(1000), baseAnswer.isoOffset
+   
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+
+
 '
 'Public Function test_AnswerBase_WhenSetInvalidTime_ShouldThrow() As Boolean
 '
@@ -155,4 +164,5 @@ End Sub
 '    test_AnswerBase_WhenGetDescription_ShouldBeNilLengthString = assertion
 '
 'End Function
+
 '
