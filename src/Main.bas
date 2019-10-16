@@ -10,7 +10,8 @@ Option Explicit
 '
 Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, Optional ByVal showMsg As Boolean = True)
          
-    On Error GoTo Catch
+'TODO remove
+   ' On Error GoTo Catch
       
     Dim sheetArray() As Variant
     Dim success As Long
@@ -32,7 +33,7 @@ Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, 
     
     Application.ScreenUpdating = False
     
-    sheetArray = Array(getWsName(WsSheet.Answers), getWsName(WsSheet.Times))
+    sheetArray = Array(getWsName(WsSheet.answers), getWsName(WsSheet.Times))
     createOrClearWorksheets sheetArray
     
     success = 0

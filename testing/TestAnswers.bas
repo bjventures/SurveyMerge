@@ -7,7 +7,7 @@ Option Private Module
 
 Private Assert As Object
 Private Fakes As Object
-Private answerCollection As Answers
+Private answerCollection As answers
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -23,7 +23,7 @@ End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    Set answerCollection = New Answers
+    Set answerCollection = New answers
 End Sub
 
 '@TestCleanup
@@ -44,7 +44,7 @@ Private Sub add_WhenAddListQuestion_ShouldAdd()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -61,7 +61,7 @@ Private Sub add_WhenAddCheckboxQuestion_ShouldAdd()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -78,7 +78,7 @@ Private Sub add_WhenAddTextQuestion_ShouldAdd()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -96,7 +96,7 @@ Private Sub add_WhenAddSliderQuestion_ShouldAdd()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -120,7 +120,7 @@ Private Sub add_WhenMultipleQuestions_ShouldAdd()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -144,7 +144,7 @@ Private Sub item_WhenMultipleQuestions_ShouldRetrieve()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -170,6 +170,6 @@ Private Sub remove_WhenAddMultipleQuestionsAndRemove_ShouldRemoveItem()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 

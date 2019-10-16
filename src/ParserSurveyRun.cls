@@ -24,15 +24,13 @@ End Sub
 Public Function parse(ByVal surveyName As String, ByVal participantId As String, ByVal dataArray As Variant) As ModelSurveyRun
     
     Dim parser As ParserAnswers
-    
     setSurveyRunMetaData surveyName, participantId, dataArray
     
     Set parser = New ParserAnswers
-    Set singleSurveyRun.answerCollection = parser.parse(dataArray)
+    singleSurveyRun.answerCollection = parser.parse(dataArray)
     If singleSurveyRun.answerCollection.count <> singleSurveyRun.questionCount Then
         Err.Raise CustomError.SurveyRunError
     End If
-
     Set parse = singleSurveyRun
     
 End Function
@@ -50,7 +48,7 @@ Private Sub setSurveyRunMetaData(ByVal surveyName As String, ByVal participantId
     dateString = Split(dataArray(1), ",")(1)
     singleSurveyRun.endTime = DateValue(Mid$(dateString, 1, 10)) + TimeValue(Mid$(dateString, 12, 8))
     
-    ' Note that first 2 elements are not question numbers and need to adjust from index (ie not "- 2")
+    ' The first 2 elements are not question numbers and need to adjust from index (ie not "- 2")
     singleSurveyRun.questionCount = UBound(Split(dataArray(0), ",")) - 1
 
 Finally:

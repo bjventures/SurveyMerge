@@ -5,7 +5,7 @@ Option Private Module
 '@TestModule
 '@Folder("SurveyMerge.Tests.Models")
 
-' Note that this class implements ModelAnswerBase, which is tested separately.
+' This class implements ModelAnswerBase, which is tested separately.
 
 Private Assert As Object
 Private Fakes As Object
@@ -45,7 +45,7 @@ Private Sub answerList_Value_WhenSetValid_ShouldSet()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -55,7 +55,7 @@ Private Sub answerList_Value_WhenInvalid_ShouldThrow()
     listAnswer.value = 0
     
 Assert:
-    Assert.Fail "Expected error was not raised"
+    Assert.fail "Expected error was not raised"
 TestExit:
     Exit Sub
 TestFail:
@@ -65,7 +65,6 @@ TestFail:
         Resume Assert
     End If
 End Sub
-
 
 '@TestMethod("Model")
 Private Sub answerList_Description_WhenValueSet_ShouldGetDescription()
@@ -78,5 +77,6 @@ Private Sub answerList_Description_WhenValueSet_ShouldGetDescription()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
+

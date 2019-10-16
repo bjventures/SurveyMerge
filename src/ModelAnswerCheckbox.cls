@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '@Folder("SurveyMerge.Model")
 '
 ' class module: ModelAnswerCheckbox
-' Note that many methods are delegated to the AnswerBase class.
+' Many methods are delegated to the AnswerBase class.
 '
 Option Explicit
 Implements ModelAnswerBase
@@ -26,7 +26,7 @@ Private Sub Class_Initialize()
 End Sub
 
 Public Property Let value(ByVal answerValue As Variant)
-    ' Note that the value argument must be an array of integers.
+    ' The value argument must be an array of integers.
     On Error GoTo Catch
     
     Dim bound As Long

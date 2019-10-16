@@ -15,7 +15,7 @@ Option Explicit
 
 '
 ' This function parses and prints the SurveyRuns in a single file.
-' Note errors in individual SurveyRuns are handled by printing the error, they are not propagated.
+' Errors in individual SurveyRuns are handled by printing the error, they are not propagated.
 '
 Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef printer As IPrinter, ByVal startLine As Long) As Long
 
@@ -117,7 +117,7 @@ Private Sub parseAndPrintSurveyRun(ByRef surveyName As String, ByRef subjectId A
     On Error GoTo Catch
     Set surveyRun = parser.parse(surveyName, subjectId, runLines)
     printer.printData surveyRun, lineNo
-    
+
 Finally:
     Exit Sub
 Catch:

@@ -10,7 +10,7 @@ Attribute VB_Exposed = False
 '@Folder("SurveyMerge.Model")
 '
 ' class module: ModelAnswerText
-' Note that many methods are delegated to the AnswerBase class.
+' Many methods are delegated to the AnswerBase class.
 '
 Option Explicit
 Implements ModelAnswerBase

@@ -13,13 +13,12 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-
 Private mQuestionCount As Long
 Private mSurveyName As String
 Private mParticipantId As String
 Private mStartTime As Date
 Private mEndTime As Date
-Private mAnswerCollection As Answers
+Private mAnswerCollection As answers
 
 Public Property Get questionCount() As Long
     questionCount = mQuestionCount
@@ -61,11 +60,11 @@ Public Property Let endTime(ByVal value As Date)
     mEndTime = value
 End Property
 
-Public Property Get answerCollection() As Answers
+Public Property Get answerCollection() As answers
     Set answerCollection = mAnswerCollection
 End Property
 
-Public Property Let answerCollection(ByRef value As Answers)
+Public Property Let answerCollection(ByRef value As answers)
     Set mAnswerCollection = value
 End Property
 

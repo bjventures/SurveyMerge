@@ -12,21 +12,18 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Public Function parse(ByVal lines As Variant) As Answers
+Public Function parse(ByVal lines As Variant) As answers
     ' lines is an array of the 3 data lines from the file.
     Dim cleanArray As Variant
-    
     cleanArray = getCleanDataArray(Split(lines(1), ","))
-
     Set parse = getAnswerCollection(cleanArray, Split(lines(2), ","))
-
 End Function
 
-Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArray As Variant) As Answers
+Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArray As Variant) As answers
     ' This function returns an AnswerCollection.
-    ' Note that the answers must be valid, there is no checking for validity elsewhere.
+    ' The answers must be valid, there is no checking for validity elsewhere.
     ' It throws an error if an unknown question type is encountered.
-    ' Note that the question answers are not set, this is for future random order and random questions
+    ' The question answers are not set, this is for future random order and random questions
 
     Dim column As Long
     Dim item As Variant
@@ -38,9 +35,9 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
     Dim checkboxAnswer As ModelAnswerCheckbox
     Dim textAnswer As ModelAnswerText
     Dim sliderAnswer As ModelAnswerSlider
-    Dim answerCollection As Answers
+    Dim answerCollection As answers
     
-    Set answerCollection = New Answers
+    Set answerCollection = New answers
     ' The starting column for the timestamp as an index.
     column = FileCol.answerData - 1
     For Each item In answerArray

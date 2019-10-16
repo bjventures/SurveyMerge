@@ -6,7 +6,7 @@ Private Sub installEndUser()
 
     Dim sheetArray() As Variant
     If Not sheetExists(getWsName(WsSheet.Dashboard)) Then
-        sheetArray = Array(getWsName(WsSheet.Dashboard), getWsName(WsSheet.Answers), getWsName(WsSheet.Times))
+        sheetArray = Array(getWsName(WsSheet.Dashboard), getWsName(WsSheet.answers), getWsName(WsSheet.Times))
         doFirstInstall (sheetArray)
     End If
 

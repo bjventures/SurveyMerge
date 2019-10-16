@@ -40,7 +40,7 @@ Private Sub answerBase_Number_WhenSetValid_ShouldSet()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -50,7 +50,7 @@ Private Sub answerBase_Number_WhenInvalid_ShouldThrow()
     baseAnswer.number = 0
 
 Assert:
-    Assert.Fail "Expected error was not raised"
+    Assert.fail "Expected error was not raised"
 TestExit:
     Exit Sub
 TestFail:
@@ -68,7 +68,7 @@ Private Sub answerBase_Time_WhenIsoTimeNotSet_ShouldReturnMidnight()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -80,7 +80,7 @@ Private Sub answerBase_Time_WhenIsoTimeSet_ShouldSet()
    
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -92,7 +92,7 @@ Private Sub answerBase_IsoOffset_WhenIsoTimeSet_ShouldGetOffset()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Model")
@@ -102,7 +102,7 @@ Private Sub answerBase_IsoTime_WhenSetInvalid_ShouldThrow()
     baseAnswer.isoTime = "20aa-04-16T15:08:07+1000"
 
 Assert:
-    Assert.Fail "Expected error was not raised"
+    Assert.fail "Expected error was not raised"
 TestExit:
     Exit Sub
 TestFail:
@@ -120,7 +120,7 @@ Private Sub answerBase_IsoTime_WhenSetInvalidTimeOffset_ShouldThrow()
     baseAnswer.isoTime = "2019-04-16T15:08:07+1a00"
 
 Assert:
-    Assert.Fail "Expected error was not raised"
+    Assert.fail "Expected error was not raised"
 TestExit:
     Exit Sub
 TestFail:
@@ -139,5 +139,6 @@ Private Sub answerBase_Description_WhenGet_ShouldBeNilLength()
 
     Exit Sub
 TestFail:
-    Assert.Fail "Test raised an error: #" & Err.number & " - " & Err.description
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
+
