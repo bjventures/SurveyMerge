@@ -25,6 +25,7 @@ Public Property Get questionCount() As Long
 End Property
 
 Public Property Let questionCount(ByVal value As Long)
+    If value < 1 Then Err.Raise CustomError.ModelValidationError
     mQuestionCount = value
 End Property
 

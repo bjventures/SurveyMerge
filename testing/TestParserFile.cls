@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-'@Folder("SurveyMerge.Tests")
+'@Folder("SurveyMerge.Tests.Parsers")
 ''
 '' class module: TestParserFile
 ''
