@@ -4,7 +4,7 @@ Option Private Module
 'TODO: Need to do these tests
 
 '@TestModule
-'@Folder("SurveyMerge.Tests.Integrated Tests")
+'@Folder("Tests.Integrated Tests")
 
 Private Assert As Object
 Private Fakes As Object
@@ -25,7 +25,7 @@ End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    clearSpreadsheet getWsName(WsSheet.answers)
+    clearSpreadsheet getWsName(WsSheet.Answers)
 End Sub
 
 '@TestCleanup

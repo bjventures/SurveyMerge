@@ -11,30 +11,30 @@ Attribute VB_Exposed = False
 Option Explicit
 
 ' Custom collection of type AnswerBase
-Private answers As New Collection
+Private Answers As New Collection
 
 Public Sub Add(ByRef answer As ModelAnswerBase)
 
-    answers.Add answer
+    Answers.Add answer
     
 End Sub
 
 Public Property Get count() As Long
 
-    count = answers.count
+    count = Answers.count
 
 End Property
 
 Public Property Get item(ByRef IndexOrName As Variant) As ModelAnswerBase
 
     ' The question number starts at 1.
-    Set item = answers(IndexOrName)
+    Set item = Answers(IndexOrName)
 
 End Property
 
 Public Sub Remove(ByRef IndexOrName As Variant)
   
-    answers.Remove IndexOrName
+    Answers.Remove IndexOrName
 
 End Sub
 

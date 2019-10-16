@@ -3,11 +3,11 @@ Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("SurveyMerge.Tests.Models")
+'@Folder("Tests.Models")
 
 Private Assert As Object
 Private Fakes As Object
-Private answerCollection As answers
+Private answerCollection As Answers
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -23,7 +23,7 @@ End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    Set answerCollection = New answers
+    Set answerCollection = New Answers
 End Sub
 
 '@TestCleanup

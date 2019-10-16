@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("SurveyMerge.Tests.Models")
+'@Folder("Tests.Models")
 
 Private Assert As Object
 Private Fakes As Object
@@ -116,14 +116,14 @@ End Sub
 '@TestMethod("Model")
 Private Sub surveyRun_AnswerCollection_WhenSetValid_ShouldSet()
     On Error GoTo TestFail
-    Dim answers As answers
-    Set answers = New answers
+    Dim Answers As Answers
+    Set Answers = New Answers
     Dim listAnswer As ModelAnswerList
     Set listAnswer = New ModelAnswerList
-    answers.Add listAnswer
-    Assert.AreEqual CLng(1), answers.count
+    Answers.Add listAnswer
+    Assert.AreEqual CLng(1), Answers.count
     
-    surveyRun.answerCollection = answers
+    surveyRun.answerCollection = Answers
      
     Assert.AreEqual CLng(1), surveyRun.answerCollection.count
     

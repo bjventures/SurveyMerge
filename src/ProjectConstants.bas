@@ -32,7 +32,7 @@ End Enum
 ' VBA does not have string Enumerations.
 Enum WsSheet
     Dashboard = 1
-    answers = 2
+    Answers = 2
     Times = 3
 End Enum
 
@@ -40,7 +40,7 @@ Public Function getWsName(ByRef id As WsSheet) As String
     Select Case id
     Case WsSheet.Dashboard
         getWsName = "Dashboard"
-    Case WsSheet.answers
+    Case WsSheet.Answers
         getWsName = "Answers"
     Case WsSheet.Times
         getWsName = "Answer Time"

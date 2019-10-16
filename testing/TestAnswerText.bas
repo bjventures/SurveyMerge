@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("SurveyMerge.Tests.Models")
+'@Folder("Tests.Models")
 
 ' This class implements ModelAnswerBase, which is tested separately.
 

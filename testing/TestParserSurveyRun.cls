@@ -8,8 +8,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
+' TODO: Create tests
 
-'@Folder("SurveyMerge.Tests.Parsers")
+'@Folder("Tests.Parsers")
 
 ''
 '' class module: TestParseSurveyRun

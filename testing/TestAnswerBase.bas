@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("SurveyMerge.Tests.Models")
+'@Folder("Tests.Models")
 
 Private Assert As Object
 Private Fakes As Object

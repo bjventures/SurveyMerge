@@ -18,7 +18,7 @@ Private mSurveyName As String
 Private mParticipantId As String
 Private mStartTime As Date
 Private mEndTime As Date
-Private mAnswerCollection As answers
+Private mAnswerCollection As Answers
 
 Public Property Get questionCount() As Long
     questionCount = mQuestionCount
@@ -61,11 +61,11 @@ Public Property Let endTime(ByVal value As Date)
     mEndTime = value
 End Property
 
-Public Property Get answerCollection() As answers
+Public Property Get answerCollection() As Answers
     Set answerCollection = mAnswerCollection
 End Property
 
-Public Property Let answerCollection(ByRef value As answers)
+Public Property Let answerCollection(ByRef value As Answers)
     Set mAnswerCollection = value
 End Property
 
