@@ -80,7 +80,6 @@ Private Sub parserAnswers_Parse_WhenLinesHaveTextAnswer_ShouldReturnCorrectAnswe
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
     Set returnedAnswers = answerParser.parse(lineArray)
     
-Debug.Print (lineAnswers)
     Assert.AreEqual CLng(1), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerText
 
@@ -98,7 +97,6 @@ Private Sub parserAnswers_Parse_WhenLinesHaveSliderAnswer_ShouldReturnCorrectAns
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
     Set returnedAnswers = answerParser.parse(lineArray)
     
-Debug.Print (lineAnswers)
     Assert.AreEqual CLng(1), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerSlider
 
@@ -106,19 +104,51 @@ Debug.Print (lineAnswers)
 TestFail:
     Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
-''@TestMethod("Parsers")
-'Private Sub parserAnsers_Value_WhenInvalid_ShouldThrow()
-'    Const ExpectedError As Long = CustomError.ModelValidationError
-'    On Error GoTo TestFail
-'
-'Assert:
-'    Assert.fail "Expected error was not raised"
-'TestExit:
-'    Exit Sub
-'TestFail:
-'    If Err.number = ExpectedError Then
-'        Resume TestExit
-'    Else
-'        Resume Assert
-'    End If
-'End Sub
+
+'@TestMethod("Parsers")
+Private Sub parserAnswers_Parse_WhenLinesHaveInvalidNonNumericAnswer_ShouldThrow()
+    Const ExpectedError As Long = CustomError.InvalidQuestionType
+    On Error GoTo TestFail
+    lineHeader = "Start Time,End Time,1"
+    ' Invalid answer: {a1}
+    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100,a1"
+    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+Assert:
+    Assert.fail "Expected error was not raised"
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("Parsers")
+Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerMissingQuote_ShouldThrow()
+    Const ExpectedError As Long = CustomError.InvalidQuestionType
+    On Error GoTo TestFail
+    lineHeader = "Start Time,End Time,1"
+    ' Invalid answer" {"Test}
+    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr(34) & "Test"
+    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+Assert:
+    Assert.fail "Expected error was not raised"
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
