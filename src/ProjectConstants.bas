@@ -6,6 +6,8 @@ Attribute VB_Name = "ProjectConstants"
 Option Explicit
 
 Public Const ProjectName As String = "SurveyMerge"
+Public Const SrcFolder As String = "src"
+Public Const testFolder As String = "tests"
 
 Enum CustomError
     IncorrectDataFormat = 515

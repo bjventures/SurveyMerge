@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '@Folder("Tests.Helpers")
 Option Explicit
-Private Const testFolder = "testing/test-files/"
+Private Const testFileFolder = testFolder & "/test-files/"
 Private lines As Variant
 
 Public Sub loadSurveyRunFile(fileNameStub As String)
@@ -20,7 +20,7 @@ Public Sub loadSurveyRunFile(fileNameStub As String)
 
     On Error GoTo Catch
 
-    fileName = getCurrentPath & testFolder & fileNameStub & ".csv"
+    fileName = getCurrentPath & testFileFolder & fileNameStub & ".csv"
     inputFile = FreeFile
     Open fileName For Input As #inputFile
     fileString = Input(LOF(inputFile), inputFile)
@@ -39,7 +39,7 @@ Catch:
     If Err.number = 53 Then
         msg = "Unable to read file '" & fileNameStub & "'."
     Else
-        msg = "Error no: " & Err.number & " in 'getAnswerLines'." & vbNewLine & Err.description
+        msg = "Error no: " & Err.number & " in 'FileAccessor.loadSurveyRunFile'." & vbNewLine & Err.description
     End If
     MsgBox msg, vbOKOnly, ProjectName
     Close inputFile

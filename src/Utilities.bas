@@ -16,7 +16,7 @@ Private Sub exportVisualBasicCode()
     Dim VBComponent As Object
     Dim count As Long
     Dim path As String
-    Dim srcDirectory As String
+    Dim SrcDirectory As String
     Dim testingDirectory As String
     Dim extension As String
     
@@ -27,11 +27,11 @@ Private Sub exportVisualBasicCode()
         
     On Error GoTo Catch
     count = 0
-    srcDirectory = getCurrentPath & "src"
-    testingDirectory = getCurrentPath & "testing"
+    SrcDirectory = getCurrentPath & SrcFolder
+    testingDirectory = getCurrentPath & testFolder
         
-    If Not directoryExists(srcDirectory) Then
-        MkDir srcDirectory
+    If Not directoryExists(SrcDirectory) Then
+        MkDir SrcDirectory
     End If
     If Not directoryExists(testingDirectory) Then
         MkDir testingDirectory
@@ -57,7 +57,7 @@ Private Sub exportVisualBasicCode()
         
         Select Case InStr(VBComponent.name, "Test")
         Case 0
-            path = srcDirectory & "/" & VBComponent.name & extension
+            path = SrcDirectory & "/" & VBComponent.name & extension
         Case Else
             path = testingDirectory & "/" & VBComponent.name & extension
         End Select
