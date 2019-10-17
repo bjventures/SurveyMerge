@@ -58,7 +58,7 @@ End Sub
 Private Sub parserAnswers_Parse_WhenLinesHaveCheckboxAnswer_ShouldReturnCorrectAnswer()
     On Error GoTo TestFail
     lineHeader = "Start Time,End Time,1"
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr(34) & "2,4" & Chr(34)
+    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr$(34) & "2,4" & Chr$(34)
     lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
     Set returnedAnswers = answerParser.parse(lineArray)
@@ -75,7 +75,7 @@ End Sub
 Private Sub parserAnswers_Parse_WhenLinesHaveTextAnswer_ShouldReturnCorrectAnswer()
     On Error GoTo TestFail
     lineHeader = "Start Time,End Time,1"
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr(34) & "Text answer" & Chr(34)
+    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr$(34) & "Text answer" & Chr$(34)
     lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
     Set returnedAnswers = answerParser.parse(lineArray)
@@ -135,7 +135,7 @@ Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerMissingQuote_ShouldThr
     On Error GoTo TestFail
     lineHeader = "Start Time,End Time,1"
     ' Invalid answer" {"Test}
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr(34) & "Test"
+    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr$(34) & "Test"
     lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
     
@@ -152,3 +152,28 @@ TestFail:
         Resume Assert
     End If
 End Sub
+
+'@TestMethod("Parsers")
+Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerShort_ShouldThrow()
+    Const ExpectedError As Long = CustomError.InvalidQuestionType
+    On Error GoTo TestFail
+    lineHeader = "Start Time,End Time,1"
+    ' Invalid answer" {a}
+    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100,a"
+    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+Assert:
+    Assert.fail "Expected error was not raised"
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+

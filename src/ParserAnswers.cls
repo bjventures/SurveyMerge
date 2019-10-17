@@ -12,6 +12,9 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
+Private answerCollection As Answers
+Private baseAnswer As ModelAnswerBase
+
 Public Function parse(ByVal lines As Variant) As Answers
     ' lines is an array of the 3 data lines from the file.
     Dim cleanArray As Variant
@@ -23,19 +26,13 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
     ' This function returns an AnswerCollection.
     ' The answers must be valid, there is no checking for validity elsewhere.
     ' It throws an error if an unknown question type is encountered.
-    ' The question answers are not set, this is for future random order and random questions
+    ' TODO: The question numbers are not set, this is for future random order and random questions
 
     Dim column As Long
     Dim item As Variant
     Dim inputString As String
     Dim cleanQuotedString As String
     Dim strLength As Long
-    Dim baseAnswer As ModelAnswerBase
-    Dim listAnswer As ModelAnswerList
-    Dim checkboxAnswer As ModelAnswerCheckbox
-    Dim textAnswer As ModelAnswerText
-    Dim sliderAnswer As ModelAnswerSlider
-    Dim answerCollection As Answers
     
     Set answerCollection = New Answers
     ' The starting column for the timestamp as an index.
@@ -47,52 +44,29 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
         ' Check if it is a "null" answer
         If strLength = 0 Then
             Set baseAnswer = New ModelAnswerBase
-            'baseAnswer.isoTime = timeArray(column)
             answerCollection.Add baseAnswer
             GoTo NextIteration
         End If
         
         ' Check if is text or checkbox answer.
-        If strLength >= 2 Then
-            If Left$(inputString, 1) = Chr$(34) And Right$(inputString, 1) = Chr$(34) Then
-                cleanQuotedString = Mid$(inputString, 2, strLength - 2)
-                If isIntegerArray(cleanQuotedString) Then
-                    Set checkboxAnswer = New ModelAnswerCheckbox
-                    Set baseAnswer = checkboxAnswer
-                    baseAnswer.isoTime = timeArray(column)
-                    checkboxAnswer.value = convertToIntegerArray(cleanQuotedString)
-                    answerCollection.Add checkboxAnswer
-                    GoTo NextIteration
-                Else
-                    Set textAnswer = New ModelAnswerText
-                    Set baseAnswer = textAnswer
-                    baseAnswer.isoTime = timeArray(column)
-                    textAnswer.value = cleanQuotedString
-                    answerCollection.Add textAnswer
-                    GoTo NextIteration
-                End If
-                
-                GoTo NextIteration
+        If isDoubleQuoted(inputString) Then
+            cleanQuotedString = Mid$(inputString, 2, strLength - 2)
+            If isIntegerArray(cleanQuotedString) Then
+                addAnswer "checkbox", cleanQuotedString, timeArray(column)
+            Else
+                addAnswer "text", cleanQuotedString, timeArray(column)
             End If
+            GoTo NextIteration
         End If
         
-        '        ' Check if is list or float answer
+        ' Check if is list or slider answer
         If IsNumeric(inputString) Then
             If CStr(CInt(item)) = item Then
-                Set listAnswer = New ModelAnswerList
-                Set baseAnswer = listAnswer
-                baseAnswer.isoTime = timeArray(column)
-                listAnswer.value = Int(inputString)
-                answerCollection.Add listAnswer
-                GoTo NextIteration
+                addAnswer "list", inputString, timeArray(column)
             Else
-                Set sliderAnswer = New ModelAnswerSlider
-                Set baseAnswer = sliderAnswer
-                baseAnswer.isoTime = timeArray(column)
-                sliderAnswer.value = CSng(inputString)
-                answerCollection.Add sliderAnswer
-                GoTo NextIteration
+                addAnswer "slider", inputString, timeArray(column)
             End If
+            GoTo NextIteration
         End If
         ' If get here, it is an error.
         Err.Raise CustomError.InvalidQuestionType
@@ -104,7 +78,44 @@ NextIteration:
 
 End Function
 
-Private Function isIntegerArray(ByRef inputString As String) As Boolean
+Private Function isDoubleQuoted(ByVal inputString As String) As Boolean
+    Dim result As Boolean
+    result = False
+    If Len(inputString) >= 2 And Left$(inputString, 1) = Chr$(34) And Right$(inputString, 1) = Chr$(34) Then result = True
+    isDoubleQuoted = result
+End Function
+
+Private Sub addAnswer(ByVal questionType As String, ByVal valueString As String, ByVal timeString As Variant)
+    Select Case questionType
+    Case Is = "checkbox"
+        Dim checkboxAnswer As ModelAnswerCheckbox
+        Set checkboxAnswer = New ModelAnswerCheckbox
+        checkboxAnswer.value = convertToIntegerArray(valueString)
+        Set baseAnswer = checkboxAnswer
+    Case Is = "list"
+        Dim listAnswer As ModelAnswerList
+        Set listAnswer = New ModelAnswerList
+        listAnswer.value = Int(valueString)
+        Set baseAnswer = listAnswer
+    Case Is = "text"
+        Dim textAnswer As ModelAnswerText
+        Set textAnswer = New ModelAnswerText
+        textAnswer.value = valueString
+        Set baseAnswer = textAnswer
+    Case Is = "slider"
+        Dim sliderAnswer As ModelAnswerSlider
+        Set sliderAnswer = New ModelAnswerSlider
+        sliderAnswer.value = CSng(valueString)
+        Set baseAnswer = sliderAnswer
+    Case Else
+        Err.Raise CustomError.InvalidQuestionType
+    End Select
+    
+    baseAnswer.isoTime = timeString
+    answerCollection.Add baseAnswer
+End Sub
+
+Private Function isIntegerArray(ByVal inputString As String) As Boolean
      
     If Len(inputString) < 1 Then
         isIntegerArray = False
@@ -145,7 +156,7 @@ Private Function convertToIntegerArray(ByVal inputString As String) As Variant
 
 End Function
 
-Private Function isInteger(ByRef item As String) As Boolean
+Private Function isInteger(ByVal item As String) As Boolean
 
     Dim result As Boolean
     result = False
@@ -161,7 +172,7 @@ End Function
 
 ' The purpose of this function is to combine the aray items from a checkbox question into a single item.
 ' The result may be a shorter array. The size should match the number of questions.
-Private Function getCleanDataArray(ByRef dataArray As Variant) As Variant
+Private Function getCleanDataArray(ByVal dataArray As Variant) As Variant
 
     Dim newDataArray As Variant
     Dim newCounter As Long

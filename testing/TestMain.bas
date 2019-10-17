@@ -8,8 +8,8 @@ Option Private Module
 
 Private Assert As Object
 Private Fakes As Object
-    Private wsAnswers As Worksheet
-    Private wstime As Worksheet
+Private wsAnswers As Worksheet
+Private wstime As Worksheet
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -32,7 +32,7 @@ End Sub
 Private Sub TestCleanup()
 End Sub
 
-Private Sub clearSpreadsheet(name As String)
+Private Sub clearSpreadsheet(ByVal name As String)
     On Error GoTo SetupFail
     ThisWorkbook.Sheets(name).Cells.ClearContents
     
@@ -51,8 +51,6 @@ Private Sub answerList_Value_WhenTest_Should()
 TestFail:
     Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
-
-
 
 '
 'Public Function test_WhenMultipleFiles_ShouldMergeAllSurveyRuns() As Boolean

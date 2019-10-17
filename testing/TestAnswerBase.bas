@@ -76,7 +76,7 @@ Private Sub answerBase_Time_WhenIsoTimeSet_ShouldSet()
     On Error GoTo TestFail
     baseAnswer.isoTime = "2019-04-16T15:08:07+1000"
    
-    Assert.AreEqual "2019-04-16 15:08:07", Format(baseAnswer.time, "yyyy-mm-dd hh:mm:ss")
+    Assert.AreEqual "2019-04-16 15:08:07", Format$(baseAnswer.time, "yyyy-mm-dd hh:mm:ss")
    
     Exit Sub
 TestFail:

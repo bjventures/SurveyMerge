@@ -46,7 +46,7 @@ Public Property Get surveyRun() As ModelSurveyRun
 End Property
 
 Public Property Set surveyRun(ByRef value As ModelSurveyRun)
-    m_SurveyRun = value
+    Set m_SurveyRun = value
 
 End Property
 
