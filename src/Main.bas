@@ -9,8 +9,6 @@ Option Explicit
 ' The arguments for this Sub are to enable testing.
 '
 Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, Optional ByVal showMsg As Boolean = True)
-         
-    On Error GoTo Catch
       
     Dim sheetArray() As Variant
     Dim success As Long
@@ -20,6 +18,8 @@ Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, 
     Dim parser As ParserFile
     Dim printer As PrinterSurveyRun
     Dim lineCounter As Long
+        
+    On Error GoTo Catch
         
     If currentPath = vbNullString Then currentPath = getCurrentPath
     fileArray = getFileList(currentPath)

@@ -22,12 +22,14 @@ Public Function parse(ByVal lines As Variant) As Answers
     Set parse = getAnswerCollection(cleanArray, Split(lines(2), ","))
 End Function
 
+' This function returns an AnswerCollection.
+' The answers must be valid, there is no checking for validity elsewhere.
+' It throws an error if an unknown question type is encountered.
+' TODO: The question numbers are not set, this is for future random order and random questions
 Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArray As Variant) As Answers
-    ' This function returns an AnswerCollection.
-    ' The answers must be valid, there is no checking for validity elsewhere.
-    ' It throws an error if an unknown question type is encountered.
-    ' TODO: The question numbers are not set, this is for future random order and random questions
-
+    If LBound(answerArray) <> LBound(timeArray) Then Err.Raise CustomError.InvalidQuestionType
+    ' The timeArray has 2 extra items for the start and finish times.
+    If UBound(answerArray) <> (UBound(timeArray) - 2) Then Err.Raise CustomError.IncorrectDataFormat, "ParserAnswers.getAnswerCollection", "The number of questions and times does not match."
     Dim column As Long
     Dim item As Variant
     Dim inputString As String
@@ -69,7 +71,7 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
             GoTo NextIteration
         End If
         ' If get here, it is an error.
-        Err.Raise CustomError.InvalidQuestionType
+        Err.Raise CustomError.InvalidQuestionType, "ParserAnswers.getAnswerCollection", "The answer text '" & inputString & "' is not a valid answer type."
 NextIteration:
         column = column + 1
     Next

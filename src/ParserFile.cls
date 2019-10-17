@@ -75,11 +75,7 @@ Private Function getUtfFile(ByVal filePath As String, ByVal fileName As String) 
 
 End Function
 
-'
-' This function is temporarily needed as older data files may have line breaks in the middle of text questions.
 ' The middle lines in the survey run are combined so each SurveyRun will have 3 lines.
-' TODO: Since May 2019, line breaks are removed from the PIEL App data file. In late 2020 can remove this.
-'
 Private Function cleanFileText(ByRef fileText As String) As String
     Dim cleanText As String
     Dim questionArray() As String
@@ -142,7 +138,7 @@ Private Function getMetaData(ByRef fileLineArray() As String, ByVal dataName As 
     dataArray = Split(fileLineArray(lineNo), ",")
     
     If validateMetaData(dataName, dataArray) = False Then
-        Err.Raise CustomError.IncorrectDataFormat, "ProjectName.getMetaData", "The value '" & dataName & "' was not found on line " & lineNo & "."
+        Err.Raise CustomError.IncorrectDataFormat, "ParserFile.getMetaData", "The value '" & dataName & "' was not found on line " & lineNo & "."
     End If
     getMetaData = Mid$(dataArray(FileCol.metadata - 1), 2, Len(dataArray(1)) - 2)
  

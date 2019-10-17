@@ -10,21 +10,27 @@ Private Fakes As Object
 Private answerParser As ParserAnswers
 Private lineHeader As String
 Private lineAnswers As String
-Private lineArray() As Variant
 Private lineTimes As String
+Private lineArray() As Variant
 Private returnedAnswers As Answers
+Private accessor As FileAccessor
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
     Set answerParser = New ParserAnswers
+    Set accessor = New FileAccessor
+    accessor.loadSurveyRunFile "answer-lines"
 End Sub
 
 '@ModuleCleanup
 Private Sub ModuleCleanup()
     Set Assert = Nothing
     Set Fakes = Nothing
+    Set answerParser = Nothing
+    Set accessor = Nothing
+    Set returnedAnswers = Nothing
 End Sub
 
 '@TestInitialize
@@ -33,20 +39,19 @@ End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
-    Set returnedAnswers = Nothing
 End Sub
 
 '@TestMethod("Parsers")
-Private Sub parserAnswers_Parse_WhenLinesHaveListAnswers_ShouldReturnCorrectAnswers()
+Private Sub parserAnswers_Parse_WhenValidListAnswers_ShouldReturnCorrectAnswers()
     On Error GoTo TestFail
-    lineHeader = "Start Time,End Time,1,2,3,4,5,6"
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100,1,,,2,1,1"
-    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100,2019-10-11T08:58:24+1100,2019-10-11T08:58:25+1100"
+    lineHeader = accessor.getFileRunLines(1)(0)
+    lineAnswers = accessor.getFileRunLines(1)(1)
+    lineTimes = accessor.getFileRunLines(1)(2)
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
 
     Set returnedAnswers = answerParser.parse(lineArray)
-    
-    Assert.AreEqual CLng(6), returnedAnswers.count
+
+    Assert.AreEqual CLng(1), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerList
 
     Exit Sub
@@ -55,15 +60,16 @@ TestFail:
 End Sub
 
 '@TestMethod("Parsers")
-Private Sub parserAnswers_Parse_WhenLinesHaveCheckboxAnswer_ShouldReturnCorrectAnswer()
+Private Sub parserAnswers_Parse_WhenValidCheckboxAnswers_ShouldReturnCorrectAnswer()
     On Error GoTo TestFail
-    lineHeader = "Start Time,End Time,1"
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr$(34) & "2,4" & Chr$(34)
-    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
+    lineHeader = accessor.getFileRunLines(2)(0)
+    lineAnswers = accessor.getFileRunLines(2)(1)
+    lineTimes = accessor.getFileRunLines(2)(2)
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
+
     Set returnedAnswers = answerParser.parse(lineArray)
-    
-    Assert.AreEqual CLng(1), returnedAnswers.count
+
+    Assert.AreEqual CLng(3), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerCheckbox
 
     Exit Sub
@@ -72,15 +78,16 @@ TestFail:
 End Sub
 
 '@TestMethod("Parsers")
-Private Sub parserAnswers_Parse_WhenLinesHaveTextAnswer_ShouldReturnCorrectAnswer()
+Private Sub parserAnswers_Parse_WhenValidTextAnswer_ShouldReturnCorrectAnswer()
     On Error GoTo TestFail
-    lineHeader = "Start Time,End Time,1"
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr$(34) & "Text answer" & Chr$(34)
-    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
+    lineHeader = accessor.getFileRunLines(3)(0)
+    lineAnswers = accessor.getFileRunLines(3)(1)
+    lineTimes = accessor.getFileRunLines(3)(2)
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
-    Set returnedAnswers = answerParser.parse(lineArray)
     
-    Assert.AreEqual CLng(1), returnedAnswers.count
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+    Assert.AreEqual CLng(5), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerText
 
     Exit Sub
@@ -89,15 +96,15 @@ TestFail:
 End Sub
 
 '@TestMethod("Parsers")
-Private Sub parserAnswers_Parse_WhenLinesHaveSliderAnswer_ShouldReturnCorrectAnswer()
+Private Sub parserAnswers_Parse_WhenValidSliderAnswer_ShouldReturnCorrectAnswer()
     On Error GoTo TestFail
-    lineHeader = "Start Time,End Time,1"
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100,0.25"
-    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
+    lineHeader = accessor.getFileRunLines(4)(0)
+    lineAnswers = accessor.getFileRunLines(4)(1)
+    lineTimes = accessor.getFileRunLines(4)(2)
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
     Set returnedAnswers = answerParser.parse(lineArray)
-    
-    Assert.AreEqual CLng(1), returnedAnswers.count
+
+    Assert.AreEqual CLng(3), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerSlider
 
     Exit Sub
@@ -106,13 +113,77 @@ TestFail:
 End Sub
 
 '@TestMethod("Parsers")
+' If there is no answer, we don't know what type it is, so use the "super" type as a placeholder.
+Private Sub parserAnswers_Parse_WhenNoAnswer_ShouldReturnBaseAnswer()
+    On Error GoTo TestFail
+    lineHeader = accessor.getFileRunLines(5)(0)
+    lineAnswers = accessor.getFileRunLines(5)(1)
+    lineTimes = accessor.getFileRunLines(5)(2)
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+    Assert.AreEqual CLng(1), returnedAnswers.count
+    Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerBase
+
+    Exit Sub
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("Parsers")
+Private Sub parserAnswers_Parse_WhenHaveAllTypes_ShouldReturnAllAnswers()
+    On Error GoTo TestFail
+    lineHeader = accessor.getFileRunLines(6)(0)
+    lineAnswers = accessor.getFileRunLines(6)(1)
+    lineTimes = accessor.getFileRunLines(6)(2)
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+    Assert.AreEqual CLng(5), returnedAnswers.count
+    Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerBase
+    Assert.IsTrue TypeOf returnedAnswers.item(2) Is ModelAnswerList
+    Assert.IsTrue TypeOf returnedAnswers.item(3) Is ModelAnswerCheckbox
+    Assert.IsTrue TypeOf returnedAnswers.item(4) Is ModelAnswerText
+    Assert.IsTrue TypeOf returnedAnswers.item(5) Is ModelAnswerSlider
+
+    Exit Sub
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("Parsers")
+Private Sub parserAnswers_Parse_WhenWrongNumberOfTimes_ShouldThrow()
+    Const ExpectedError As Long = CustomError.IncorrectDataFormat
+    Const ExpectedDescription As String = "The number of questions and times does not match."
+    On Error GoTo TestFail
+    lineHeader = accessor.getFileRunLines(7)(0)
+    lineAnswers = accessor.getFileRunLines(7)(1)
+    lineTimes = accessor.getFileRunLines(7)(2)
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+Assert:
+    Assert.fail "Expected error was not raised"
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.number = ExpectedError And Err.description = ExpectedDescription Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
+'@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenLinesHaveInvalidNonNumericAnswer_ShouldThrow()
     Const ExpectedError As Long = CustomError.InvalidQuestionType
+    Const ExpectedDescription As String = "The answer text 'a1' is not a valid answer type."
     On Error GoTo TestFail
     lineHeader = "Start Time,End Time,1"
     ' Invalid answer: {a1}
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100,a1"
-    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
+    lineHeader = accessor.getFileRunLines(8)(0)
+    lineAnswers = accessor.getFileRunLines(8)(1)
+    lineTimes = accessor.getFileRunLines(8)(2)
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
     
     Set returnedAnswers = answerParser.parse(lineArray)
@@ -122,7 +193,7 @@ Assert:
 TestExit:
     Exit Sub
 TestFail:
-    If Err.number = ExpectedError Then
+    If Err.number = ExpectedError And Err.description = ExpectedDescription Then
         Resume TestExit
     Else
         Resume Assert
@@ -132,13 +203,15 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerMissingQuote_ShouldThrow()
     Const ExpectedError As Long = CustomError.InvalidQuestionType
+    Const ExpectedDescription As String = "The answer text '""Test' is not a valid answer type."
     On Error GoTo TestFail
     lineHeader = "Start Time,End Time,1"
     ' Invalid answer" {"Test}
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100," & Chr$(34) & "Test"
-    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
+    lineHeader = accessor.getFileRunLines(9)(0)
+    lineAnswers = accessor.getFileRunLines(9)(1)
+    lineTimes = accessor.getFileRunLines(9)(2)
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
-    
+
     Set returnedAnswers = answerParser.parse(lineArray)
 
 Assert:
@@ -146,7 +219,7 @@ Assert:
 TestExit:
     Exit Sub
 TestFail:
-    If Err.number = ExpectedError Then
+    If Err.number = ExpectedError And Err.description = ExpectedDescription Then
         Resume TestExit
     Else
         Resume Assert
@@ -156,11 +229,14 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerShort_ShouldThrow()
     Const ExpectedError As Long = CustomError.InvalidQuestionType
+    Const ExpectedDescription As String = "The answer text 'a' is not a valid answer type."
+
     On Error GoTo TestFail
     lineHeader = "Start Time,End Time,1"
     ' Invalid answer" {a}
-    lineAnswers = "2019-10-11T08:57:50+1100,2019-10-11T08:58:26+1100,a"
-    lineTimes = ",,2019-10-11T08:57:52+1100,Nil,Nil,2019-10-11T08:58:22+1100"
+    lineHeader = accessor.getFileRunLines(10)(0)
+    lineAnswers = accessor.getFileRunLines(10)(1)
+    lineTimes = accessor.getFileRunLines(10)(2)
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
     
     Set returnedAnswers = answerParser.parse(lineArray)
@@ -170,7 +246,7 @@ Assert:
 TestExit:
     Exit Sub
 TestFail:
-    If Err.number = ExpectedError Then
+    If Err.number = ExpectedError And Err.description = ExpectedDescription Then
         Resume TestExit
     Else
         Resume Assert
