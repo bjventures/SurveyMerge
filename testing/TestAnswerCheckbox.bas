@@ -49,25 +49,35 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerList_Value_WhenInvalid_ShouldThrow()
-    Const ExpectedError As Long = CustomError.ModelValidationError
-    On Error GoTo TestFail
-    checkboxAnswer.value = Array(2, "error")
+Private Sub answerCheckbox_Value_WhenContainsNegative_ShouldThrow()
+    Const ExpectedError As Long = 13
+    Const ExpectedDescription As String = "Type mismatch"
+    On Error GoTo Assert
+    checkboxAnswer.value = Array(2, -2)
 
-Assert:
     Assert.fail "Expected error was not raised"
-TestExit:
     Exit Sub
-TestFail:
-    If Err.number = ExpectedError Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerList_Description_WhenValueSet_ShouldGetDescription()
+Private Sub answerCheckbox_Value_WhenContainsText_ShouldThrow()
+    Const ExpectedError As Long = 13
+    Const ExpectedDescription As String = "Type mismatch"
+    On Error GoTo Assert
+    checkboxAnswer.value = Array(2, "error")
+
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
+
+'@TestMethod("Model")
+Private Sub answerCheckbox_Description_WhenValueSet_ShouldGetDescription()
     On Error GoTo TestFail
     checkboxAnswer.value = Array(2, 4)
     ' Recast to parent class.

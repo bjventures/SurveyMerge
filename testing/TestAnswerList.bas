@@ -49,22 +49,33 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerList_Value_WhenInvalid_ShouldThrow()
+Private Sub answerList_Value_WhenZero_ShouldThrow()
     Const ExpectedError As Long = CustomError.ModelValidationError
-    On Error GoTo TestFail
+    Const ExpectedDescription As String = "The value '0' is not valid."
+    On Error GoTo Assert
     listAnswer.value = 0
     
-Assert:
     Assert.fail "Expected error was not raised"
-TestExit:
     Exit Sub
-TestFail:
-    If Err.number = ExpectedError Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
 End Sub
+
+'@TestMethod("Model")
+Private Sub answerList_Value_WhenNegative_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
+    Const ExpectedDescription As String = "The value '-1' is not valid."
+    On Error GoTo Assert
+    listAnswer.value = -1
+    
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
+
 
 '@TestMethod("Model")
 Private Sub answerList_Description_WhenValueSet_ShouldGetDescription()

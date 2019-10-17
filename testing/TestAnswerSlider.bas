@@ -49,21 +49,31 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerList_Value_WhenInvalid_ShouldThrow()
+Private Sub answerList_Value_WhenNegative_ShouldThrow()
     Const ExpectedError As Long = CustomError.ModelValidationError
-    On Error GoTo TestFail
+    Const ExpectedDescription = "The value '-0.34' is not valid."
+    On Error GoTo Assert
     sliderAnswer.value = -0.34
 
-Assert:
     Assert.fail "Expected error was not raised"
-TestExit:
     Exit Sub
-TestFail:
-    If Err.number = ExpectedError Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
+
+'@TestMethod("Model")
+Private Sub answerList_Value_WhenGreaterThanOne_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
+    Const ExpectedDescription = "The value '2' is not valid."
+    On Error GoTo Assert
+    sliderAnswer.value = 2
+
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
 End Sub
 
 '@TestMethod("Model")

@@ -27,62 +27,42 @@ End Sub
 
 Public Property Let value(ByVal answerValue As Variant)
     ' The value argument must be an array of integers.
-    On Error GoTo Catch
-    
     Dim bound As Long
     Dim i As Long
-    
     bound = UBound(answerValue)
+    
     ReDim m_value(bound)
     For i = 0 To bound
+        If answerValue(i) < 1 Then Err.Raise CustomError.ModelValidationError, "ModelAnswerCheckbox.value", "The value '" & answerValue & "' is not valid."
         m_value(i) = answerValue(i)
     Next i
-Finally:
-    Exit Property
- 
-Catch:
-    Err.Raise CustomError.ModelValidationError
-    Resume Finally
-
 End Property
 
 Public Property Get value() As Variant
-
     value = m_value
-    
 End Property
 
 '
 ' Delegate properties to implemented base class (AnswerBase)
 '
 Private Property Let ModelAnswerBase_number(ByVal answerValue As Long)
-    
     baseAnswer.number = answerValue
-    
 End Property
 
 Private Property Get ModelAnswerBase_number() As Long
-
     ModelAnswerBase_number = baseAnswer.number
-    
 End Property
 
 Private Property Let ModelAnswerBase_isoTime(ByVal answerValue As String)
-    
     baseAnswer.isoTime = answerValue
-    
 End Property
 
 Private Property Get ModelAnswerBase_time() As Date
-
     ModelAnswerBase_time = baseAnswer.time
-    
 End Property
 
 Private Property Get ModelAnswerBase_isoOffset() As Long
-
     ModelAnswerBase_isoOffset = baseAnswer.isoOffset
-    
 End Property
 
 Private Property Get ModelAnswerBase_description() As String
@@ -97,6 +77,5 @@ Private Property Get ModelAnswerBase_description() As String
     Next i
     
     ModelAnswerBase_description = CStr(Join(strArray, ","))
-    
 End Property
 

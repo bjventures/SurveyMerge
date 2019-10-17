@@ -22,59 +22,41 @@ Private m_value As String
 ' Class specific properties
 '
 Private Sub Class_Initialize()
-
     Set baseAnswer = New ModelAnswerBase
-
 End Sub
 
 Public Property Let value(ByVal answerValue As String)
-    
     m_value = answerValue
-    
 End Property
 
 Public Property Get value() As String
-
     value = m_value
-    
 End Property
 
 '
 ' Delegate properties to implemented base class (AnswerBase)
 '
 Private Property Let ModelAnswerBase_number(ByVal number As Long)
-    
     baseAnswer.number = number
-    
 End Property
 
 Private Property Get ModelAnswerBase_number() As Long
-
     ModelAnswerBase_number = baseAnswer.number
-    
 End Property
 
 Private Property Let ModelAnswerBase_isoTime(ByVal answerValue As String)
-    
     baseAnswer.isoTime = answerValue
-    
 End Property
 
 Private Property Get ModelAnswerBase_time() As Date
-
     ModelAnswerBase_time = baseAnswer.time
-    
 End Property
 
 Private Property Get ModelAnswerBase_isoOffset() As Long
-
     ModelAnswerBase_isoOffset = baseAnswer.isoOffset
-    
 End Property
 
 Private Property Get ModelAnswerBase_description() As String
-
     ModelAnswerBase_description = m_value
-    
 End Property
 
