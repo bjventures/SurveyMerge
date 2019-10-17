@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("Tests.Models")
+'@Folder("Tests.Models.AnswerModels")
 
 ' This class implements ModelAnswerBase, which is tested separately.
 

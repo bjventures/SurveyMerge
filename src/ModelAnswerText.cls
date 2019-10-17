@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'@Folder("SurveyMerge.Model")
+'@Folder("SurveyMerge.Models.AnswerModels")
 '
 ' class module: ModelAnswerText
 ' Many methods are delegated to the AnswerBase class.
