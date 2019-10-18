@@ -47,7 +47,7 @@ Catch:
     
 End Sub
 
-Public Function getFileRunLines(runNumber As Long) As Variant
+Public Function getFileRunLines(runNumber As Integer) As Variant
     ' Note each run has 3 lines.
     Dim runStartIndex As Long
     runStartIndex = ((runNumber) * 4) - 3
