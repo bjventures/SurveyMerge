@@ -155,32 +155,27 @@ End Sub
 Private Sub parserAnswers_Parse_WhenWrongNumberOfTimes_ShouldThrow()
     Const ExpectedError As Long = CustomError.IncorrectDataFormat
     Const ExpectedDescription As String = "The number of questions and times does not match."
-    On Error GoTo TestFail
+    On Error GoTo Assert
     lineHeader = accessor.getFileRunLines(7)(0)
     lineAnswers = accessor.getFileRunLines(7)(1)
     lineTimes = accessor.getFileRunLines(7)(2)
     lineArray = Array(lineHeader, lineAnswers, lineTimes)
     Set returnedAnswers = answerParser.parse(lineArray)
 
-Assert:
     Assert.fail "Expected error was not raised"
-TestExit:
     Exit Sub
-TestFail:
-    If Err.number = ExpectedError And Err.description = ExpectedDescription Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
+    
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
 End Sub
 
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenLinesHaveInvalidNonNumericAnswer_ShouldThrow()
     Const ExpectedError As Long = CustomError.InvalidQuestionType
     Const ExpectedDescription As String = "The answer text 'a1' is not a valid answer type."
-    On Error GoTo TestFail
+    On Error GoTo Assert
     lineHeader = "Start Time,End Time,1"
-    ' Invalid answer: {a1}
     lineHeader = accessor.getFileRunLines(8)(0)
     lineAnswers = accessor.getFileRunLines(8)(1)
     lineTimes = accessor.getFileRunLines(8)(2)
@@ -188,25 +183,20 @@ Private Sub parserAnswers_Parse_WhenLinesHaveInvalidNonNumericAnswer_ShouldThrow
     
     Set returnedAnswers = answerParser.parse(lineArray)
 
-Assert:
     Assert.fail "Expected error was not raised"
-TestExit:
     Exit Sub
-TestFail:
-    If Err.number = ExpectedError And Err.description = ExpectedDescription Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
+    
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
 End Sub
 
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerMissingQuote_ShouldThrow()
     Const ExpectedError As Long = CustomError.InvalidQuestionType
     Const ExpectedDescription As String = "The answer text '""Test' is not a valid answer type."
-    On Error GoTo TestFail
+    On Error GoTo Assert
     lineHeader = "Start Time,End Time,1"
-    ' Invalid answer" {"Test}
     lineHeader = accessor.getFileRunLines(9)(0)
     lineAnswers = accessor.getFileRunLines(9)(1)
     lineTimes = accessor.getFileRunLines(9)(2)
@@ -214,16 +204,12 @@ Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerMissingQuote_ShouldThr
 
     Set returnedAnswers = answerParser.parse(lineArray)
 
-Assert:
     Assert.fail "Expected error was not raised"
-TestExit:
     Exit Sub
-TestFail:
-    If Err.number = ExpectedError And Err.description = ExpectedDescription Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
+    
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
 End Sub
 
 '@TestMethod("Parsers")
@@ -231,9 +217,8 @@ Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerShort_ShouldThrow()
     Const ExpectedError As Long = CustomError.InvalidQuestionType
     Const ExpectedDescription As String = "The answer text 'a' is not a valid answer type."
 
-    On Error GoTo TestFail
+    On Error GoTo Assert
     lineHeader = "Start Time,End Time,1"
-    ' Invalid answer" {a}
     lineHeader = accessor.getFileRunLines(10)(0)
     lineAnswers = accessor.getFileRunLines(10)(1)
     lineTimes = accessor.getFileRunLines(10)(2)
@@ -241,15 +226,103 @@ Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerShort_ShouldThrow()
     
     Set returnedAnswers = answerParser.parse(lineArray)
 
-Assert:
     Assert.fail "Expected error was not raised"
-TestExit:
     Exit Sub
-TestFail:
-    If Err.number = ExpectedError And Err.description = ExpectedDescription Then
-        Resume TestExit
-    Else
-        Resume Assert
-    End If
+    
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
+
+'
+' Test errors thrown in models
+'
+
+'@TestMethod("Parsers")
+Private Sub parserAnswers_Parse_WhenLinesHaveNegativeListAnswer_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
+    Const ExpectedDescription As String = "The value '-1' is not valid."
+
+    On Error GoTo Assert
+    lineHeader = "Start Time,End Time,1"
+    lineHeader = accessor.getFileRunLines(11)(0)
+    lineAnswers = accessor.getFileRunLines(11)(1)
+    lineTimes = accessor.getFileRunLines(11)(2)
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+    
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
+
+'@TestMethod("Parsers")
+Private Sub parserAnswers_Parse_WhenLinesHaveNegativeCheckboxAnswer_ShouldThrow()
+    Const ExpectedError As Long = 13
+    Const ExpectedDescription As String = "Type mismatch"
+
+    On Error GoTo Assert
+    lineHeader = "Start Time,End Time,1"
+    lineHeader = accessor.getFileRunLines(12)(0)
+    lineAnswers = accessor.getFileRunLines(12)(1)
+    lineTimes = accessor.getFileRunLines(12)(2)
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+    
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
+
+'@TestMethod("Parsers")
+Private Sub parserAnswers_Parse_WhenLinesHaveSliderAnswerGreaterThanOne_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
+    Const ExpectedDescription As String = "The value '-1.2' is not valid."
+
+    On Error GoTo Assert
+    lineHeader = "Start Time,End Time,1"
+    lineHeader = accessor.getFileRunLines(13)(0)
+    lineAnswers = accessor.getFileRunLines(13)(1)
+    lineTimes = accessor.getFileRunLines(13)(2)
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+    
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
+
+'@TestMethod("Parsers")
+Private Sub parserAnswers_Parse_WhenLinesHaveSliderAnswerLessThanZero_ShouldThrow()
+    Const ExpectedError As Long = CustomError.ModelValidationError
+    Const ExpectedDescription As String = "The value '-1.2' is not valid."
+
+    On Error GoTo Assert
+    lineHeader = "Start Time,End Time,1"
+    lineHeader = accessor.getFileRunLines(13)(0)
+    lineAnswers = accessor.getFileRunLines(13)(1)
+    lineTimes = accessor.getFileRunLines(13)(2)
+    lineArray = Array(lineHeader, lineAnswers, lineTimes)
+    
+    Set returnedAnswers = answerParser.parse(lineArray)
+
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+    
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
 End Sub
 
