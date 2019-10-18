@@ -29,7 +29,7 @@ End Function
 Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArray As Variant) As Answers
     If LBound(answerArray) <> LBound(timeArray) Then Err.Raise CustomError.InvalidQuestionType
     ' The timeArray has 2 extra items for the start and finish times.
-    If UBound(answerArray) <> (UBound(timeArray) - 2) Then Err.Raise CustomError.IncorrectDataFormat, "ParserAnswers.getAnswerCollection", "The number of questions and times does not match."
+    If UBound(answerArray) <> (UBound(timeArray) - 2) Then Err.Raise CustomError.IncorrectDataFormat, "ParserAnswers.getAnswerCollection", "The question count is incorrect."
     Dim column As Long
     Dim item As Variant
     Dim inputString As String

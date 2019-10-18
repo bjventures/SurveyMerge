@@ -62,58 +62,34 @@ TestFail:
     Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-'Private assertion As Boolean
-'Private parser As ParserSurveyRun
-'Private singleSurveyRun As ModelSurveyRun
+'@TestMethod("Parsers")
+' If there is no answer, we don't know what type it is, so use the "super" type as a placeholder.
+Private Sub test_ParserSurveyRun_WhenIncorrectNumberCount_ShouldThrow()
+    Const ExpectedError As Long = CustomError.SurveyRunError
+    Const ExpectedDescription As String = "The question count does not match the question numbers."
+    On Error GoTo Assert
+    Set singleSurveyRun = parser.parse("name", "participant id", getRunLines(2))
+    
+    Assert.fail "Expected error was not raised"
+    Exit Sub
 
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
 
-'
-'Public Function test_ParserSurveyRun_WhenCorrectData_ShouldParseAnswers() As Boolean
-'
-'    Set singleSurveyRun = parser.parse("name", "participant id", getAnswerLines("test-109"))
-'    Dim answerCollection As Answers
-'
-'    Set answerCollection = singleSurveyRun.answerCollection
-'    assertion = answerCollection.count = 5
-'    test_ParserSurveyRun_WhenCorrectData_ShouldParseAnswers = assertion
-'
-'End Function
-'
-'Public Function test_ParserSurveyRun_WhenIncorrectNumberCount_ShouldThrow() As Boolean
-'
-'On Error GoTo Catch
-'    Set singleSurveyRun = parser.parse("name", "participant id", getAnswerLines("test-114"))
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.SurveyRunError
-'    test_ParserSurveyRun_WhenIncorrectNumberCount_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-''@Ignore UnderscoreInPublicClassModuleMember
-'Public Function test_ParserSurveyRun_WhenIncorrectFileData_ShouldThrow() As Boolean
-'
-'On Error GoTo Catch
-'    Set singleSurveyRun = parser.parse("name", "participant id", getAnswerLines("test-115"))
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.IncorrectDataFormat
-'    test_ParserSurveyRun_WhenIncorrectFileData_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-'
+'@TestMethod("Parsers")
+Private Sub test_ParserSurveyRun_WhenIncorrectFileData_ShouldThrow()
+    Const ExpectedError As Long = CustomError.IncorrectDataFormat
+    Const ExpectedDescription As String = "There is an error in the survey run meta data."
+    On Error GoTo Assert
+    Set singleSurveyRun = parser.parse("name", "participant id", getRunLines(3))
 
+    Assert.fail "Expected error was not raised"
+    Exit Sub
 
-
-
-
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
 

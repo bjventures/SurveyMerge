@@ -133,7 +133,7 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenWrongNumberOfTimes_ShouldThrow()
     Const ExpectedError As Long = CustomError.IncorrectDataFormat
-    Const ExpectedDescription As String = "The number of questions and times does not match."
+    Const ExpectedDescription As String = "The question count is incorrect."
     On Error GoTo Assert
     Set returnedAnswers = answerParser.parse(getRunLines(7))
 

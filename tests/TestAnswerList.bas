@@ -76,7 +76,6 @@ Assert:
     Assert.AreEqual ExpectedDescription, Err.description
 End Sub
 
-
 '@TestMethod("Model")
 Private Sub answerList_Description_WhenValueSet_ShouldGetDescription()
     On Error GoTo TestFail

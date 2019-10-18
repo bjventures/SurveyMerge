@@ -28,9 +28,8 @@ Public Function parse(ByVal surveyName As String, ByVal participantId As String,
     
     Set parser = New ParserAnswers
     singleSurveyRun.answerCollection = parser.parse(dataArray)
-    If singleSurveyRun.answerCollection.count <> singleSurveyRun.questionCount Then
-        Err.Raise CustomError.SurveyRunError
-    End If
+    If singleSurveyRun.answerCollection.count <> singleSurveyRun.questionCount _
+       Then Err.Raise CustomError.SurveyRunError, "ParserSurveyRun.parse", "The question count does not match the question numbers."
     Set parse = singleSurveyRun
     
 End Function
@@ -54,8 +53,9 @@ Private Sub setSurveyRunMetaData(ByVal surveyName As String, ByVal participantId
 Finally:
     Exit Sub
 Catch:
-    Err.Raise CustomError.IncorrectDataFormat
+    Err.Raise CustomError.IncorrectDataFormat, "ParserSurveyRun.setSurveyRunMetaData", "There is an error in the survey run meta data."
     Resume Finally
 
 End Sub
+
 
