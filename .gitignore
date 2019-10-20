@@ -2,4 +2,9 @@
 *.xls
 *.xlsm
 *.xlsx
+*.survey
+
+# Ignore csv files except those in test-files directory.
 *.csv
+!tests/test-files/*.csv
+

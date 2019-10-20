@@ -16,4 +16,4 @@ This Excel file has 3 worksheets. Dashboard, Answers and Answer Time. To merge y
 
 The answers and answer times will be found in the other 2 worksheets. If you want to conduct manipulation of the data and analysis, we recommend that you start a new works sheet since every time you click on the  "Merge Files" button, the "Answers" and "Answer Time" worksheets will be overwritten.
 
-Please see the [wiki on GitHub](https://github.com/bjventures/SurveyMerge/wiki) for more information.
+Developers who wish to work with the code, please see the [wiki on GitHub](https://github.com/bjventures/SurveyMerge/wiki) for more information.
