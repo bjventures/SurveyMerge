@@ -50,7 +50,7 @@ Finally:
 
 Catch:
     ' Delete any imported data, if an error occured, it is unreliable.
-    createOrClearWorksheets sheetArray
+    If Err.number <> CustomError.FileNotFound Then createOrClearWorksheets sheetArray
     If showMsg Then MsgBox "The file could not be imported." & vbNewLine & Err.description, vbOKOnly, ProjectName
     Resume Finally
 

@@ -1,13 +1,13 @@
-Attribute VB_Name = "TestAnswerBase"
+Attribute VB_Name = "TestModelSurveyRun"
 Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("Tests.Models.AnswerModels")
+'@Folder("Tests.Models")
 
 Private Assert As Object
 Private Fakes As Object
-Private baseAnswer As ModelAnswerBase
+Private surveyRun As ModelSurveyRun
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -23,20 +23,20 @@ End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    Set baseAnswer = New ModelAnswerBase
+    Set surveyRun = New ModelSurveyRun
 End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
-    Set baseAnswer = Nothing
+    Set surveyRun = Nothing
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerBase_Number_WhenSetValid_ShouldSet()
+Private Sub surveyRun_QuestionCount_WhenSetValid_ShouldSet()
     On Error GoTo TestFail
-    baseAnswer.number = 2
-    
-    Assert.AreEqual CLng(2), baseAnswer.number
+    surveyRun.questionCount = 3
+   
+    Assert.AreEqual CLng(3), surveyRun.questionCount
 
     Exit Sub
 TestFail:
@@ -44,11 +44,11 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerBase_Number_WhenInvalid_ShouldThrow()
+Private Sub surveyRun_QuestionCount_WhenInvalid_ShouldThrow()
     Const ExpectedError As Long = CustomError.ModelValidationError
     On Error GoTo TestFail
-    baseAnswer.number = 0
-
+    surveyRun.questionCount = 0
+    
 Assert:
     Assert.fail "Expected error was not raised"
 TestExit:
@@ -62,33 +62,23 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerBase_Time_WhenIsoTimeNotSet_ShouldReturnMidnight()
+Private Sub surveyRun_SurveyName_WhenSetValid_ShouldSet()
     On Error GoTo TestFail
-    Assert.AreEqual CDate(0), baseAnswer.time
-
-    Exit Sub
-TestFail:
-    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
-End Sub
-
-'@TestMethod("Model")
-Private Sub answerBase_Time_WhenIsoTimeSet_ShouldSet()
-    On Error GoTo TestFail
-    baseAnswer.isoTime = "2019-04-16T15:08:07+1000"
+    surveyRun.surveyName = "Test Name"
    
-    Assert.AreEqual "2019-04-16 15:08:07", Format$(baseAnswer.time, "yyyy-mm-dd hh:mm:ss")
+    Assert.AreEqual "Test Name", surveyRun.surveyName
+
+    Exit Sub
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("Model")
+Private Sub surveyRun_ParticipantId_WhenSetValid_ShouldSet()
+    On Error GoTo TestFail
+    surveyRun.participantId = "Test Id"
    
-    Exit Sub
-TestFail:
-    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
-End Sub
-
-'@TestMethod("Model")
-Private Sub answerBase_IsoOffset_WhenIsoTimeSet_ShouldGetOffset()
-    On Error GoTo TestFail
-    baseAnswer.isoTime = "2019-04-16T15:08:07+1000"
-   
-    Assert.AreEqual CLng(1000), baseAnswer.isoOffset
+    Assert.AreEqual "Test Id", surveyRun.participantId
 
     Exit Sub
 TestFail:
@@ -96,10 +86,13 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerBase_IsoTime_WhenSetInvalidTime_ShouldSetDefault()
+Private Sub surveyRun_StartTime_WhenSetValid_ShouldSet()
     On Error GoTo TestFail
-
-    Assert.AreEqual CDate(0), baseAnswer.time
+    Dim todayDate As Date
+    todayDate = Date
+    surveyRun.startTime = todayDate
+    
+    Assert.AreEqual todayDate, surveyRun.startTime
 
     Exit Sub
 TestFail:
@@ -107,11 +100,13 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerBase_IsoTime_WhenSetInvalidTimeOffset_ShouldSetDefault()
+Private Sub surveyRun_EndTime_WhenSetValid_ShouldSet()
     On Error GoTo TestFail
-    baseAnswer.isoTime = "2019-04-16T15:08:07+1a00"
-
-    Assert.AreEqual CLng(0), baseAnswer.isoOffset
+    Dim todayDate As Date
+    todayDate = Date
+    surveyRun.endTime = todayDate
+    
+    Assert.AreEqual todayDate, surveyRun.endTime
 
     Exit Sub
 TestFail:
@@ -119,11 +114,19 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerBase_Description_WhenGet_ShouldBeNilLength()
+Private Sub surveyRun_AnswerCollection_WhenSetValid_ShouldSet()
     On Error GoTo TestFail
-   
-    Assert.AreEqual vbNullString, baseAnswer.description
-
+    Dim Answers As Answers
+    Set Answers = New Answers
+    Dim listAnswer As ModelAnswerList
+    Set listAnswer = New ModelAnswerList
+    Answers.Add listAnswer
+    Assert.AreEqual CLng(1), Answers.count
+    
+    surveyRun.answerCollection = Answers
+     
+    Assert.AreEqual CLng(1), surveyRun.answerCollection.count
+    
     Exit Sub
 TestFail:
     Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description

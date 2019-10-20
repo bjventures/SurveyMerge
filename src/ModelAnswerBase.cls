@@ -31,11 +31,11 @@ Public Property Let isoTime(ByVal value As String)
     On Error GoTo Catch
     m_time = DateValue(Mid$(value, 1, 10)) + TimeValue(Mid$(value, 12, 8))
     m_offset = Int(Mid$(value, 20, 5))
+
 Finally:
     Exit Property
-
 Catch:
-    Err.Raise CustomError.ModelValidationError
+    m_offset = CDate(0)
     Resume Finally
 End Property
 
