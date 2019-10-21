@@ -60,13 +60,15 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
             End If
             GoTo NextIteration
         End If
-        
+                
+        ' TODO: Make this internationalisation more robust.
         ' Check if is list or slider answer
         If IsNumeric(inputString) Then
             If CStr(CInt(item)) = item Then
                 addAnswer "list", inputString, timeArray(column)
             Else
-                addAnswer "slider", inputString, timeArray(column)
+                ' Have to internationalise the decimal since CSng uses local setting.
+                addAnswer "slider", Replace(inputString, ".", Application.International(xlDecimalSeparator)), timeArray(column)
             End If
             GoTo NextIteration
         End If

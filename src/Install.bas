@@ -30,15 +30,15 @@ End Sub
 
 Private Function sheetExists(ByVal sheetToFind As String, Optional ByRef wb As Workbook) As Boolean
     
-    Dim sheet As Worksheet
+    Dim Sheet As Worksheet
     sheetExists = False
     If wb Is Nothing Then Set wb = ThisWorkbook
-    For Each sheet In wb.Worksheets
-        If sheetToFind = sheet.name Then
+    For Each Sheet In wb.Worksheets
+        If sheetToFind = Sheet.name Then
             sheetExists = True
             Exit Function
         End If
-    Next sheet
+    Next Sheet
 
 End Function
 

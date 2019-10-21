@@ -44,6 +44,10 @@ Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef 
     
     surveyRunCount = (UBound(lineArray) - 4) / 3
     
+    '
+    '  WORK HERE WITH MODELDATAFILE
+    '
+    '
     surveyName = getMetaData(lineArray, "Survey Name", 0)
     subjectId = getMetaData(lineArray, "Subject ID", 2)
     

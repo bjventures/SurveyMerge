@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'@Folder("SurveyMerge.Models.AnswerModels")
+'@Folder("SurveyMerge.Models.Answers")
 '
 ' class module: ModelAnswerBase
 ' This is used to mimic inheritance. See: https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-basic-6/aa240846(v%3dvs.60)

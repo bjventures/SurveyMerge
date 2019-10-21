@@ -27,13 +27,7 @@ Enum FileCol
     answerData = 3
 End Enum
 
-Enum RunDataRow
-    Header = 1
-    Data = 2
-    TimeStamps = 3
-End Enum
-
-' VBA does not have string Enumerations.
+' VBA does not have String Enumerations.
 Enum WsSheet
     Dashboard = 1
     Answers = 2

@@ -8,23 +8,23 @@ Option Private Module
 Private Assert As Object
 Private Fakes As Object
 Private dataFile As ModelDataFile
-Private FileAccessor As FileAccessor
+Private accessor As FileAccessor
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
-    Set FileAccessor = New FileAccessor
-    FileAccessor.loadSurveyRunFile "test-1"
+    Set accessor = New FileAccessor
+    accessor.loadSurveyRunFile "test-1"
     Set dataFile = New ModelDataFile
-    dataFile.fileContents = FileAccessor.fileText
+    dataFile.fileContents = accessor.fileText
 End Sub
 
 '@ModuleCleanup
 Private Sub ModuleCleanup()
     Set Assert = Nothing
     Set Fakes = Nothing
-    Set FileAccessor = Nothing
+    Set accessor = Nothing
     Set dataFile = Nothing
 End Sub
 
