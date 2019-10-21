@@ -50,11 +50,9 @@ Private Sub setSurveyRunMetaData(ByVal surveyName As String, ByVal participantId
     ' The first 2 elements are not question numbers and need to adjust from index (ie not "- 2")
     singleSurveyRun.questionCount = UBound(Split(dataArray(0), ",")) - 1
 
-Finally:
-    Exit Sub
 Catch:
-    Err.Raise CustomError.IncorrectDataFormat, "ParserSurveyRun.setSurveyRunMetaData", "There is an error in the survey run meta data."
-    Resume Finally
+    ' Catch if the date string is not valid.
+    If Err.number = 13 Then Err.Raise CustomError.IncorrectDataFormat, "ParserSurveyRun.setSurveyRunMetaData", "There is an error in the survey run timestamp data."
 
 End Sub
 

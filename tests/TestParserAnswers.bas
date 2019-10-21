@@ -9,14 +9,14 @@ Private Assert As Object
 Private Fakes As Object
 Private answerParser As ParserAnswers
 Private returnedAnswers As Answers
-Private accessor As fileAccessor
+Private accessor As FileAccessor
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
     Set answerParser = New ParserAnswers
-    Set accessor = New fileAccessor
+    Set accessor = New FileAccessor
     accessor.loadSurveyRunFile "answer-lines-1"
 End Sub
 

@@ -9,13 +9,13 @@ Private Assert As Object
 Private Fakes As Object
 Private parser As ParserSurveyRun
 Private singleSurveyRun As ModelSurveyRun
-Private accessor As fileAccessor
+Private accessor As FileAccessor
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
-    Set accessor = New fileAccessor
+    Set accessor = New FileAccessor
     accessor.loadSurveyRunFile "answer-lines-2"
 End Sub
 
@@ -81,7 +81,7 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub test_ParserSurveyRun_WhenIncorrectFileData_ShouldThrow()
     Const ExpectedError As Long = CustomError.IncorrectDataFormat
-    Const ExpectedDescription As String = "There is an error in the survey run meta data."
+    Const ExpectedDescription As String = "There is an error in the survey run timestamp data."
     On Error GoTo Assert
     Set singleSurveyRun = parser.parse("name", "participant id", getRunLines(3))
 
