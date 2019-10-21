@@ -11,10 +11,14 @@ Attribute VB_Exposed = False
 Option Explicit
 Private Const testFileFolder = testFolder & "/test-files/"
 Private lines As Variant
+Private mFileText As String
+
+Public Property Get fileText() As String
+    fileText = mFileText
+End Property
 
 Public Sub loadSurveyRunFile(fileNameStub As String)
     Dim inputFile As Integer
-    Dim fileString As String
     Dim fileName As String
     Dim lineArray As Variant
 
@@ -23,14 +27,14 @@ Public Sub loadSurveyRunFile(fileNameStub As String)
     fileName = getCurrentPath & testFileFolder & fileNameStub & ".csv"
     inputFile = FreeFile
     Open fileName For Input As #inputFile
-    fileString = Input(LOF(inputFile), inputFile)
+    mFileText = Input(LOF(inputFile), inputFile)
     ' Make sure lines are separated by vbLf
-    fileString = Replace(fileString, vbCrLf, vbLf)
+    mFileText = Replace(mFileText, vbCrLf, vbLf)
     ' Just in case there are Mac line breaks
-    fileString = Replace(fileString, vbCr, vbNullString)
+    mFileText = Replace(mFileText, vbCr, vbNullString)
     Close #inputFile
 
-    lines = Split(fileString, vbLf)
+    lines = Split(mFileText, vbLf)
 
 Finally:
     Exit Sub
@@ -44,7 +48,7 @@ Catch:
     MsgBox msg, vbOKOnly, ProjectName
     Close inputFile
     Resume Finally
-    
+
 End Sub
 
 Public Function getFileRunLines(runNumber As Integer) As Variant

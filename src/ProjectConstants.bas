@@ -21,10 +21,6 @@ Enum CustomError
     DirNotFound = 522
 End Enum
 
-Enum FileRow
-    firstAnswer = 4
-End Enum
-
 Enum FileCol
     keyword = 1
     metadata = 2

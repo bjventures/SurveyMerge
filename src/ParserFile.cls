@@ -42,13 +42,13 @@ Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef 
 
     lineArray = Split(fileText, vbLf)
     
-    surveyRunCount = (UBound(lineArray) - FileRow.firstAnswer) / 3
+    surveyRunCount = (UBound(lineArray) - 4) / 3
     
     surveyName = getMetaData(lineArray, "Survey Name", 0)
     subjectId = getMetaData(lineArray, "Subject ID", 2)
     
     For i = 0 To surveyRunCount - 1
-        firstRow = i * 3 + FileRow.firstAnswer
+        firstRow = i * 3 + 4
         ' Create an array of the 3 survey run lines
         runLines = Array(lineArray(firstRow), lineArray(firstRow + 1), lineArray(firstRow + 2))
         parseAndPrintSurveyRun surveyName, subjectId, runLines, parser, surveyRun, printer, startLine + i
@@ -132,6 +132,7 @@ Catch:
         
 End Sub
 
+' TODO: Delete this method when refactor ModelDataFile
 Private Function getMetaData(ByRef fileLineArray() As String, ByVal dataName As String, ByRef lineNo As Long) As String
 
     Dim dataArray() As String
@@ -144,6 +145,7 @@ Private Function getMetaData(ByRef fileLineArray() As String, ByVal dataName As 
  
 End Function
 
+' TODO: Delete this method when refactor ModelDataFile
 Private Function validateMetaData(ByVal dataName As Variant, ByRef dataArray As Variant) As Boolean
 
     ' Check there is a value
