@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("Tests.Models.AnswerModels")
+'@Folder("Tests.Models.Answers")
 
 Private Assert As Object
 Private Fakes As Object

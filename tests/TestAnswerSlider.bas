@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("Tests.Models.AnswerModels")
+'@Folder("Tests.Models.Answers")
 
 ' This class implements ModelAnswerBase, which is tested separately.
 
@@ -51,7 +51,8 @@ End Sub
 '@TestMethod("Model")
 Private Sub answerList_Value_WhenNegative_ShouldThrow()
     Const ExpectedError As Long = CustomError.ModelValidationError
-    Const ExpectedDescription = "The value '-0.34' is not valid."
+    Dim ExpectedDescription As String
+    ExpectedDescription = "The value '-0" & Application.International(xlDecimalSeparator) & "34' is not valid."
     On Error GoTo Assert
     sliderAnswer.value = -0.34
 
@@ -82,8 +83,8 @@ Private Sub answerList_Description_WhenValueSet_ShouldGetDescription()
     sliderAnswer.value = 0.34
     ' Recast to parent class.
     Set answer = sliderAnswer
-
-    Assert.AreEqual "0.34", answer.description
+    
+    Assert.AreEqual "0" & Application.International(xlDecimalSeparator) & "34", answer.description
 
     Exit Sub
 TestFail:

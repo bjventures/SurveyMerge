@@ -61,14 +61,12 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
             GoTo NextIteration
         End If
                 
-        ' TODO: Make this internationalisation more robust.
         ' Check if is list or slider answer
         If IsNumeric(inputString) Then
             If CStr(CInt(item)) = item Then
                 addAnswer "list", inputString, timeArray(column)
             Else
-                ' Have to internationalise the decimal since CSng uses local setting.
-                addAnswer "slider", Replace(inputString, ".", Application.International(xlDecimalSeparator)), timeArray(column)
+                addAnswer "slider", inputString, timeArray(column)
             End If
             GoTo NextIteration
         End If
@@ -109,6 +107,8 @@ Private Sub addAnswer(ByVal questionType As String, ByVal valueString As String,
     Case Is = "slider"
         Dim sliderAnswer As ModelAnswerSlider
         Set sliderAnswer = New ModelAnswerSlider
+        ' International localisation decimal separators.
+       ' sliderAnswer.value = CSng(Replace(valueString, ".", Application.International(xlDecimalSeparator)))
         sliderAnswer.value = CSng(valueString)
         Set baseAnswer = sliderAnswer
     Case Else

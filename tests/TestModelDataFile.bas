@@ -3,7 +3,7 @@ Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("Tests.Models")
+'@Folder("Tests.Models.DataFile")
 
 Private Assert As Object
 Private Fakes As Object
@@ -72,11 +72,10 @@ End Sub
 '@TestMethod("Model")
 Private Sub surveyRunStrings_WhenInitialisedWithFileText_ShouldSet()
     On Error GoTo TestFail
-    Dim runLines As Variant
-    runLines = dataFile.surveyRunStrings(1)
+    Dim dataLines As ModelDataLines
+    Set dataLines = dataFile.surveyRunStrings(1)
 
-    Assert.AreEqual "Start Time,End Time,1,2,3,4,5", runLines(0)
-    Assert.AreEqual "Start Time,End Time,1,2,3,4,5", runLines(0)
+    Assert.AreEqual "Start Time,End Time,1,2,3,4,5", dataLines.header
 
     Exit Sub
 TestFail:

@@ -1,47 +1,42 @@
-Attribute VB_Name = "TestAnswerText"
+Attribute VB_Name = "TestModelDataLines"
 Option Explicit
 Option Private Module
 
 '@TestModule
-'@Folder("Tests.Models.Answers")
-
-' This class implements ModelAnswerBase, which is tested separately.
+'@Folder("Tests.Models.DataFile")
 
 Private Assert As Object
 Private Fakes As Object
-Private answer As ModelAnswerBase
-Private textAnswer As ModelAnswerText
+Private dataLines As ModelDataLines
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
+    Set dataLines = New ModelDataLines
 End Sub
 
 '@ModuleCleanup
 Private Sub ModuleCleanup()
     Set Assert = Nothing
     Set Fakes = Nothing
+    Set dataLines = Nothing
 End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    Set answer = New ModelAnswerText
-    Set textAnswer = answer
 End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
-    Set answer = Nothing
-    Set textAnswer = Nothing
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerList_Value_WhenSetValid_ShouldSet()
+Private Sub header_WhenInitialisedWithText_ShouldSet()
     On Error GoTo TestFail
-    textAnswer.value = "Test"
-
-    Assert.AreEqual "Test", textAnswer.value
+    dataLines.header = "Header line"
+    
+    Assert.AreEqual "Header line", dataLines.header
 
     Exit Sub
 TestFail:
@@ -49,13 +44,23 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub answerList_Description_WhenValueSet_ShouldGetDescription()
+Private Sub answer_WhenInitialisedWithText_ShouldSet()
     On Error GoTo TestFail
-    textAnswer.value = "Test"
-    ' Recast to parent class.
-    Set answer = textAnswer
+    dataLines.answer = "Answer line"
+    
+    Assert.AreEqual "Answer line", dataLines.answer
 
-    Assert.AreEqual "Test", answer.description
+    Exit Sub
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("Model")
+Private Sub timeStamp_WhenInitialisedWithText_ShouldSet()
+    On Error GoTo TestFail
+    dataLines.timeStamp = "Timestamp line"
+    
+    Assert.AreEqual "Timestamp line", dataLines.timeStamp
 
     Exit Sub
 TestFail:

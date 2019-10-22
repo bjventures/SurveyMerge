@@ -227,7 +227,7 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenLinesHaveSliderAnswerGreaterThanOne_ShouldThrow()
     Const ExpectedError As Long = CustomError.ModelValidationError
-    Const ExpectedDescription As String = "The value '1.2' is not valid."
+    Const ExpectedDescription As String = "The value '12' is not valid."
     On Error GoTo Assert
     Set returnedAnswers = answerParser.parse(getRunLines(13))
 
@@ -242,7 +242,8 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenLinesHaveSliderAnswerLessThanZero_ShouldThrow()
     Const ExpectedError As Long = CustomError.ModelValidationError
-    Const ExpectedDescription As String = "The value '-1.2' is not valid."
+    Dim ExpectedDescription As String
+    ExpectedDescription = "The value '-1.2' is not valid."
     On Error GoTo Assert
     Set returnedAnswers = answerParser.parse(getRunLines(14))
 

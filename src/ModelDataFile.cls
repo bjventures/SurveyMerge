@@ -49,11 +49,15 @@ Public Property Get surveyRunCount() As Long
     surveyRunCount = mSurveyRunCount
 End Property
 
-Public Function surveyRunStrings(ByVal runNumber As String) As Variant
+Public Function surveyRunStrings(ByVal runNumber As String) As ModelDataLines
     If runNumber < 1 Or runNumber > mSurveyRunCount Then Err.Raise CustomError.IncorrectDataFormat, "ModelDataFile.surveyRunStrings", "The value for 'runNumber' is not valid."
     Dim startLineNumber As Long
+    Dim rows As New ModelDataLines
     startLineNumber = FirstAnswerLine + ((runNumber - 1) * 3)
-    surveyRunStrings = Array(lineArray(startLineNumber), lineArray(startLineNumber + 1), lineArray(startLineNumber + 2))
+    rows.header = lineArray(startLineNumber)
+    rows.answer = lineArray(startLineNumber + 1)
+    rows.timeStamp = lineArray(startLineNumber + 2)
+    Set surveyRunStrings = rows
 End Function
 
 Private Function removeQuotes(originalString As String) As String
