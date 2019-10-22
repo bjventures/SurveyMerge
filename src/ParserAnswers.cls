@@ -108,8 +108,7 @@ Private Sub addAnswer(ByVal questionType As String, ByVal valueString As String,
         Dim sliderAnswer As ModelAnswerSlider
         Set sliderAnswer = New ModelAnswerSlider
         ' International localisation decimal separators.
-       ' sliderAnswer.value = CSng(Replace(valueString, ".", Application.International(xlDecimalSeparator)))
-        sliderAnswer.value = CSng(valueString)
+        sliderAnswer.value = CSng(Replace(valueString, ".", Application.International(xlDecimalSeparator)))
         Set baseAnswer = sliderAnswer
     Case Else
         Err.Raise CustomError.InvalidQuestionType

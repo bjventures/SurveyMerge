@@ -243,7 +243,7 @@ End Sub
 Private Sub parserAnswers_Parse_WhenLinesHaveSliderAnswerLessThanZero_ShouldThrow()
     Const ExpectedError As Long = CustomError.ModelValidationError
     Dim ExpectedDescription As String
-    ExpectedDescription = "The value '-1.2' is not valid."
+    ExpectedDescription = "The value '-1" & Application.International(xlDecimalSeparator) & "2' is not valid."
     On Error GoTo Assert
     Set returnedAnswers = answerParser.parse(getRunLines(14))
 
