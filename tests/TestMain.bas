@@ -4,7 +4,7 @@ Option Private Module
 'TODO: Need to do these tests
 
 '@TestModule
-'@Folder("Tests.Integrated Tests")
+'@Folder("Tests.Controllers")
 
 Private Assert As Object
 Private Fakes As Object

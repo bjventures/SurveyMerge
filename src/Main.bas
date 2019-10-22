@@ -1,5 +1,5 @@
 Attribute VB_Name = "Main"
-'@Folder("SurveyMerge.Controller")
+'@Folder("SurveyMerge.Controllers")
 '
 ' module: Main
 '

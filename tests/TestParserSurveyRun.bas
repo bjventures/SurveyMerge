@@ -47,7 +47,6 @@ Private Function getRunLines(runNumber As Integer) As Variant
     getRunLines = Array(lineHeader, lineAnswers, lineTimes)
 End Function
 
-' TODO Test Fail
 '@TestMethod("Parsers")
 Private Sub test_ParserSurveyRun_WhenCorrectData_ShouldParseAnswers()
     On Error GoTo TestFail

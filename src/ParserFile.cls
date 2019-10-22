@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'@Folder("SurveyMerge.Data.Parsers")
+'@Folder("SurveyMerge.Parsers")
 '
 ' class module: ParserFile
 '
@@ -44,8 +44,7 @@ Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef 
     
     surveyRunCount = (UBound(lineArray) - 4) / 3
     
-    '
-    '  WORK HERE WITH MODELDATAFILE
+    ' TODO: WORK HERE WITH MODELDATAFILE
     '
     '
     surveyName = getMetaData(lineArray, "Survey Name", 0)

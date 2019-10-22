@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'@Folder("Tests.Helpers")
+'@Folder("Tests.Utilities")
 Option Explicit
 Private Const testFileFolder = testFolder & "/test-files/"
 Private lines As Variant

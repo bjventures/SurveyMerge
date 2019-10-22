@@ -1,5 +1,8 @@
 Attribute VB_Name = "Install"
-'@Folder("SurveyMerge.Controller")
+'@Folder("SurveyMerge.Controllers")
+'
+' module: Install
+'
 Option Explicit
 
 Private Sub installEndUser()

@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-'@Folder("SurveyMerge.Data.Parsers")
+'@Folder("SurveyMerge.Parsers")
 ' class module: ParserAnswer
 '
 Option Explicit
