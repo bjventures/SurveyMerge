@@ -63,7 +63,6 @@ TestFail:
     Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-' TODO Test Fail
 '@TestMethod("Parsers")
 ' If there is no answer, we don't know what type it is, so use the "super" type as a placeholder.
 Private Sub test_ParserSurveyRun_WhenIncorrectNumberCount_ShouldThrow()

@@ -7,12 +7,19 @@ Option Private Module
 
 Private Assert As Object
 Private Fakes As Object
+Private runCount As Long
+Private testFolder As String
+Private parser As ParserFile
+Private mockPrinter As IPrinter
+Private mockTestPrinter As TestMockPrinter
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
     'this method runs once per module.
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
+    Set parser = New ParserFile
+    testFolder = getCurrentPath() & "tests/test-files/"
 End Sub
 
 '@ModuleCleanup
@@ -20,175 +27,98 @@ Private Sub ModuleCleanup()
     'this method runs once per module.
     Set Assert = Nothing
     Set Fakes = Nothing
+    Set parser = Nothing
 End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    'this method runs before every test in the module.
+    Set mockTestPrinter = New TestMockPrinter
+    ' Cast to specific class.
+    Set mockPrinter = mockTestPrinter
 End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
-    'this method runs after every test in the module.
+    Set mockTestPrinter = Nothing
+    Set mockPrinter = Nothing
 End Sub
 
-' TODO: Create tests
-'@Folder("Tests.Parsers")
-''
-'' class module: TestParserFile
-''
-'Option Explicit
-'Implements ITester
-'
-'Private assertion As Boolean
-'Private parser As ParserFile
-'Private runCount As Long
-'Private mockPrinter As IPrinter
-'Private mockTestPrinter As TestMockPrinter
-'
-'Private Property Get ITester_className() As String
-'    ITester_className = "TestParserFile"
-'End Property
-'
-'Private Property Get ITester_testList() As Variant
-''    ITester_testList = Array( _
-''        "test_ParserFile_WhenCorrect_ShouldReturnQuestionCount", _
-''        "test_ParserFile_WhenCorrectStartingCountSet_ShouldReturnCount", _
-''        "test_ParserFile_WhenCorrect_ShouldCallPrinterForEachSurveyRun", _
-''        "test_ParserFile_WhenHasSubjectId_ShouldSet", _
-''        "test_ParserFile_WhenHasSurveyName_ShouldSet", _
-''        "test_ParserFile_WhenHasIncorrectSurveyNameString_ShouldThrow", _
-''        "test_ParserFile_WhenHasIncorrectSubjectIdString_ShouldThrow", _
-''        "test_ParserFile_WhenIncorrectFormatSubjectId_ShouldThrow" _
-''    )
-'    ITester_testList = Array("test_ParserFile_WhenHasSubjectId_ShouldSet")
-'
-'End Property
-'
-'Private Function ITester_runTest(ByRef methodName As String) As Boolean
-'
-'    If Len(methodName) > 63 Then MsgBox "The method name '" & methodName & "' is too long to run on the Mac os.", vbCritical, ProjectName
-'    ITester_runTest = CallByName(Me, methodName, VbMethod)
-'
-'End Function
-'
-'Private Sub Class_Initialize()
-'
-'    Set parser = New ParserFile
-'
-'End Sub
-'
-'Private Sub ITester_setUp()
-'    Set mockTestPrinter = New TestMockPrinter
-'    Set mockPrinter = mockTestPrinter
-'End Sub
-'
-'Private Sub ITester_breakDown()
-'    Set mockTestPrinter = Nothing
-'    Set mockPrinter = Nothing
-'End Sub
-'
-'Public Function test_ParserFile_WhenCorrect_ShouldReturnQuestionCount() As Boolean
-'
-'    runCount = parser.parse(getTestFilePath(), getTestFileName("test-1"), mockPrinter, 0)
-'    assertion = runCount = 2
-'    test_ParserFile_WhenCorrect_ShouldReturnQuestionCount = assertion
-'
-'End Function
-'
-'Public Function test_ParserFile_WhenCorrectStartingCountSet_ShouldReturnCount() As Boolean
-'
-'    runCount = parser.parse(getTestFilePath(), getTestFileName("test-1"), mockPrinter, 3)
-'    assertion = runCount = 5
-'    test_ParserFile_WhenCorrectStartingCountSet_ShouldReturnCount = assertion
-'
-'End Function
-'
-'Public Function test_ParserFile_WhenCorrect_ShouldCallPrinterForEachSurveyRun() As Boolean
-'
-'    runCount = parser.parse(getTestFilePath(), getTestFileName("test-1"), mockPrinter, 0)
-'
-'    assertion = 2 = mockTestPrinter.validSurveyRunNumber
-'    test_ParserFile_WhenCorrect_ShouldCallPrinterForEachSurveyRun = assertion
-'
-'End Function
-'
-'Public Function test_ParserFile_WhenHasSubjectId_ShouldSet() As Boolean
-'
-'    runCount = parser.parse(getTestFilePath(), getTestFileName("test-1"), mockPrinter, 0)
-'
-'    assertion = "aa" = mockTestPrinter.surveyRun.participantId
-'
-'    test_ParserFile_WhenHasSubjectId_ShouldSet = assertion
-'
-'End Function
-'
-'Public Function test_ParserFile_WhenHasSurveyName_ShouldSet() As Boolean
-'
-'    runCount = parser.parse(getTestFilePath(), getTestFileName("test-1"), mockPrinter, 0)
-'
-'    assertion = "Test 1" = mockTestPrinter.surveyRun.surveyName
-'    test_ParserFile_WhenHasSurveyName_ShouldSet = assertion
-'
-'End Function
-'
-''@Ignore UnderscoreInPublicClassModuleMember
-'Public Function test_ParserFile_WhenHasIncorrectSurveyNameString_ShouldThrow() As Boolean
-'
-'    On Error GoTo Catch
-'    runCount = parser.parse(getTestFilePath(), getTestFileName("test-2"), mockPrinter, 0)
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.IncorrectDataFormat
-'    test_ParserFile_WhenHasIncorrectSurveyNameString_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-'Public Function test_ParserFile_WhenHasIncorrectSubjectIdString_ShouldThrow() As Boolean
-'
-'    On Error GoTo Catch
-'    runCount = parser.parse(getTestFilePath(), getTestFileName("test-3"), mockPrinter, 0)
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.IncorrectDataFormat
-'    test_ParserFile_WhenHasIncorrectSubjectIdString_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-'Public Function test_ParserFile_WhenIncorrectFormatSubjectId_ShouldThrow() As Boolean
-'
-'    On Error GoTo Catch
-'    runCount = parser.parse(getTestFilePath(), getTestFileName("test-4"), mockPrinter, 0)
-'
-'Finally:
-'    Exit Function
-'
-'Catch:
-'    assertion = Err.number = CustomError.IncorrectDataFormat
-'    test_ParserFile_WhenIncorrectFormatSubjectId_ShouldThrow = assertion
-'    Resume Finally
-'
-'End Function
-'
-'
-'
-'
-'
+'@TestMethod("Parsers")
+Private Sub parse_WhenFileCorrect_ShouldReturnQuestionCount()
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 0)
+    
+    Assert.AreEqual CLng(2), runCount
+End Sub
 
+'@TestMethod("Parsers")
+Private Sub parse_WhenFileCorrectStartingCountSet_ShouldReturnQuestionCount()
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 3)
+    
+    Assert.AreEqual CLng(5), runCount
+End Sub
 
+'@TestMethod("Parsers")
+Private Sub parse_WhenFileCorrect_ShouldCallPrinterForEachSurveyRun()
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 0)
+    
+    Assert.AreEqual CLng(2), mockTestPrinter.validSurveyRunNumber
+End Sub
 
+'@TestMethod("Parsers")
+Private Sub parse_WhenFileWhenHasSubjectId_ShouldSet()
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 0)
+    
+    Assert.AreEqual "Test ID", mockTestPrinter.surveyRun.participantId
+End Sub
 
+'@TestMethod("Parsers")
+Private Sub parse_WhenFileWhenHasSurveyName_ShouldSet()
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 0)
+    
+    Assert.AreEqual "Test 1", mockTestPrinter.surveyRun.surveyName
+End Sub
 
+'@TestMethod("Parsers")
+Private Sub parse_WhenHasIncorrectSurveyNameString_ShouldThrow()
+    Const ExpectedError As Long = CustomError.IncorrectDataFormat
+    Const ExpectedDescription As String = "There is an error in the file 'test-2.csv'. The value 'Survey Name' was not found on line 0."
+    On Error GoTo Assert
+    
+    runCount = parser.parse(testFolder, "test-2.csv", mockPrinter, 0)
+    
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
 
+'@TestMethod("Parsers")
+Private Sub parse_WhenHasIncorrectSubjectIdString_ShouldThrow()
+    Const ExpectedError As Long = CustomError.IncorrectDataFormat
+    Const ExpectedDescription As String = "There is an error in the file 'test-4.csv'. The value 'Subject ID' was not found on line 2."
+    On Error GoTo Assert
+    
+    runCount = parser.parse(testFolder, "test-4.csv", mockPrinter, 0)
+    
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub
 
-
-
-
+'@TestMethod("Parsers")
+Private Sub parse_WhenHasIncorrectFormatSubjectIdString_ShouldThrow()
+    Const ExpectedError As Long = CustomError.IncorrectDataFormat
+    Const ExpectedDescription As String = "There is an error in the file 'test-4.csv'. The value 'Subject ID' was not found on line 2."
+    On Error GoTo Assert
+    
+    runCount = parser.parse(testFolder, "test-4.csv", mockPrinter, 0)
+    
+    Assert.fail "Expected error was not raised"
+    Exit Sub
+Assert:
+    Assert.AreEqual ExpectedError, Err.number
+    Assert.AreEqual ExpectedDescription, Err.description
+End Sub

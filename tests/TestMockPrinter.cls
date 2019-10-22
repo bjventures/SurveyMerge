@@ -28,31 +28,23 @@ End Sub
 
 '@Ignore ParameterNotUsed
 Public Sub IPrinter_printError(ByVal message As String, ByVal lineNo As Long)
-
     m_ErrorMessage = message
-
 End Sub
 
 Public Property Get validSurveyRunNumber() As Long
-
     validSurveyRunNumber = m_ValidSurveyRunNumber
-
 End Property
 
 Public Property Get surveyRun() As ModelSurveyRun
-    If surveyRun Is Nothing Then Set m_SurveyRun = New ModelSurveyRun
+    If m_SurveyRun Is Nothing Then Set m_SurveyRun = New ModelSurveyRun
     Set surveyRun = m_SurveyRun
-
 End Property
 
 Public Property Set surveyRun(ByRef value As ModelSurveyRun)
     Set m_SurveyRun = value
-
 End Property
 
 Public Property Get errorMessage() As String
-
     errorMessage = m_ErrorMessage
-
 End Property
 

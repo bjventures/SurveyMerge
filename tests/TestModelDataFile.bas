@@ -70,10 +70,10 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub surveyRunStrings_WhenInitialisedWithFileText_ShouldSet()
+Private Sub surveyRunLines_WhenInitialisedWithFileText_ShouldSet()
     On Error GoTo TestFail
     Dim dataLines As ModelDataLines
-    Set dataLines = dataFile.surveyRunStrings(1)
+    Set dataLines = dataFile.surveyRunLines(1)
 
     Assert.AreEqual "Start Time,End Time,1,2,3,4,5", dataLines.header
 
@@ -83,13 +83,13 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
-Private Sub surveyRunStrings_WhenArgumentTooHigh_ShouldThrow()
+Private Sub surveyRunLines_WhenArgumentTooHigh_ShouldThrow()
     Const ExpectedError As Long = CustomError.IncorrectDataFormat
     Const ExpectedDescription As String = "The value for 'runNumber' is not valid."
     On Error GoTo Assert
     
     ' There are only 2 survey runs in the file.
-    dataFile.surveyRunStrings (3)
+    dataFile.surveyRunLines (3)
       
     Assert.fail "Expected error was not raised"
     Exit Sub
