@@ -27,7 +27,7 @@ Private Sub exportVisualBasicCode()
     On Error GoTo Catch
     count = 0
     SrcDirectory = getCurrentPath & SrcFolder
-    testingDirectory = getCurrentPath & testFolder
+    testingDirectory = getCurrentPath & TestFolder
         
     If Not directoryExists(SrcDirectory) Then
         MkDir SrcDirectory

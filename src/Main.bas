@@ -8,7 +8,7 @@ Option Explicit
 '
 ' The arguments for this Sub are to enable testing.
 '
-Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, Optional ByVal showMsg As Boolean = True)
+Public Sub combineCsvFiles(Optional ByVal currentPath As String = vbNullString, Optional ByVal showMsg As Boolean = True)
     Dim sheetArray() As Variant
     Dim success As Long
     Dim fileArray() As String

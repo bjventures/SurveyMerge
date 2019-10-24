@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '@Folder("Tests.Utilities")
 Option Explicit
-Private Const testFileFolder = testFolder & "/test-files/"
+Private Const testFileFolder = TestFolder & "/test-files/"
 Private lines As Variant
 Private mFileText As String
 
