@@ -3,6 +3,7 @@
 *.xlsm
 *.xlsx
 *.survey
+*.doc*
 
 # Ignore csv files except those in test-files directory.
 *.csv
