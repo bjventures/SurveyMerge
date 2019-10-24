@@ -6,33 +6,14 @@ Attribute VB_Name = "Install"
 Option Explicit
 
 Private Sub installEndUser()
-
     Dim sheetArray() As Variant
     If Not sheetExists(getWsName(WsSheet.Dashboard)) Then
         sheetArray = Array(getWsName(WsSheet.Dashboard), getWsName(WsSheet.Answers), getWsName(WsSheet.Times))
-        doFirstInstall (sheetArray)
+    clearOrAddSpreadsheets sheetArray
     End If
-
-End Sub
-
-'@Ignore ProcedureNotUsed
-Private Sub installDeveloper()
-
-    installEndUser
-
-End Sub
-
-Private Sub doFirstInstall(ByVal sheetArray As Variant)
-
-    Application.ScreenUpdating = False
-    createOrClearWorksheets sheetArray
-    setupDashboard
-    Application.ScreenUpdating = True
-
 End Sub
 
 Private Function sheetExists(ByVal sheetToFind As String, Optional ByRef wb As Workbook) As Boolean
-    
     Dim Sheet As Worksheet
     sheetExists = False
     If wb Is Nothing Then Set wb = ThisWorkbook
@@ -42,31 +23,15 @@ Private Function sheetExists(ByVal sheetToFind As String, Optional ByRef wb As W
             Exit Function
         End If
     Next Sheet
-
 End Function
 
-Public Sub createOrClearWorksheets(ByVal sheetArray As Variant)
-
-    Dim SheetName As Variant
-    Dim sheetString As String
-
-    For Each SheetName In sheetArray
-        sheetString = CStr(SheetName)
-        If sheetExists(sheetString) Then
-            ThisWorkbook.Sheets(sheetString).Cells.ClearContents
-        Else
-            createSheet sheetString
-        End If
-    Next SheetName
-
-End Sub
-
 Private Sub setupDashboard()
-    
     Dim ws As Worksheet
     Dim btnRange As Range
     Dim btn As Button
-    Set ws = ThisWorkbook.Sheets(getWsName(WsSheet.Dashboard))
+    Application.ScreenUpdating = False
+    
+    Set ws = ThisWorkbook.sheets(getWsName(WsSheet.Dashboard))
     ws.Activate
     
     ' Instructions
@@ -96,7 +61,6 @@ Private Sub setupDashboard()
     ws.Cells(6, 1).HorizontalAlignment = xlCenter
     ws.UsedRange.WrapText = True
     
-    
     ' Button
     Set btnRange = ws.Range("A8")
     Set btn = ws.Buttons.Add(btnRange.Left + 145, btnRange.Top, 100, 25)
@@ -106,17 +70,11 @@ Private Sub setupDashboard()
         .Font.Bold = True
         .OnAction = "combineCsvFiles"
     End With
+    Application.ScreenUpdating = True
 
-End Sub
-
-Private Sub createSheet(ByVal name As String)
-    With ThisWorkbook
-        .Sheets.Add(After:=.Sheets(.Sheets.count)).name = name
-    End With
 End Sub
 
 Private Function getInstructions1() As String
-
     Dim returnString As String
     
     returnString = "To import the PIEL Survey data files (with '.csv' extension):" & _
@@ -126,28 +84,23 @@ Private Function getInstructions1() As String
                    "Each time that you click on the button, the previous imported data will be overwritten. " & _
                    "This allows you to merge the data as often as you like as new data files are received."
     getInstructions1 = returnString
-
 End Function
 
 Private Function getInstructions2() As String
-
     Dim returnString As String
     
     returnString = "Note that this is a Beta version of the data merge tool, " & _
                    "let us know of any problems by clicking on the contact link below."
     getInstructions2 = returnString
-
 End Function
 
 Private Function getInstructions3() As String
-
     Dim returnString As String
     
     returnString = "This software is an open source project. " & _
                    "Click on the link below for the repository that contains the code and license terms. " & _
                    "It would be great if your team could contribute to the project and improve it for other researchers."
     getInstructions3 = returnString
-
 End Function
 
 

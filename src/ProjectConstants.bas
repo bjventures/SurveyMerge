@@ -34,7 +34,7 @@ Enum WsSheet
     Times = 3
 End Enum
 
-Public Function getWsName(ByRef id As WsSheet) As String
+Public Function getWsName(ByVal id As WsSheet) As String
     Select Case id
     Case WsSheet.Dashboard
         getWsName = "Dashboard"

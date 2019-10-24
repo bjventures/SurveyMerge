@@ -1,15 +1,14 @@
 Attribute VB_Name = "TestMain"
-Option Explicit
-Option Private Module
-'TODO: Need to do these tests
-
 '@TestModule
 '@Folder("Tests.Controllers")
+
+Option Explicit
+Option Private Module
 
 Private Assert As Object
 Private Fakes As Object
 Private wsAnswers As Worksheet
-Private wstime As Worksheet
+Private wsTimes As Worksheet
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -25,21 +24,16 @@ End Sub
 
 '@TestInitialize
 Private Sub TestInitialize()
-    clearSpreadsheet getWsName(WsSheet.Answers)
 End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
 End Sub
 
-Private Sub clearSpreadsheet(ByVal name As String)
-    On Error GoTo SetupFail
-    ThisWorkbook.Sheets(name).Cells.ClearContents
-    
-    Exit Sub
-SetupFail:
-    Err.Raise CustomError.SetupError, ProjectName & ".clearSpreadsheet", "The " & name & " worksheet does not exist. Please set up project correctly."
-End Sub
+
+'TODO: Need to do these tests
+
+
 
 '@TestMethod("Model")
 Private Sub answerList_Value_WhenTest_Should()

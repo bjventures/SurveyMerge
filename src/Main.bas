@@ -9,7 +9,6 @@ Option Explicit
 ' The arguments for this Sub are to enable testing.
 '
 Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, Optional ByVal showMsg As Boolean = True)
-      
     Dim sheetArray() As Variant
     Dim success As Long
     Dim fileArray() As String
@@ -33,7 +32,7 @@ Public Sub combineCsvFiles(Optional ByRef currentPath As String = vbNullString, 
     Application.ScreenUpdating = False
     
     sheetArray = Array(getWsName(WsSheet.Answers), getWsName(WsSheet.Times))
-    createOrClearWorksheets sheetArray
+    clearOrAddSpreadsheets sheetArray
     
     success = 0
     lineCounter = 0
@@ -50,7 +49,7 @@ Finally:
 
 Catch:
     ' Delete any imported data, if an error occured, it is unreliable.
-    If Err.number <> CustomError.FileNotFound Then createOrClearWorksheets sheetArray
+    If Err.number <> CustomError.FileNotFound Then clearOrAddSpreadsheets sheetArray
     If showMsg Then MsgBox "The file could not be imported." & vbNewLine & Err.description, vbOKOnly, ProjectName
     Resume Finally
 

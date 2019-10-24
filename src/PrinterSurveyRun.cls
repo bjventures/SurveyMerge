@@ -12,26 +12,22 @@ Attribute VB_Exposed = False
 ' class module: PrinterSurveyRun
 '
 Option Explicit
-
 Implements IPrinter
 
-Private i As Long
+Private questionCounter As Long
 
+'TODO: Remove ByRef after tests implemented
 Public Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
-
     Dim ws As Worksheet
     
-    Set ws = ThisWorkbook.Sheets(getWsName(WsSheet.Answers))
+    Set ws = ThisWorkbook.sheets(getWsName(WsSheet.Answers))
     printAnswerWs ws, surveyRun, lineNo
     
-    Set ws = ThisWorkbook.Sheets(getWsName(WsSheet.Times))
-    printtimeWs ws, surveyRun, lineNo
-
-
+    Set ws = ThisWorkbook.sheets(getWsName(WsSheet.Times))
+    printTimeWs ws, surveyRun, lineNo
 End Sub
 
 Private Sub printAnswerWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByVal lineNo As Long)
-            
     printAnswerWsHeaderLine ws, surveyRun, lineNo
     
     ws.Cells(lineNo + 2, 1).value = surveyRun.surveyName
@@ -39,18 +35,16 @@ Private Sub printAnswerWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyR
     ws.Cells(lineNo + 2, 3).value = surveyRun.startTime
     ws.Cells(lineNo + 2, 4).value = surveyRun.endTime
 
-    For i = 1 To surveyRun.questionCount
-        ws.Cells(lineNo + 2, 4 + i).value = surveyRun.answerCollection.item(i).description
-    Next i
+    For questionCounter = 1 To surveyRun.questionCount
+        ws.Cells(lineNo + 2, 4 + questionCounter).value = surveyRun.answerCollection.item(questionCounter).description
+    Next questionCounter
     ws.UsedRange.Columns(1).AutoFit
     ws.UsedRange.Columns(2).AutoFit
     ws.UsedRange.Columns(3).AutoFit
     ws.UsedRange.Columns(4).AutoFit
-
 End Sub
 
-Private Sub printtimeWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByVal lineNo As Long)
-        
+Private Sub printTimeWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByVal lineNo As Long)
     printAnswerWsHeaderLine ws, surveyRun, lineNo
     
     ws.Cells(lineNo + 2, 1).value = surveyRun.surveyName
@@ -58,14 +52,13 @@ Private Sub printtimeWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun
     ws.Cells(lineNo + 2, 3).value = surveyRun.startTime
     ws.Cells(lineNo + 2, 4).value = surveyRun.endTime
 
-    For i = 1 To surveyRun.questionCount
+    For questionCounter = 1 To surveyRun.questionCount
         ' Dates aren't set if the question is skipped by branching.
-        If surveyRun.answerCollection.item(i).time <> CDate(0) Then
-            ws.Cells(lineNo + 2, 4 + i).value = surveyRun.answerCollection.item(i).time
+        If surveyRun.answerCollection.item(questionCounter).time <> CDate(0) Then
+            ws.Cells(lineNo + 2, 4 + questionCounter).value = surveyRun.answerCollection.item(questionCounter).time
         End If
-    Next i
+    Next questionCounter
     ws.UsedRange.Columns.AutoFit
-
 End Sub
 
 Private Sub printAnswerWsHeaderLine(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByVal lineNo As Long)
@@ -96,21 +89,19 @@ Private Sub printAnswerWsHeaderLine(ByRef ws As Worksheet, ByRef surveyRun As Mo
         .HorizontalAlignment = xlCenter
     End With
     
-    For i = 1 To surveyRun.questionCount
-        With ws.Cells(1, 4 + i)
-            .value = i
+    For questionCounter = 1 To surveyRun.questionCount
+        With ws.Cells(1, 4 + questionCounter)
+            .value = questionCounter
             .Font.Bold = True
             .HorizontalAlignment = xlCenter
         End With
-    Next i
-    
+    Next questionCounter
+   
 End Sub
 
 Public Sub IPrinter_printError(ByVal description As String, ByVal lineNo As Long)
-
     Dim ws As Worksheet
-    Set ws = ThisWorkbook.Sheets(getWsName(WsSheet.Answers))
+    Set ws = ThisWorkbook.sheets(getWsName(WsSheet.Answers))
     ws.Cells(lineNo + 2, 1).value = "Error In Survey Run: " & description
-
 End Sub
 
