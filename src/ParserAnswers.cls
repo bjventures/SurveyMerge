@@ -141,7 +141,6 @@ Private Function isIntegerArray(ByVal inputString As String) As Boolean
 End Function
 
 Private Function convertToIntegerArray(ByVal inputString As String) As Variant
- 
     Dim stringArray() As String
     Dim intArray() As Long
     Dim bound As Long
@@ -154,29 +153,25 @@ Private Function convertToIntegerArray(ByVal inputString As String) As Variant
     For i = 0 To bound
         intArray(i) = CInt(stringArray(i))
     Next i
-    
-    convertToIntegerArray = stringArray
 
+    convertToIntegerArray = intArray
 End Function
 
 Private Function isInteger(ByVal item As String) As Boolean
-
     Dim result As Boolean
     result = False
-
     If IsNumeric(item) Then
         If CStr(CInt(item)) = item Then
             result = True
         End If
     End If
     isInteger = result
-
 End Function
 
 ' The purpose of this function is to combine the aray items from a checkbox question into a single item.
+' TODO: Since May 2019, {"} is replaced by {'} in the PIEL App data file. In late 2010 can simplify this logic.
 ' The result may be a shorter array. The size should match the number of questions.
 Private Function getCleanDataArray(ByVal dataArray As Variant) As Variant
-
     Dim newDataArray As Variant
     Dim newCounter As Long
     Dim oldCounter As Long
@@ -196,14 +191,12 @@ Private Function getCleanDataArray(ByVal dataArray As Variant) As Variant
     Next
     
     getCleanDataArray = newDataArray
-
 End Function
 
 '
 ' This recursive function is called when '"*' is found.
 ' It returns the index of the array for the second last item '*"' before th6e next item '"*' or the end of the array.
 ' It is broken by 2 edge cases: {","} and {",number,} but is better than Excel parsing for this type of file.
-' TODO: Since May 2019, {"} is replaced by {'} in the PIEL App data file. In late 2010 can simplify this logic.
 '
 Private Function getEndIndex(ByVal counter As Long, ByVal answerArray As Variant, ByVal oldArraySize As Long) As Long
     Dim i As Long
