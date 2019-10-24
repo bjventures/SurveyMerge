@@ -12,7 +12,7 @@ Public Sub combineCsvFiles(Optional ByVal currentPath As String = vbNullString, 
     Dim sheetArray() As Variant
     Dim success As Long
     Dim fileArray() As String
-    Dim i As Long
+    Dim fileCounter As Long
     Dim arrayBound As Long
     Dim parser As ParserFile
     Dim printer As PrinterSurveyRun
@@ -36,10 +36,10 @@ Public Sub combineCsvFiles(Optional ByVal currentPath As String = vbNullString, 
     
     success = 0
     lineCounter = 0
-    For i = 0 To arrayBound - 1
-        lineCounter = parser.parse(currentPath, fileArray(i), printer, lineCounter)
+    For fileCounter = 0 To arrayBound - 1
+        lineCounter = parser.parse(currentPath, fileArray(fileCounter), printer, lineCounter)
         success = success + 1
-    Next
+    Next fileCounter
 
     Application.ScreenUpdating = True
     If showMsg Then MsgBox success & " CSV files were combined.", vbOKOnly, ProjectName

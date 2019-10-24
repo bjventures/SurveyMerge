@@ -24,7 +24,7 @@ End Sub
 Private Sub ModuleCleanup()
     Set Assert = Nothing
     Set Fakes = Nothing
-    clearOrAddSpreadsheets (sheets)
+   ' clearOrAddSpreadsheets (sheets)
 End Sub
 
 '@TestInitialize
@@ -43,7 +43,7 @@ End Sub
 Private Sub combineCsvFiles_WhenMultipleFilesOldVersion_ShouldMergeAllSurveyRuns()
     On Error GoTo TestFail
     
-    combineCsvFiles getCurrentPath() & TestFolder & "/test-files/test-group-1/", False
+    combineCsvFiles getCurrentPath() & testFolder & "/test-files/test-group-1/", False
      
     Assert.AreEqual CLng(10), wsAnswers.UsedRange.rows.count
     Assert.AreEqual CLng(10), wsTimes.UsedRange.rows.count
@@ -53,12 +53,11 @@ TestFail:
     Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-
 '@TestMethod("Controllers")
 Private Sub combineCsvFiles_WhenMultipleFiles_ShouldMergeAllSurveyRuns()
     On Error GoTo TestFail
     
-    combineCsvFiles getCurrentPath() & TestFolder & "/test-files/test-group-2/", False
+    combineCsvFiles getCurrentPath() & testFolder & "/test-files/test-group-2/", False
      
     Assert.AreEqual CLng(10), wsAnswers.UsedRange.rows.count
     Assert.AreEqual CLng(10), wsTimes.UsedRange.rows.count
@@ -73,7 +72,7 @@ End Sub
 Private Sub combineCsvFiles_WhenSurveyRunError_ShouldPrintError()
     On Error GoTo TestFail
     
-    combineCsvFiles getCurrentPath() & TestFolder & "/test-files/test-group-3/", False
+    combineCsvFiles getCurrentPath() & testFolder & "/test-files/test-group-3/", False
      
     Assert.AreEqual "Error In Survey Run: The question type is not recognised.", wsAnswers.Cells(3, 1).value
     Assert.AreEqual "Error In Survey Run: Error 515: The question count is incorrect.", wsAnswers.Cells(5, 1).value

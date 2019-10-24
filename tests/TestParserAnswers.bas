@@ -37,20 +37,11 @@ End Sub
 Private Sub TestCleanup()
 End Sub
 
-Private Function getRunLines(runNumber As Integer) As Variant
-    Dim lineHeader As String
-    Dim lineAnswers As String
-    Dim lineTimes As String
-    lineHeader = accessor.getFileRunLines(runNumber)(0)
-    lineAnswers = accessor.getFileRunLines(runNumber)(1)
-    lineTimes = accessor.getFileRunLines(runNumber)(2)
-    getRunLines = Array(lineHeader, lineAnswers, lineTimes)
-End Function
-
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenValidListAnswers_ShouldReturnCorrectAnswers()
     On Error GoTo TestFail
-    Set returnedAnswers = answerParser.parse(getRunLines(1))
+    
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(1))
 
     Assert.AreEqual CLng(1), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerList
@@ -63,7 +54,7 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenValidCheckboxAnswers_ShouldReturnCorrectAnswer()
     On Error GoTo TestFail
-    Set returnedAnswers = answerParser.parse(getRunLines(2))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(2))
 
     Assert.AreEqual CLng(3), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerCheckbox
@@ -76,7 +67,7 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenValidTextAnswer_ShouldReturnCorrectAnswer()
     On Error GoTo TestFail
-    Set returnedAnswers = answerParser.parse(getRunLines(3))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(3))
 
     Assert.AreEqual CLng(5), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerText
@@ -89,7 +80,7 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenValidSliderAnswer_ShouldReturnCorrectAnswer()
     On Error GoTo TestFail
-    Set returnedAnswers = answerParser.parse(getRunLines(4))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(4))
 
     Assert.AreEqual CLng(3), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerSlider
@@ -103,7 +94,7 @@ End Sub
 ' If there is no answer, we don't know what type it is, so use the "super" type as a placeholder.
 Private Sub parserAnswers_Parse_WhenNoAnswer_ShouldReturnBaseAnswer()
     On Error GoTo TestFail
-    Set returnedAnswers = answerParser.parse(getRunLines(5))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(5))
 
     Assert.AreEqual CLng(1), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerBase
@@ -116,7 +107,7 @@ End Sub
 '@TestMethod("Parsers")
 Private Sub parserAnswers_Parse_WhenHaveAllTypes_ShouldReturnAllAnswers()
     On Error GoTo TestFail
-    Set returnedAnswers = answerParser.parse(getRunLines(6))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(6))
 
     Assert.AreEqual CLng(5), returnedAnswers.count
     Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerBase
@@ -135,7 +126,7 @@ Private Sub parserAnswers_Parse_WhenWrongNumberOfTimes_ShouldThrow()
     Const ExpectedError As Long = CustomError.IncorrectDataFormat
     Const ExpectedDescription As String = "The question count is incorrect."
     On Error GoTo Assert
-    Set returnedAnswers = answerParser.parse(getRunLines(7))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(7))
 
     Assert.fail "Expected error was not raised"
     Exit Sub
@@ -150,7 +141,7 @@ Private Sub parserAnswers_Parse_WhenLinesHaveInvalidNonNumericAnswer_ShouldThrow
     Const ExpectedError As Long = CustomError.InvalidQuestionType
     Const ExpectedDescription As String = "The answer text 'a1' is not a valid answer type."
     On Error GoTo Assert
-    Set returnedAnswers = answerParser.parse(getRunLines(8))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(8))
 
     Assert.fail "Expected error was not raised"
     Exit Sub
@@ -165,7 +156,7 @@ Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerMissingQuote_ShouldThr
     Const ExpectedError As Long = CustomError.InvalidQuestionType
     Const ExpectedDescription As String = "The answer text '""Test' is not a valid answer type."
     On Error GoTo Assert
-    Set returnedAnswers = answerParser.parse(getRunLines(9))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(9))
 
     Assert.fail "Expected error was not raised"
     Exit Sub
@@ -180,7 +171,7 @@ Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerShort_ShouldThrow()
     Const ExpectedError As Long = CustomError.InvalidQuestionType
     Const ExpectedDescription As String = "The answer text 'a' is not a valid answer type."
     On Error GoTo Assert
-    Set returnedAnswers = answerParser.parse(getRunLines(10))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(10))
 
     Assert.fail "Expected error was not raised"
     Exit Sub
@@ -199,7 +190,7 @@ Private Sub parserAnswers_Parse_WhenLinesHaveNegativeListAnswer_ShouldThrow()
     Const ExpectedError As Long = CustomError.ModelValidationError
     Const ExpectedDescription As String = "The value '-1' is not valid."
     On Error GoTo Assert
-    Set returnedAnswers = answerParser.parse(getRunLines(11))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(11))
 
     Assert.fail "Expected error was not raised"
     Exit Sub
@@ -214,7 +205,7 @@ Private Sub parserAnswers_Parse_WhenLinesHaveNegativeCheckboxAnswer_ShouldThrow(
     Const ExpectedError As Long = 13
     Const ExpectedDescription As String = "Type mismatch"
     On Error GoTo Assert
-    Set returnedAnswers = answerParser.parse(12)
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(12))
 
     Assert.fail "Expected error was not raised"
     Exit Sub
@@ -229,7 +220,7 @@ Private Sub parserAnswers_Parse_WhenLinesHaveSliderAnswerGreaterThanOne_ShouldTh
     Const ExpectedError As Long = CustomError.ModelValidationError
     Const ExpectedDescription As String = "The value '12' is not valid."
     On Error GoTo Assert
-    Set returnedAnswers = answerParser.parse(getRunLines(13))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(13))
 
     Assert.fail "Expected error was not raised"
     Exit Sub
@@ -245,7 +236,7 @@ Private Sub parserAnswers_Parse_WhenLinesHaveSliderAnswerLessThanZero_ShouldThro
     Dim ExpectedDescription As String
     ExpectedDescription = "The value '-1" & Application.International(xlDecimalSeparator) & "2' is not valid."
     On Error GoTo Assert
-    Set returnedAnswers = answerParser.parse(getRunLines(14))
+    Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(14))
 
     Assert.fail "Expected error was not raised"
     Exit Sub

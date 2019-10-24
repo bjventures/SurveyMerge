@@ -8,7 +8,7 @@ Option Private Module
 Private Assert As Object
 Private Fakes As Object
 Private runCount As Long
-Private TestFolder As String
+Private testFolder As String
 Private parser As ParserFile
 Private mockPrinter As IPrinter
 Private mockTestPrinter As TestMockPrinter
@@ -19,7 +19,7 @@ Private Sub ModuleInitialize()
     Set Assert = CreateObject("Rubberduck.AssertClass")
     Set Fakes = CreateObject("Rubberduck.FakesProvider")
     Set parser = New ParserFile
-    TestFolder = getCurrentPath() & "tests/test-files/"
+    testFolder = getCurrentPath() & "tests/test-files/"
 End Sub
 
 '@ModuleCleanup
@@ -45,35 +45,37 @@ End Sub
 
 '@TestMethod("Parsers")
 Private Sub parse_WhenFileCorrect_ShouldReturnQuestionCount()
-    runCount = parser.parse(TestFolder, "test-1.csv", mockPrinter, 0)
+
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 0)
     
     Assert.AreEqual CLng(2), runCount
 End Sub
 
 '@TestMethod("Parsers")
 Private Sub parse_WhenFileCorrectStartingCountSet_ShouldReturnQuestionCount()
-    runCount = parser.parse(TestFolder, "test-1.csv", mockPrinter, 3)
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 3)
     
     Assert.AreEqual CLng(5), runCount
 End Sub
 
 '@TestMethod("Parsers")
 Private Sub parse_WhenFileCorrect_ShouldCallPrinterForEachSurveyRun()
-    runCount = parser.parse(TestFolder, "test-1.csv", mockPrinter, 0)
+
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 0)
     
     Assert.AreEqual CLng(2), mockTestPrinter.validSurveyRunNumber
 End Sub
 
 '@TestMethod("Parsers")
 Private Sub parse_WhenFileWhenHasSubjectId_ShouldSet()
-    runCount = parser.parse(TestFolder, "test-1.csv", mockPrinter, 0)
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 0)
     
     Assert.AreEqual "Test ID", mockTestPrinter.surveyRun.participantId
 End Sub
 
 '@TestMethod("Parsers")
 Private Sub parse_WhenFileWhenHasSurveyName_ShouldSet()
-    runCount = parser.parse(TestFolder, "test-1.csv", mockPrinter, 0)
+    runCount = parser.parse(testFolder, "test-1.csv", mockPrinter, 0)
     
     Assert.AreEqual "Test 1", mockTestPrinter.surveyRun.surveyName
 End Sub
@@ -84,7 +86,7 @@ Private Sub parse_WhenHasIncorrectSurveyNameString_ShouldThrow()
     Const ExpectedDescription As String = "There is an error in the file 'test-2.csv'. The value 'Survey Name' was not found on line 0."
     On Error GoTo Assert
     
-    runCount = parser.parse(TestFolder, "test-2.csv", mockPrinter, 0)
+    runCount = parser.parse(testFolder, "test-2.csv", mockPrinter, 0)
     
     Assert.fail "Expected error was not raised"
     Exit Sub
@@ -99,7 +101,7 @@ Private Sub parse_WhenHasIncorrectSubjectIdString_ShouldThrow()
     Const ExpectedDescription As String = "There is an error in the file 'test-4.csv'. The value 'Subject ID' was not found on line 2."
     On Error GoTo Assert
     
-    runCount = parser.parse(TestFolder, "test-4.csv", mockPrinter, 0)
+    runCount = parser.parse(testFolder, "test-4.csv", mockPrinter, 0)
     
     Assert.fail "Expected error was not raised"
     Exit Sub
@@ -114,7 +116,7 @@ Private Sub parse_WhenHasIncorrectFormatSubjectIdString_ShouldThrow()
     Const ExpectedDescription As String = "There is an error in the file 'test-4.csv'. The value 'Subject ID' was not found on line 2."
     On Error GoTo Assert
     
-    runCount = parser.parse(TestFolder, "test-4.csv", mockPrinter, 0)
+    runCount = parser.parse(testFolder, "test-4.csv", mockPrinter, 0)
     
     Assert.fail "Expected error was not raised"
     Exit Sub

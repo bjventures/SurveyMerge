@@ -20,7 +20,7 @@ Private m_SurveyRun As ModelSurveyRun
 Private m_ErrorMessage As String
 
 '@Ignore ParameterNotUsed
-Public Sub IPrinter_printData(ByRef singleRun As ModelSurveyRun, ByRef lineNo As Long)
+Public Sub IPrinter_printData(ByVal singleRun As ModelSurveyRun, ByVal lineNo As Long)
     Set m_SurveyRun = singleRun
     m_ValidSurveyRunNumber = m_ValidSurveyRunNumber + 1
 

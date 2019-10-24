@@ -13,7 +13,7 @@ Attribute VB_Exposed = False
 '
 Option Explicit
 
-Public Sub printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
+Public Sub printData(ByVal surveyRun As ModelSurveyRun, ByVal lineNo As Long)
 
 End Sub
 

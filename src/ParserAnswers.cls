@@ -15,11 +15,11 @@ Option Explicit
 Private answerCollection As Answers
 Private baseAnswer As ModelAnswerBase
 
-Public Function parse(ByVal lines As Variant) As Answers
+Public Function parse(ByVal lines As ModelDataLines) As Answers
     ' lines is an array of the 3 data lines from the file.
     Dim cleanArray As Variant
-    cleanArray = getCleanDataArray(Split(lines(1), ","))
-    Set parse = getAnswerCollection(cleanArray, Split(lines(2), ","))
+    cleanArray = getCleanDataArray(Split(lines.answer, ","))
+    Set parse = getAnswerCollection(cleanArray, Split(lines.timeStamp, ","))
 End Function
 
 ' This function returns an AnswerCollection.
@@ -241,4 +241,3 @@ Private Function joinSubArray(ByVal mainArray As Variant, ByVal startIndex As Lo
     joinSubArray = Join(tempArray, separator)
     
 End Function
-

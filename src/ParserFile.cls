@@ -23,43 +23,30 @@ Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef 
     
     Dim fileText As String
     Dim surveyRunCount As Double
-    Dim i As Long
+    Dim runCounter As Long
     Dim firstRow As Long
-    Dim runLines As Variant
     Dim parser As ParserSurveyRun
-    Dim surveyRun As ModelSurveyRun
     Dim surveyName As String
     Dim subjectId As String
     Dim lineArray() As String
-    
+
     Set parser = New ParserSurveyRun
-    
+
     #If Mac Then
         fileText = cleanFileText(getAsciFile(filePath, fileName))
     #Else
         fileText = cleanFileText(getUtfFile(filePath, fileName))
     #End If
 
-    lineArray = Split(fileText, vbLf)
-    
-    surveyRunCount = (UBound(lineArray) - 4) / 3
-    
-    ' TODO: WORK HERE WITH MODELDATAFILE
-    '
-    '
-    surveyName = getMetaData(lineArray, "Survey Name", 0)
-    subjectId = getMetaData(lineArray, "Subject ID", 2)
-    
-    For i = 0 To surveyRunCount - 1
-        firstRow = i * 3 + 4
-        ' Create an array of the 3 survey run lines
-        runLines = Array(lineArray(firstRow), lineArray(firstRow + 1), lineArray(firstRow + 2))
-        parseAndPrintSurveyRun surveyName, subjectId, runLines, parser, surveyRun, printer, startLine + i
-    Next i
-    parse = surveyRunCount + startLine
-    
-    Exit Function
+    Dim dataFile As ModelDataFile
+    Set dataFile = New ModelDataFile
+    dataFile.fileContents = fileText
 
+    For runCounter = 1 To dataFile.surveyRunCount
+        parseAndPrintSurveyRun dataFile.surveyName, dataFile.subjectId, dataFile.surveyRunLines(runCounter), parser, printer, startLine + runCounter - 1
+    Next runCounter
+    parse = dataFile.surveyRunCount + startLine
+    Exit Function
 Catch:
     ' Need to close file before error gets propagated.
     Err.Raise Err.number, Err.Source, "There is an error in the file '" & fileName & "'. " & Err.description
@@ -83,7 +70,8 @@ Private Function cleanFileText(ByRef fileText As String) As String
     Dim cleanText As String
     Dim questionArray() As String
     Dim lineArray() As String
-    Dim i As Long
+    Dim counter As Long
+
     Dim n As Long
     
     ' Make sure lines are separated by vbLf
@@ -94,15 +82,15 @@ Private Function cleanFileText(ByRef fileText As String) As String
 
     cleanText = questionArray(0)
     
-    For i = 1 To UBound(questionArray)
+    For counter = 1 To UBound(questionArray)
         cleanText = cleanText & Chr$(34) & "Start Time"
-        lineArray = Split(questionArray(i), vbLf)
+        lineArray = Split(questionArray(counter), vbLf)
         cleanText = cleanText + lineArray(0) + vbLf
         For n = 1 To UBound(lineArray) - 2
             cleanText = cleanText + lineArray(n)
         Next n
         cleanText = cleanText & vbLf & lineArray(UBound(lineArray) - 1) & vbLf
-    Next i
+    Next counter
 
     cleanFileText = cleanText
     
@@ -111,9 +99,10 @@ End Function
 '
 ' This function handles errors in the SurveyRun by printing the error.
 '
-Private Sub parseAndPrintSurveyRun(ByRef surveyName As String, ByRef subjectId As String, ByRef runLines As Variant, ByRef parser As ParserSurveyRun, ByRef surveyRun As ModelSurveyRun, ByRef printer As IPrinter, ByRef lineNo As Long)
+Private Sub parseAndPrintSurveyRun(ByRef surveyName As String, ByRef subjectId As String, ByRef runLines As ModelDataLines, ByRef parser As ParserSurveyRun, ByRef printer As IPrinter, ByRef lineNo As Long)
     
     On Error GoTo Catch
+    Dim surveyRun As ModelSurveyRun
     Set surveyRun = parser.parse(surveyName, subjectId, runLines)
     printer.printData surveyRun, lineNo
 

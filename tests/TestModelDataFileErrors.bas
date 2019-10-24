@@ -36,7 +36,7 @@ End Sub
 '@TestMethod("Model")
 Private Sub fileContents_WhenMetaLabelMissing_ShouldThrow()
     Const ExpectedError As Long = CustomError.IncorrectDataFormat
-    Const ExpectedDescription As String = "The value 'Survey Name' was not found."
+    Const ExpectedDescription As String = "The value 'Survey Name' was not found on line 0."
     On Error GoTo Assert
     
     accessor.loadSurveyRunFile "test-2"
@@ -53,7 +53,7 @@ End Sub
 '@TestMethod("Model")
 Private Sub fileContents_WhenMetaDataMissing_ShouldThrow()
     Const ExpectedError As Long = CustomError.IncorrectDataFormat
-    Const ExpectedDescription As String = "The value 'Survey Name' was not found."
+    Const ExpectedDescription As String = "The value 'Survey Name' was not found on line 0."
     On Error GoTo Assert
     
     accessor.loadSurveyRunFile "test-3"

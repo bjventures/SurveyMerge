@@ -16,8 +16,7 @@ Implements IPrinter
 
 Private questionCounter As Long
 
-'TODO: Remove ByRef after tests implemented
-Public Sub IPrinter_printData(ByRef surveyRun As ModelSurveyRun, ByRef lineNo As Long)
+Public Sub IPrinter_printData(ByVal surveyRun As ModelSurveyRun, ByVal lineNo As Long)
     Dim ws As Worksheet
     
     Set ws = ThisWorkbook.sheets(getWsName(WsSheet.Answers))

@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 '@Folder("Tests.Utilities")
 Option Explicit
-Private Const testFileFolder = TestFolder & "/test-files/"
+Private Const testFileFolder = testFolder & "/test-files/"
 Private lines As Variant
 Private mFileText As String
 
@@ -23,7 +23,6 @@ Public Sub loadSurveyRunFile(fileNameStub As String)
     Dim lineArray As Variant
 
     On Error GoTo Catch
-
     fileName = getCurrentPath & testFileFolder & fileNameStub & ".csv"
     inputFile = FreeFile
     Open fileName For Input As #inputFile
@@ -35,7 +34,6 @@ Public Sub loadSurveyRunFile(fileNameStub As String)
     Close #inputFile
 
     lines = Split(mFileText, vbLf)
-
 Finally:
     Exit Sub
 Catch:
@@ -51,10 +49,15 @@ Catch:
 
 End Sub
 
-Public Function getFileRunLines(runNumber As Integer) As Variant
+Public Function getFileRunLines(runNumber As Integer) As ModelDataLines
     ' Note each run has 3 lines.
     Dim runStartIndex As Long
+    Dim runLines As ModelDataLines
+    Set runLines = New ModelDataLines
     runStartIndex = ((runNumber) * 4) - 3
-    getFileRunLines = Array(lines(runStartIndex), lines(runStartIndex + 1), lines(runStartIndex + 2))
+    runLines.header = lines(runStartIndex)
+    runLines.answer = lines(runStartIndex + 1)
+    runLines.timeStamp = lines(runStartIndex + 2)
+    Set getFileRunLines = runLines
 End Function
 

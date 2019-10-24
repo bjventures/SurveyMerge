@@ -23,18 +23,42 @@ Private Const LinesPerSurveyRun = 3
 
 Public Property Let fileContents(ByVal fileText As String)
     lineArray = Split(fileText, vbLf)
-    mSurveyName = getMetaData(lineArray(SurveyNameLine - 1), "Survey Name")
-    mSubjectId = getMetaData(lineArray(SubjectIdLine - 1), "Subject ID")
+    mSurveyName = getMetaData(lineArray, "Survey Name", 0)
+    mSubjectId = getMetaData(lineArray, "Subject ID", 2)
     mSurveyRunCount = CLng((UBound(lineArray) - FirstAnswerLine - 1) / LinesPerSurveyRun)
 End Property
 
-Private Function getMetaData(ByVal lineText As String, ByVal dataName As String) As String
-    Dim lineArray() As String
-    lineArray = Split(lineText, ",")
-    If lineArray(0) <> dataName And UBound(lineArray) < 2 Then
-        Err.Raise CustomError.IncorrectDataFormat, "ModelDataFile.getMetaData", "The value '" & dataName & "' was not found."
+Private Function getMetaData(ByRef fileLineArray() As String, ByVal dataName As String, ByRef lineNo As Long) As String
+
+    Dim dataArray() As String
+    dataArray = Split(fileLineArray(lineNo), ",")
+    
+    If validateMetaData(dataName, dataArray) = False Then
+        Err.Raise CustomError.IncorrectDataFormat, "ParserFile.getMetaData", "The value '" & dataName & "' was not found on line " & lineNo & "."
     End If
-    getMetaData = removeQuotes(lineArray(1))
+    getMetaData = Mid$(dataArray(FileCol.metadata - 1), 2, Len(dataArray(1)) - 2)
+ 
+End Function
+
+Private Function validateMetaData(ByVal dataName As Variant, ByRef dataArray As Variant) As Boolean
+    ' Check there is a value
+    If UBound(dataArray) <> 1 Then
+        validateMetaData = False
+        Exit Function
+    End If
+    ' Check the name of the value is correct.
+    ' Here need "And dataName <> dataArray(0)" since an earlier version of the Android app does not add quotes to the keyword.
+    ' Long term can remove this.
+    If Chr$(34) & dataName & Chr$(34) <> dataArray(0) And dataName <> dataArray(0) Then
+        validateMetaData = False
+        Exit Function
+    End If
+    ' Check the value is in parentheses
+    If Left$(dataArray(FileCol.metadata - 1), 1) <> Chr$(34) Or Right$(dataArray(1), 1) <> Chr$(34) Then
+        validateMetaData = False
+        Exit Function
+    End If
+    validateMetaData = True
 End Function
 
 Public Property Get surveyName() As String

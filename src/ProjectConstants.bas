@@ -7,7 +7,7 @@ Option Explicit
 
 Public Const ProjectName As String = "SurveyMerge"
 Public Const SrcFolder As String = "src"
-Public Const TestFolder As String = "tests"
+Public Const testFolder As String = "tests"
 
 Enum CustomError
     IncorrectDataFormat = 515
