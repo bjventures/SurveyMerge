@@ -8,12 +8,8 @@ The PIEL Survey app is a research tool which conducts surveys using Ecological M
 
 You can download an Excel file with SurveyMerge pre-installed from [the PIEL Survey website](http://pielsurvey.org/download/surveymerge).
 
-This Excel file has 3 worksheets. Dashboard, Answers and Answer Time. To merge your data files, follow the following steps.
-
-1. Copy your data files into the same folder as the Excel file. Make sure you keep a copy of the original files.
-2. Go to the Dashboard worksheet.
-3. Click on the "Merge Files" button.
+This Excel file has 3 worksheets. Dashboard, Answers and Answer Time. To merge your data files, go to the Dashboard worksheet and follow the instructions.
 
 The answers and answer times will be found in the other 2 worksheets. If you want to conduct manipulation of the data and analysis, we recommend that you start a new works sheet since every time you click on the  "Merge Files" button, the "Answers" and "Answer Time" worksheets will be overwritten.
 
-Developers who wish to work with the code, please see the [wiki on GitHub](https://github.com/bjventures/SurveyMerge/wiki) for more information.
+If you wish to install the code yourself or you are a developers who wishes to work with the code, please see the [wiki on GitHub](https://github.com/bjventures/SurveyMerge/wiki) for more information.
