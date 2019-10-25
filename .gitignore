@@ -1,0 +1,11 @@
+
+*.xls
+*.xlsm
+*.xlsx
+*.survey
+*.doc*
+
+# Ignore csv files except those in test-files directory.
+*.csv
+!tests/test-files/*.csv
+!tests/test-files/test-group*/*.csv
