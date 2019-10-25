@@ -27,6 +27,7 @@ Public Sub IPrinter_printData(ByVal surveyRun As ModelSurveyRun, ByVal lineNo As
 End Sub
 
 Private Sub printAnswerWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun, ByVal lineNo As Long)
+    Dim cell As Range
     printAnswerWsHeaderLine ws, surveyRun, lineNo
     
     ws.Cells(lineNo + 2, 1).value = surveyRun.surveyName
@@ -35,7 +36,17 @@ Private Sub printAnswerWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyR
     ws.Cells(lineNo + 2, 4).value = surveyRun.endTime
 
     For questionCounter = 1 To surveyRun.questionCount
-        ws.Cells(lineNo + 2, 4 + questionCounter).value = surveyRun.answerCollection.item(questionCounter).description
+        Set cell = ws.Cells(lineNo + 2, 4 + questionCounter)
+        ' Here need to ensure Sliders are shown as number in all regions and Checkbox questions are text with no error.
+        If TypeOf surveyRun.answerCollection.item(questionCounter) Is ModelAnswerSlider Then
+            cell.value = CDec(surveyRun.answerCollection.item(questionCounter).description)
+        Else
+            cell.value = surveyRun.answerCollection.item(questionCounter).description
+        End If
+        If TypeOf surveyRun.answerCollection.item(questionCounter) Is ModelAnswerCheckbox Then
+            cell.NumberFormat = "@"
+            cell.Errors(xlNumberAsText).Ignore = True
+        End If
     Next questionCounter
     ws.UsedRange.Columns(1).AutoFit
     ws.UsedRange.Columns(2).AutoFit

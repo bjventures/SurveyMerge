@@ -234,3 +234,4 @@ Private Function joinSubArray(ByVal mainArray As Variant, ByVal startIndex As Lo
     joinSubArray = Join(tempArray, separator)
     
 End Function
+

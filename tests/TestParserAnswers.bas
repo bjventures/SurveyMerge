@@ -10,6 +10,7 @@ Private Fakes As Object
 Private answerParser As ParserAnswers
 Private returnedAnswers As Answers
 Private accessor As FileAccessor
+Private saveCalcState As Long
 
 '@ModuleInitialize
 Private Sub ModuleInitialize()
@@ -18,6 +19,9 @@ Private Sub ModuleInitialize()
     Set answerParser = New ParserAnswers
     Set accessor = New FileAccessor
     accessor.loadSurveyRunFile "answer-lines-1"
+    saveCalcState = Application.Calculation
+    Application.Calculation = xlManual
+    Application.ScreenUpdating = False
 End Sub
 
 '@ModuleCleanup
@@ -27,6 +31,8 @@ Private Sub ModuleCleanup()
     Set answerParser = Nothing
     Set accessor = Nothing
     Set returnedAnswers = Nothing
+    Application.Calculation = saveCalcState
+    Application.ScreenUpdating = True
 End Sub
 
 '@TestInitialize

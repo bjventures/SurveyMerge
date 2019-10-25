@@ -76,6 +76,8 @@ Private Sub surveyRunLines_WhenInitialisedWithFileText_ShouldSet()
     Set dataLines = dataFile.surveyRunLines(1)
 
     Assert.AreEqual "Start Time,End Time,1,2,3,4,5", dataLines.header
+    Assert.AreEqual "2019-04-16T15:08:07+1000,2019-04-16T15:08:14+1000,4," & Chr(34) & "4,5,6" & Chr(34) & ",0.32,," & Chr(34) & "hhii" & Chr(34), dataLines.answer
+    Assert.AreEqual ",,2019-04-16T15:08:08+1000,2019-04-16T15:09:09+1000,2019-04-16T15:10:10+1000,2019-04-16T15:11:13+1000,2019-04-16T15:12:13+1000", dataLines.timeStamp
 
     Exit Sub
 TestFail:
@@ -97,7 +99,4 @@ Assert:
     Assert.AreEqual ExpectedError, Err.number
     Assert.AreEqual ExpectedDescription, Err.description
 End Sub
-
-
-
 

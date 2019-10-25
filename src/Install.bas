@@ -9,21 +9,10 @@ Private Sub installEndUser()
     Dim sheetArray() As Variant
     If Not sheetExists(getWsName(WsSheet.Dashboard)) Then
         sheetArray = Array(getWsName(WsSheet.Dashboard), getWsName(WsSheet.Answers), getWsName(WsSheet.Times))
-    clearOrAddSpreadsheets sheetArray
+        clearOrAddSpreadsheets sheetArray
     End If
+    setupDashboard
 End Sub
-
-Private Function sheetExists(ByVal sheetToFind As String, Optional ByRef wb As Workbook) As Boolean
-    Dim Sheet As Worksheet
-    sheetExists = False
-    If wb Is Nothing Then Set wb = ThisWorkbook
-    For Each Sheet In wb.Worksheets
-        If sheetToFind = Sheet.name Then
-            sheetExists = True
-            Exit Function
-        End If
-    Next Sheet
-End Function
 
 Private Sub setupDashboard()
     Dim ws As Worksheet
@@ -77,19 +66,22 @@ End Sub
 Private Function getInstructions1() As String
     Dim returnString As String
     
-    returnString = "To import the PIEL Survey data files (with '.csv' extension):" & _
-                   "  1. Copy all the data files into the same folder at this Workbook." & _
-                   "  2. Click on the button below." & _
-                   "  3. Check the resulting imported data. Errors (if any) will be printed in the file." & vbCrLf & vbCrLf & _
-                   "Each time that you click on the button, the previous imported data will be overwritten. " & _
-                   "This allows you to merge the data as often as you like as new data files are received."
+    returnString = "To import the PIEL Survey data files (with '.csv' extension):" & vbCrLf & _
+                   "  1. Create a new folder and copy this Workbook to the new folder." & vbCrLf & _
+                   "  2. Copy all the data files into the new folder with this Workbook." & vbCrLf & _
+                   "  3. Click on the button below." & Chr(10) & _
+                   "  4. Check the resulting imported data. Errors (if any) will be printed in the file." & vbCrLf & vbCrLf & _
+                   "NOTE" & Chr(10) & _
+                   "- Do not alter the data files." & vbCrLf & _
+                   "- Each time that you click on the button, the previous imported data will be overwritten. " & _
+                   "We suggest you carry out any work in a separate spreadsheet."
     getInstructions1 = returnString
 End Function
 
 Private Function getInstructions2() As String
     Dim returnString As String
     
-    returnString = "Note that this is a Beta version of the data merge tool, " & _
+    returnString = "This is a Beta version of the data merge tool, " & _
                    "let us know of any problems by clicking on the contact link below."
     getInstructions2 = returnString
 End Function

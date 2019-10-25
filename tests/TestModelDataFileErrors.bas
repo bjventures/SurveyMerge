@@ -67,5 +67,22 @@ Assert:
     Assert.AreEqual ExpectedDescription, Err.description
 End Sub
 
+'@TestMethod("Model")
+Private Sub fileContents_WhenOldVersionNoParenthesesForMetaData_ShouldNotThrow()
+    ' TODO: This is temporary, it is to allow old versions of the data file to be imported.
+    ' The meta data will be trimmed but at least they will be able to import it.
+    ' In a future version, this will throw an error.
+    On Error GoTo TestFail
+    
+    accessor.loadSurveyRunFile "test-6"
+    Set dataFile = New ModelDataFile
+    dataFile.fileContents = accessor.fileText
+    
+    ' The meta data "Test-6" is trimmed.
+    Assert.AreEqual "est ", dataFile.surveyName
 
+    Exit Sub
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
 

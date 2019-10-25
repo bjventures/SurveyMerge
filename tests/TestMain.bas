@@ -24,7 +24,7 @@ End Sub
 Private Sub ModuleCleanup()
     Set Assert = Nothing
     Set Fakes = Nothing
-   ' clearOrAddSpreadsheets (sheets)
+    clearOrAddSpreadsheets (sheets)
 End Sub
 
 '@TestInitialize
@@ -33,7 +33,7 @@ Private Sub TestInitialize()
     clearOrAddSpreadsheets (sheets)
     wsAnswers.UsedRange.Clear
     wsTimes.UsedRange.Clear
- End Sub
+End Sub
 
 '@TestCleanup
 Private Sub TestCleanup()
@@ -67,7 +67,6 @@ TestFail:
     Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
-
 '@TestMethod("Controllers")
 Private Sub combineCsvFiles_WhenSurveyRunError_ShouldPrintError()
     On Error GoTo TestFail
@@ -82,9 +81,4 @@ Private Sub combineCsvFiles_WhenSurveyRunError_ShouldPrintError()
 TestFail:
     Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
-
-
-
-
-
 

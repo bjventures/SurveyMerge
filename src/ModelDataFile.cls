@@ -46,18 +46,17 @@ Private Function validateMetaData(ByVal dataName As Variant, ByRef dataArray As 
         validateMetaData = False
         Exit Function
     End If
-    ' Check the name of the value is correct.
-    ' Here need "And dataName <> dataArray(0)" since an earlier version of the Android app does not add quotes to the keyword.
-    ' Long term can remove this.
+    ' TODO: Here need "And dataName <> dataArray(0)" since an earlier version of the Android app does not add quotes to the keyword.
+    '       Consider removing in a future version.
     If Chr$(34) & dataName & Chr$(34) <> dataArray(0) And dataName <> dataArray(0) Then
         validateMetaData = False
         Exit Function
     End If
-    ' Check the value is in parentheses
-    If Left$(dataArray(FileCol.metadata - 1), 1) <> Chr$(34) Or Right$(dataArray(1), 1) <> Chr$(34) Then
-        validateMetaData = False
-        Exit Function
-    End If
+    ' TODO: This check is disable for now, a very early version did not have parentheses. Consider enabling in a future version.
+    'If Left$(dataArray(FileCol.metadata - 1), 1) <> Chr$(34) Or Right$(dataArray(1), 1) <> Chr$(34) Then
+    '    validateMetaData = False
+    '    Exit Function
+    'End If
     validateMetaData = True
 End Function
 
@@ -90,3 +89,4 @@ Private Function removeQuotes(originalString As String) As String
     If Right$(modifiedString, 1) = Chr$(34) Then modifiedString = Left$(modifiedString, Len(modifiedString) - 1)
     removeQuotes = modifiedString
 End Function
+
