@@ -82,3 +82,15 @@ TestFail:
     Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
+'@TestMethod("Controllers")
+Private Sub combineCsvFiles_WhenNonAsciCharacter_ShouldMergeCorrectly()
+    On Error GoTo TestFail
+    
+    combineCsvFiles getCurrentPath() & testFolder & "/test-files/test-group-2/", False
+  
+     Assert.AreEqual "€", wsAnswers.Cells(6, 8).value
+    
+    Exit Sub
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
