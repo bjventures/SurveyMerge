@@ -70,8 +70,11 @@ Private Function getAnswerCollection(ByVal answerArray As Variant, ByVal timeArr
             End If
             GoTo NextIteration
         End If
-        ' If get here, it is an error.
-        Err.Raise CustomError.InvalidQuestionType, "ParserAnswers.getAnswerCollection", "The answer text '" & inputString & "' is not a valid answer type."
+        
+        ' If get here, it is an error. This can occur if a data file is saved from Excel, the quotes for a text answer are removed.
+        ' Rather than throw an error, place the data in the spreadsheet and the researcher can check it.
+        ' TODO: Consider showing a warning to check the data.
+        addAnswer "text", inputString, timeArray(column)
 NextIteration:
         column = column + 1
     Next

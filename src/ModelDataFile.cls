@@ -41,8 +41,8 @@ Private Function getMetaData(ByRef fileLineArray() As String, ByVal dataName As 
 End Function
 
 Private Function validateMetaData(ByVal dataName As Variant, ByRef dataArray As Variant) As Boolean
-    ' Check there is a value
-    If UBound(dataArray) <> 1 Then
+    ' Check there is a value. We do not validate the upper limit of the array as a researcher may open the data file in Excel and save it, which adds commas.
+    If UBound(dataArray) = 0 Then
         validateMetaData = False
         Exit Function
     End If
@@ -52,7 +52,7 @@ Private Function validateMetaData(ByVal dataName As Variant, ByRef dataArray As 
         validateMetaData = False
         Exit Function
     End If
-    ' TODO: This check is disable for now, a very early version did not have parentheses. Consider enabling in a future version.
+    ' TODO: This check is disabled for now, a very early version did not have parentheses. Consider enabling in a future version.
     'If Left$(dataArray(FileCol.metadata - 1), 1) <> Chr$(34) Or Right$(dataArray(1), 1) <> Chr$(34) Then
     '    validateMetaData = False
     '    Exit Function

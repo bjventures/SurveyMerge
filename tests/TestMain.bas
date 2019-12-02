@@ -73,9 +73,10 @@ Private Sub combineCsvFiles_WhenSurveyRunError_ShouldPrintError()
     
     combineCsvFiles getCurrentPath() & testFolder & "/test-files/test-group-3/", False
      
-    Assert.AreEqual "Error In Survey Run: The question type is not recognised.", wsAnswers.Cells(3, 1).value
     Assert.AreEqual "Error In Survey Run: Error 515: The question count is incorrect.", wsAnswers.Cells(5, 1).value
-    Assert.AreEqual "Error In Survey Run: The question type is not recognised.", wsAnswers.Cells(9, 1).value
+    ' These incorrectly formatted answers are now printed in the file.
+    'Assert.AreEqual "Error In Survey Run: The question type is not recognised.", wsAnswers.Cells(3, 1).value
+    'Assert.AreEqual "Error In Survey Run: The question type is not recognised.", wsAnswers.Cells(9, 1).value
     
     Exit Sub
 TestFail:

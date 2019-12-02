@@ -143,48 +143,49 @@ Assert:
 End Sub
 
 '@TestMethod("Parsers")
-Private Sub parserAnswers_Parse_WhenLinesHaveInvalidNonNumericAnswer_ShouldThrow()
+Private Sub parserAnswers_Parse_WhenLinesHaveInvalidNonNumericAnswer_ShouldConvertToText()
+    On Error GoTo TestFail
     Const ExpectedError As Long = CustomError.InvalidQuestionType
     Const ExpectedDescription As String = "The answer text 'a1' is not a valid answer type."
-    On Error GoTo Assert
     Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(8))
 
-    Assert.fail "Expected error was not raised"
+    Assert.AreEqual CLng(1), returnedAnswers.count
+    Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerText
+    
     Exit Sub
-
-Assert:
-    Assert.AreEqual ExpectedError, Err.number
-    Assert.AreEqual ExpectedDescription, Err.description
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Parsers")
-Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerMissingQuote_ShouldThrow()
+Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerMissingQuote_ShouldChangeToText()
+    On Error GoTo TestFail
     Const ExpectedError As Long = CustomError.InvalidQuestionType
     Const ExpectedDescription As String = "The answer text '""Test' is not a valid answer type."
-    On Error GoTo Assert
     Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(9))
 
-    Assert.fail "Expected error was not raised"
+    Assert.AreEqual CLng(1), returnedAnswers.count
+    Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerText
+    
     Exit Sub
-
-Assert:
-    Assert.AreEqual ExpectedError, Err.number
-    Assert.AreEqual ExpectedDescription, Err.description
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 End Sub
 
 '@TestMethod("Parsers")
-Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerShort_ShouldThrow()
+Private Sub parserAnswers_Parse_WhenLinesHaveInvalidAnswerShort_ShouldChangeToText()
+    On Error GoTo TestFail
     Const ExpectedError As Long = CustomError.InvalidQuestionType
     Const ExpectedDescription As String = "The answer text 'a' is not a valid answer type."
-    On Error GoTo Assert
     Set returnedAnswers = answerParser.parse(accessor.getFileRunLines(10))
 
-    Assert.fail "Expected error was not raised"
+    Assert.AreEqual CLng(1), returnedAnswers.count
+    Assert.IsTrue TypeOf returnedAnswers.item(1) Is ModelAnswerText
+    
     Exit Sub
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
 
-Assert:
-    Assert.AreEqual ExpectedError, Err.number
-    Assert.AreEqual ExpectedDescription, Err.description
 End Sub
 
 '
