@@ -33,6 +33,7 @@ Public Sub combineCsvFiles(Optional ByVal currentPath As String = vbNullString, 
     
     sheetArray = Array(getWsName(WsSheet.Answers), getWsName(WsSheet.Times))
     clearOrAddSpreadsheets sheetArray
+    Worksheets(getWsName(WsSheet.Dashboard)).Activate
     
     success = 0
     lineCounter = 0
