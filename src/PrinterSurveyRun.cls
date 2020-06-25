@@ -61,7 +61,11 @@ Private Sub printTimeWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyRun
     ws.Cells(lineNo + 2, 2).value = surveyRun.participantId
     ws.Cells(lineNo + 2, 3).value = surveyRun.startTime
     ws.Cells(lineNo + 2, 4).value = surveyRun.endTime
-
+'    ws.Cells(lineNo + 2, 3).NumberFormat = "mm.dd.yyyy hh:mm:ss"
+'Range("A2", "A50000").NumberFormat = "yyyy-mm-dd"
+'Format(date_test, "mm.dd.yyyy hh:mm")
+    
+    
     For questionCounter = 1 To surveyRun.questionCount
         ' Dates aren't set if the question is skipped by branching.
         If surveyRun.answerCollection.item(questionCounter).time <> CDate(0) Then

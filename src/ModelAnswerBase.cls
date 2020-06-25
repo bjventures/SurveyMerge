@@ -29,9 +29,19 @@ End Property
 
 Public Property Let isoTime(ByVal value As String)
     On Error GoTo Catch
-    m_time = DateValue(Mid$(value, 1, 10)) + TimeValue(Mid$(value, 12, 8))
-    m_offset = Int(Mid$(value, 20, 5))
-
+    
+    If Len(value) < 23 Then
+        GoTo Finally
+    End If
+    
+    If Len(value) = 23 Then
+        m_time = DateValue(Mid$(value, 1, 10)) + TimeValue("0" + Mid$(value, 12, 7))
+        m_offset = Int(Mid$(value, 19, 5))
+    Else
+        m_time = DateValue(Mid$(value, 1, 10)) + TimeValue(Mid$(value, 12, 8))
+        m_offset = Int(Mid$(value, 20, 5))
+    End If
+    
 Finally:
     Exit Property
 Catch:

@@ -33,24 +33,39 @@ Public Function parse(ByVal surveyName As String, ByVal participantId As String,
 End Function
 
 Private Sub setSurveyRunMetaData(ByVal surveyName As String, ByVal participantId As String, ByVal dataArray As ModelDataLines)
-        
-    Dim dateString As String
+    Dim splitArray() As String
+    Dim startDateString As String
+    Dim endDateString As String
+    Dim dateLength As Integer
         
     On Error GoTo Catch
     singleSurveyRun.surveyName = surveyName
     singleSurveyRun.participantId = participantId
-            
-    dateString = Split(dataArray.answer, ",")(0)
-    singleSurveyRun.startTime = DateValue(Mid$(dateString, 1, 10)) + TimeValue(Mid$(dateString, 12, 8))
-    dateString = Split(dataArray.answer, ",")(1)
-    singleSurveyRun.endTime = DateValue(Mid$(dateString, 1, 10)) + TimeValue(Mid$(dateString, 12, 8))
+        
+    splitArray = Split(dataArray.answer, ",")
+    startDateString = splitArray(0)
+    endDateString = splitArray(1)
     
+    If Len(startDateString) = 23 Then
+        singleSurveyRun.startTime = DateValue(Mid$(startDateString, 1, 10)) + TimeValue("0" + Mid$(startDateString, 12, 7))
+    Else
+        singleSurveyRun.startTime = DateValue(Mid$(startDateString, 1, 10)) + TimeValue(Mid$(startDateString, 12, 8))
+    End If
+   
+    If Len(endDateString) = 23 Then
+        singleSurveyRun.endTime = DateValue(Mid$(endDateString, 1, 10)) + TimeValue("0" + Mid$(endDateString, 12, 7))
+    Else
+        singleSurveyRun.endTime = DateValue(Mid$(endDateString, 1, 10)) + TimeValue(Mid$(endDateString, 12, 8))
+    End If
+
     ' The first 2 elements are not question numbers and need to adjust from index (ie not "- 2")
     singleSurveyRun.questionCount = UBound(Split(dataArray.header, ",")) - 1
 
+    Exit Sub
+
 Catch:
     ' Catch if the date string is not valid.
-    If Err.number = 13 Then Err.Raise CustomError.IncorrectDataFormat, "ParserSurveyRun.setSurveyRunMetaData", "There is an error in the survey run timestamp data."
+     If Err.number = 13 Then Err.Raise CustomError.IncorrectDataFormat, "ParserSurveyRun.setSurveyRunMetaData", "There is an error in the survey run timestamp data."
 
 End Sub
 
