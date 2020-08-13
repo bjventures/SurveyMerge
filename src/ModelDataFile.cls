@@ -31,12 +31,19 @@ End Property
 Private Function getMetaData(ByRef fileLineArray() As String, ByVal dataName As String, ByRef lineNo As Long) As String
 
     Dim dataArray() As String
+    Dim tempString As String
     dataArray = Split(fileLineArray(lineNo), ",")
     
     If validateMetaData(dataName, dataArray) = False Then
         Err.Raise CustomError.IncorrectDataFormat, "ParserFile.getMetaData", "The value '" & dataName & "' was not found on line " & lineNo & "."
     End If
-    getMetaData = Mid$(dataArray(FileCol.metadata - 1), 2, Len(dataArray(1)) - 2)
+        
+    ' Remove parentheses if exist (if open csv file in Excel then save, will remove parentheses.
+    tempString = dataArray(FileCol.metadata - 1)
+    If Left(tempString, 1) = Chr$(34) Then tempString = Mid(tempString, 2, Len(tempString) - 1)
+    If Right(tempString, 1) = Chr$(34) Then tempString = Mid(tempString, 1, Len(tempString) - 1)
+ 
+    getMetaData = tempString
  
 End Function
 

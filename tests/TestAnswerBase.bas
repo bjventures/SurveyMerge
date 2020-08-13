@@ -84,6 +84,18 @@ TestFail:
 End Sub
 
 '@TestMethod("Model")
+Private Sub answerBase_Time_WhenIsoTimeShortSet_ShouldSet()
+    On Error GoTo TestFail
+    baseAnswer.isoTime = "2019-04-16T5:08:07+1000"
+   
+    Assert.AreEqual "2019-04-16 05:08:07", Format$(baseAnswer.time, "yyyy-mm-dd hh:mm:ss")
+   
+    Exit Sub
+TestFail:
+    Assert.fail "Test raised an error: #" & Err.number & " - " & Err.description
+End Sub
+
+'@TestMethod("Model")
 Private Sub answerBase_IsoOffset_WhenIsoTimeSet_ShouldGetOffset()
     On Error GoTo TestFail
     baseAnswer.isoTime = "2019-04-16T15:08:07+1000"
