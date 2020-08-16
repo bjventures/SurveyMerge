@@ -78,8 +78,8 @@ Private Sub fileContents_WhenOldVersionNoParenthesesForMetaData_ShouldNotThrow()
     Set dataFile = New ModelDataFile
     dataFile.fileContents = accessor.fileText
     
-    ' The meta data "Test-6" is trimmed.
-    Assert.AreEqual "est ", dataFile.surveyName
+    ' The meta data "Test-6" is not trimmed.
+    Assert.AreEqual "Test 6", dataFile.surveyName
 
     Exit Sub
 TestFail:
