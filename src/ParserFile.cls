@@ -31,11 +31,12 @@ Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef 
     Dim lineArray() As String
 
     Set parser = New ParserSurveyRun
-
+    
     #If Mac Then
         If isFirstFile Then
-            MsgBox "SurveyMerge is not fully supported on MacOS since some letters of languages with extended characters may not be correctly imported. You should check the imported data carefully.", vbOKOnly, ProjectName
-ProjectName
+            Dim msg As String
+            msg = "SurveyMerge is not fully supported on MacOS since some letters of languages with extended characters may not be correctly imported. You should check the imported data carefully."
+            MsgBox msg, vbOKOnly, ProjectName
         End If
         fileText = cleanFileText(getAsciiFile(filePath, fileName))
     #Else
