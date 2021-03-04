@@ -17,6 +17,7 @@ Public Sub combineCsvFiles(Optional ByVal currentPath As String = vbNullString, 
     Dim parser As ParserFile
     Dim printer As PrinterSurveyRun
     Dim lineCounter As Long
+    Dim isFirstFile As Boolean
         
     On Error GoTo Catch
         
@@ -38,7 +39,8 @@ Public Sub combineCsvFiles(Optional ByVal currentPath As String = vbNullString, 
     success = 0
     lineCounter = 0
     For fileCounter = 0 To arrayBound - 1
-        lineCounter = parser.parse(currentPath, fileArray(fileCounter), printer, lineCounter)
+        isFirstFile = IIf(fileCounter > 0, False, True)
+        lineCounter = parser.parse(currentPath, fileArray(fileCounter), printer, lineCounter, isFirstFile)
         success = success + 1
     Next fileCounter
 

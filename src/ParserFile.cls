@@ -17,7 +17,7 @@ Option Explicit
 ' This function parses and prints the SurveyRuns in a single file.
 ' Errors in individual SurveyRuns are handled by printing the error, they are not propagated.
 '
-Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef printer As IPrinter, ByVal startLine As Long) As Long
+Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef printer As IPrinter, ByVal startLine As Long, isFirstFile As Boolean) As Long
 
     On Error GoTo Catch
     
@@ -33,7 +33,11 @@ Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef 
     Set parser = New ParserSurveyRun
 
     #If Mac Then
-        fileText = cleanFileText(getAsciFile(filePath, fileName))
+        If isFirstFile Then
+            MsgBox "SurveyMerge is not fully supported on MacOS since some letters of languages with extended characters may not be correctly imported. You should check the imported data carefully.", vbOKOnly, ProjectName
+ProjectName
+        End If
+        fileText = cleanFileText(getAsciiFile(filePath, fileName))
     #Else
         fileText = cleanFileText(getUtfFile(filePath, fileName))
     #End If
@@ -50,6 +54,19 @@ Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef 
 Catch:
     ' Need to close file before error gets propagated.
     Err.Raise Err.number, Err.Source, "There is an error in the file '" & fileName & "'. " & Err.description
+
+End Function
+
+Private Function getAsciiFile(ByVal filePath As String, ByVal fileName As String) As String
+    Dim fileId As Integer
+    Dim fullFilePath As String
+
+    fullFilePath = filePath & fileName
+    fileId = FreeFile
+
+    Open fullFilePath For Input As fileId
+    getAsciiFile = Input(LOF(fileId), fileId)
+    Close fileId
 
 End Function
 

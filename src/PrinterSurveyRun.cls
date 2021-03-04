@@ -39,7 +39,7 @@ Private Sub printAnswerWs(ByRef ws As Worksheet, ByRef surveyRun As ModelSurveyR
         Set cell = ws.Cells(lineNo + 2, 4 + questionCounter)
         ' Here need to ensure Sliders are shown as number in all regions and Checkbox questions are text with no error.
         If TypeOf surveyRun.answerCollection.item(questionCounter) Is ModelAnswerSlider Then
-            cell.value = CDec(surveyRun.answerCollection.item(questionCounter).description)
+            cell.value = CDbl(surveyRun.answerCollection.item(questionCounter).description)
         Else
             cell.value = surveyRun.answerCollection.item(questionCounter).description
         End If
