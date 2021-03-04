@@ -17,7 +17,7 @@ Option Explicit
 ' This function parses and prints the SurveyRuns in a single file.
 ' Errors in individual SurveyRuns are handled by printing the error, they are not propagated.
 '
-Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef printer As IPrinter, ByVal startLine As Long, isFirstFile As Boolean) As Long
+Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef printer As IPrinter, ByVal startLine As Long, Optional isFirstFile As Boolean = False) As Long
 
     On Error GoTo Catch
     
@@ -31,7 +31,7 @@ Public Function parse(ByVal filePath As String, ByVal fileName As String, ByRef 
     Dim lineArray() As String
 
     Set parser = New ParserSurveyRun
-    
+
     #If Mac Then
         If isFirstFile Then
             Dim msg As String
@@ -68,7 +68,7 @@ Private Function getAsciiFile(ByVal filePath As String, ByVal fileName As String
     Open fullFilePath For Input As fileId
     getAsciiFile = Input(LOF(fileId), fileId)
     Close fileId
-
+   
 End Function
 
 Private Function getUtfFile(ByVal filePath As String, ByVal fileName As String) As String
@@ -89,7 +89,6 @@ Private Function cleanFileText(ByRef fileText As String) As String
     Dim questionArray() As String
     Dim lineArray() As String
     Dim counter As Long
-
     Dim n As Long
     
     ' Make sure lines are separated by vbLf
