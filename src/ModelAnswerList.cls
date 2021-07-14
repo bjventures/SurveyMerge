@@ -26,7 +26,8 @@ Private Sub Class_Initialize()
 End Sub
 
 Public Property Let value(ByVal answerValue As Long)
-    If answerValue < 1 Then Err.Raise CustomError.ModelValidationError, "ModelAnswerList.value", "The value '" & answerValue & "' is not valid."
+    ' It is possible that this is actually a slider answer so need to allow zero.
+    If answerValue < 0 Then Err.Raise CustomError.ModelValidationError, "ModelAnswerList.value", "The value '" & answerValue & "' is not valid."
     m_value = answerValue
 End Property
 

@@ -50,7 +50,7 @@ Catch:
 End Sub
 
 Public Function getFileRunLines(runNumber As Integer) As ModelDataLines
-    ' Note each run has 3 lines.
+    ' Each run has 3 lines.
     Dim runStartIndex As Long
     Dim runLines As ModelDataLines
     Set runLines = New ModelDataLines
